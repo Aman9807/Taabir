@@ -70,9 +70,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Link href="/">
-            <div className="h-12 w-12 rounded-full border-2 border-[#C5A880] flex items-center justify-center text-slate-800 font-serif text-xl font-bold bg-white shadow">
-              T
-            </div>
+            <img src="/icon.svg" alt="Taabir Logo" className="h-12 w-12 drop-shadow-md rounded-xl" />
           </Link>
         </div>
 

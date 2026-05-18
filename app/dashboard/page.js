@@ -157,34 +157,7 @@ export default function DashboardPage() {
         {/* Top Navbar */}
         <div className="flex flex-col sm:flex-row items-center justify-between bg-white border border-slate-100 shadow-sm rounded-2xl p-6 mb-8 gap-4">
           <Link href="/" className="flex items-center gap-4 hover:opacity-90 transition-all group shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" className="h-10 w-10 shrink-0 shadow-md rounded-xl group-hover:scale-105 transition-transform duration-300">
-              <defs>
-                <linearGradient id="yellow-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#FFF3C4" />
-                  <stop offset="35%" stopColor="#FCD34D" />
-                  <stop offset="70%" stopColor="#D97706" />
-                  <stop offset="100%" stopColor="#78350F" />
-                </linearGradient>
-                <linearGradient id="charcoal-bg" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#1E202B" />
-                  <stop offset="100%" stopColor="#0F1016" />
-                </linearGradient>
-                <radialGradient id="gold-glow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#FCD34D" stopOpacity="0.15" />
-                  <stop offset="100%" stopColor="#FCD34D" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-              <rect width="200" height="200" rx="44" fill="url(#charcoal-bg)" />
-              <circle cx="100" cy="100" r="90" fill="url(#gold-glow)" />
-              <rect x="12" y="12" width="176" height="176" rx="32" fill="none" stroke="url(#yellow-gold-grad)" strokeWidth="2.5" />
-              <rect x="18" y="18" width="164" height="164" rx="26" fill="none" stroke="url(#yellow-gold-grad)" strokeWidth="0.75" opacity="0.5" />
-              <path d="M 32,32 L 48,32 A 16,16 0 0,0 32,48 Z" fill="url(#yellow-gold-grad)" opacity="0.8" />
-              <path d="M 168,32 L 152,32 A 16,16 0 0,1 168,48 Z" fill="url(#yellow-gold-grad)" opacity="0.8" />
-              <path d="M 32,168 L 48,168 A 16,16 0 0,1 32,152 Z" fill="url(#yellow-gold-grad)" opacity="0.8" />
-              <path d="M 168,168 L 152,168 A 16,16 0 0,0 168,152 Z" fill="url(#yellow-gold-grad)" opacity="0.8" />
-              <text x="100" y="118" fontFamily="'Playfair Display', 'Didot', 'Georgia', serif" fontSize="76" fontWeight="bold" fill="url(#yellow-gold-grad)" textAnchor="middle" filter="drop-shadow(0px 2px 8px rgba(217, 119, 6, 0.45))">T</text>
-              <text x="100" y="152" fontFamily="'Inter', 'Montserrat', 'sans-serif'" fontSize="10.5" fontWeight="800" fill="url(#yellow-gold-grad)" textAnchor="middle" letter-spacing="4.5" opacity="0.95">TAABIR</text>
-            </svg>
+            <img src="/icon.svg" alt="Taabir Logo" className="h-10 w-10 shrink-0 shadow-md rounded-xl group-hover:scale-105 transition-transform duration-300" />
             <div>
               <h1 className="text-xl font-bold text-slate-900 tracking-tight group-hover:text-amber-700 transition-colors">Taabir Dashboard</h1>
               <p className="text-xs text-slate-400 font-mono">Logged in as {user.email}</p>
