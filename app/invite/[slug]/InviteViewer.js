@@ -1707,8 +1707,8 @@ function ScratchCardCanvas({ goldColor, textColor, onRevealed, instructionsText 
     }
 
     const percentage = cleared / (pixels.length / 4);
-    if (percentage > 0.6) {
-      // Fade out canvas automatically
+    if (percentage > 0.35) {
+      // Fade out canvas automatically when 35%-40% is cleared
       canvas.style.transition = "opacity 0.6s ease";
       canvas.style.opacity = 0;
       setTimeout(onRevealed, 600);
