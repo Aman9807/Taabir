@@ -955,7 +955,8 @@ export default function CreateInvitationPage() {
                     { id: "midnight-royal", label: "Midnight Royal", desc: "Luxury starry navy with double-door parting", color: "#0A192F", textColor: "#D4AF37", tag: "Premium Interactive" },
                     { id: "ivory-elegance", label: "Ivory Elegance", desc: "Warm white card with parting velvet curtains", color: "#FAF9F5", textColor: "#800020", tag: "Premium Interactive" },
                     { id: "minimalist-romance", label: "Minimalist Romance", desc: "Clean layout, full-viewport parallax hero sections", color: "#FFFFF0", textColor: "#333333", tag: "Premium Scroll" },
-                    { id: "dark-moody-elegant", label: "Dark Moody & Elegant", desc: "Cinematic immersive story, slow Ken Burns, rich gold & onyx", color: "#0F0F0F", textColor: "#D4AF37", tag: "Premium Scroll" }
+                    { id: "dark-moody-elegant", label: "Dark Moody & Elegant", desc: "Cinematic immersive story, slow Ken Burns, rich gold & onyx", color: "#0F0F0F", textColor: "#D4AF37", tag: "Premium Scroll" },
+                    { id: "bohemian-terracotta", label: "Bohemian Terracotta Dream", desc: "Warm boho-chic, organic shapes & floating botanical SVGs", color: "#FFFDD0", textColor: "#E2725B", tag: "Premium Scroll" }
                   ].map((tpl) => (
                     <div key={tpl.id} className={`border-2 rounded-2xl overflow-hidden transition-all relative ${
                       formData.templateId === tpl.id ? "border-amber-500 shadow-md" : "border-slate-200 hover:border-slate-300"
@@ -993,6 +994,8 @@ export default function CreateInvitationPage() {
                               setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#F7E7CE", btnTextColor: "#333333" }));
                             } else if (tpl.id === "dark-moody-elegant") {
                               setFormData(prev => ({ ...prev, doorAnimation: "sliding-doors", btnBgColor: "#D4AF37", btnTextColor: "#0F0F0F" }));
+                            } else if (tpl.id === "bohemian-terracotta") {
+                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#E2725B", btnTextColor: "#FFFDD0" }));
                             }
                             // Auto trigger animation preview
                             setPreviewingAnim(true);

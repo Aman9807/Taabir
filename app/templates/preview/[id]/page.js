@@ -176,6 +176,57 @@ const DEMO_DATA = {
       btnTextColor: "#0F0F0F"
     }
   },
+  "bohemian-terracotta": {
+    id: "__demo_bohemian_terracotta__",
+    brideName: "Clara",
+    brideParentsName: "Dr. & Mrs. Edward Jenkins",
+    groomName: "Julian",
+    groomParentsName: "Mr. & Mrs. Thomas Alvarez",
+    weddingDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Whisper Pines Meadow",
+      address: "450 Organic Valley Road, Sedona, Arizona",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1519225495810-7517c300ea64?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1519225495810-7517c300ea64?q=80&w=1200",
+      "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200"
+    ],
+    musicUrl: "",
+    coupleEmail: "clara.julian.wedding@sedonameadows.com",
+    theme: { templateId: "bohemian-terracotta" },
+    details: {
+      schedule: [
+        {
+          name: "Welcome Sunset Meadow Cocktail",
+          time: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Organic cider, acoustic folk tunes, and warm welcome circles under the red cliffs.",
+          venue: "The Meadow Firepit"
+        },
+        {
+          name: "Rustic Exchange of Vows",
+          time: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Our exchange of forever promises amidst wild lavender and sage bushes.",
+          venue: "The Oak Tree Sanctuary"
+        },
+        {
+          name: "Outdoor Boho Feast & Celebration",
+          time: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
+          description: "Long wooden banquets, organic sourdough feasts, stargazing, and acoustic dancing.",
+          venue: "The Sedona Glamp Pavilion"
+        },
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#E2725B",
+      btnTextColor: "#FFFDD0"
+    }
+  }
 };
 
 export async function generateMetadata({ params }) {
@@ -184,7 +235,8 @@ export async function generateMetadata({ params }) {
     "emerald-noir": "Emerald Noir", 
     "ivory-classic": "Ivory Classic", 
     "minimalist-romance": "Minimalist Romance",
-    "dark-moody-elegant": "Dark Moody & Elegant"
+    "dark-moody-elegant": "Dark Moody & Elegant",
+    "bohemian-terracotta": "Bohemian Terracotta"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

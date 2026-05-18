@@ -107,6 +107,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-300",
     featureColor: "text-slate-200",
     btnSecondaryClass: "bg-white/10 hover:bg-white/20 text-[#FAF9F5] border-white/10"
+  },
+  {
+    id: "bohemian-terracotta",
+    name: "Bohemian Terracotta Dream",
+    badge: "Boho Chic Premium",
+    vibe: "Warm boho-chic digital invitation with organic shapes, wave dividers, floating botanical SVGs, Pacifico typography, and Zoom-In-Fade transitions.",
+    primaryColor: "bg-[#FFFDD0]",
+    textColor: "text-[#E2725B]",
+    paletteColors: ["#FFFDD0", "#E2725B", "#9DC183", "#333333"],
+    fonts: "Pacifico, Roboto",
+    features: [
+      "Organic Scrolling Layout (No Rigid Boxes)",
+      "Floating & Levitating Botanical SVGs",
+      "Dynamic Zoom-In-Fade Content Entrances",
+      "Chic Calligraphy & Clean Roboto Body",
+      "Warm Terracotta Date Scratcher Canvas",
+      "Integrated Soft Terracotta RSVP forms"
+    ],
+    bgClass: "bg-[#FFFDD0] border-amber-600/20",
+    image: "https://images.unsplash.com/photo-1519225495810-7517c300ea64?q=80&w=800",
+    cardTheme: "light",
+    badgeClass: "bg-[#E2725B]/10 text-[#E2725B] border-[#E2725B]/20",
+    titleColor: "text-[#E2725B] group-hover:text-[#d65c43]",
+    vibeColor: "text-slate-700",
+    featureColor: "text-slate-600",
+    btnSecondaryClass: "bg-[#E2725B]/15 hover:bg-[#E2725B]/25 text-[#E2725B] border-transparent"
   }
 ];
 

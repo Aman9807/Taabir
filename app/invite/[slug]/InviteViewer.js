@@ -268,6 +268,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#D4AF37", 
         border: "rgba(212,175,55,0.25)"
       }
+    : tplId === "bohemian-terracotta"
+    ? {
+        bg: "#FFFDD0", 
+        door: "#E2725B", 
+        seam: "#9DC183", 
+        card: "#FFFDD0", 
+        text: "#333333", 
+        sub: "#E2725B", 
+        gold: "#E2725B", 
+        border: "rgba(226,114,91,0.25)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -1604,6 +1615,484 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderBohemianTerracotta = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+    const customBg = invitation.backgroundImage || galleryPhotos[0] || "https://images.unsplash.com/photo-1519225495810-7517c300ea64?q=80&w=1200";
+
+    return (
+      <div 
+        style={{
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s ease-out, transform 1.5s ease-out",
+          width: "100%",
+          margin: "0 auto",
+          backgroundColor: "#FFFDD0",
+          color: "#333333",
+          fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "'Roboto', sans-serif",
+          position: "relative",
+          overflow: "hidden"
+        }}
+      >
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;500;700&display=swap');
+          
+          @keyframes zoomInFade {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+          }
+          .zoom-in-fade-el {
+            opacity: 0;
+            animation: zoomInFade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          }
+
+          @keyframes levitateAnim {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+          }
+          .levitate-botanical {
+            animation: levitateAnim 4s ease-in-out infinite;
+          }
+
+          .boho-card {
+            background-color: rgba(255, 253, 208, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(157, 193, 131, 0.3);
+            border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
+            padding: 40px;
+            box-shadow: 0 15px 35px -15px rgba(226, 114, 91, 0.15);
+            transition: all 0.5s ease;
+          }
+          .boho-card:hover {
+            border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+            border-color: rgba(226, 114, 91, 0.5);
+          }
+
+          .boho-image-mask {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            overflow: hidden;
+            border: 3px solid #E2725B;
+            transition: all 0.8s ease-in-out;
+          }
+          .boho-image-mask:hover {
+            border-radius: 50%;
+          }
+
+          .boho-input {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(226, 114, 91, 0.3);
+            border-radius: 20px;
+            color: #333333;
+            font-size: 13.5px;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+          }
+          .boho-input:focus {
+            border-color: #E2725B;
+            box-shadow: 0 0 0 3px rgba(226, 114, 91, 0.1);
+            background-color: #FFFFFF;
+          }
+
+          .boho-btn-pulse {
+            background: linear-gradient(135deg, #E2725B 0%, #d65c43 100%);
+            color: #FFFDD0;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 10px 20px rgba(226, 114, 91, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+          }
+          .boho-btn-pulse:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(226, 114, 91, 0.3);
+          }
+        `}</style>
+
+        {/* FLOATING BOTANICAL DECORATIVE VECTORS */}
+        <div className="levitate-botanical" style={{ position: "absolute", top: "10%", left: "5%", width: 120, height: 120, opacity: 0.2, pointerEvents: "none", zIndex: 1 }}>
+          <svg viewBox="0 0 100 100" fill="none" stroke="#9DC183" strokeWidth="2" strokeLinecap="round">
+            <path d="M50,90 C50,90 20,60 20,40 C20,20 35,10 50,30 C65,10 80,20 80,40 C80,60 50,90 50,90 Z" />
+            <path d="M50,30 L50,90" />
+            <path d="M50,45 C40,40 30,45 30,45" />
+            <path d="M50,60 C60,55 70,60 70,60" />
+            <path d="M50,75 C40,70 30,75 30,75" />
+          </svg>
+        </div>
+        <div className="levitate-botanical" style={{ position: "absolute", top: "25%", right: "3%", width: 140, height: 140, opacity: 0.25, pointerEvents: "none", zIndex: 1, animationDelay: "1s" }}>
+          <svg viewBox="0 0 100 100" fill="none" stroke="#9DC183" strokeWidth="1.5">
+            <path d="M10,90 Q40,70 50,10 Q60,70 90,90" />
+            <circle cx="50" cy="10" r="4" fill="#E2725B" />
+            <circle cx="25" cy="50" r="3" fill="#E2725B" />
+            <circle cx="75" cy="50" r="3" fill="#E2725B" />
+          </svg>
+        </div>
+        <div className="levitate-botanical" style={{ position: "absolute", bottom: "15%", left: "4%", width: 130, height: 130, opacity: 0.22, pointerEvents: "none", zIndex: 1, animationDelay: "2s" }}>
+          <svg viewBox="0 0 100 100" fill="none" stroke="#9DC183" strokeWidth="2">
+            <path d="M10,50 Q50,90 90,50" />
+            <path d="M50,10 L50,90" />
+          </svg>
+        </div>
+
+        {/* HERO HEADER SECTION WITH FULL SCREEN IMAGE & FLUID OVERLAYS */}
+        <div style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px", zIndex: 2 }}>
+          {/* Cover image styled as an organic fluid mask */}
+          <div className="zoom-in-fade-el" style={{ width: "100%", maxWidth: 500, aspectRatio: "1/1", position: "relative", marginBottom: 32 }}>
+            <div className="boho-image-mask" style={{ width: "100%", height: "100%" }}>
+              <img src={customBg} alt="Cover" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+            {/* Absolute organic frame border */}
+            <div style={{
+              position: "absolute", inset: -10, border: "2px dashed #9DC183",
+              borderRadius: "40% 60% 50% 50% / 50% 50% 60% 40%", pointerEvents: "none", opacity: 0.5
+            }} />
+          </div>
+
+          <div className="zoom-in-fade-el" style={{ textAlign: "center", maxWidth: 600, animationDelay: "0.4s" }}>
+            <span style={{ fontFamily: "'Pacifico', cursive", fontSize: 24, color: "#E2725B", display: "block", marginBottom: 8 }}>
+              {eventType === "wedding" ? text.wedding : 
+               eventType === "birthday" ? text.birthday : 
+               eventType === "anniversary" ? text.anniversary : 
+               eventType === "family_function" ? text.family_function : text.general}
+            </span>
+            <h1 style={{ fontFamily: "'Pacifico', cursive", fontSize: 52, color: "#E2725B", margin: "12px 0 0", lineHeight: 1.2 }}>
+              {invitation.brideName}
+            </h1>
+            {invitation.brideParentsName && (
+              <p style={{ color: "#9DC183", fontSize: 13, fontWeight: 500, letterSpacing: "0.05em", textTransform: "uppercase", marginTop: 4 }}>
+                {eventType === "wedding" ? `${text.daughterOf} ${invitation.brideParentsName}` : invitation.brideParentsName}
+              </p>
+            )}
+
+            {invitation.groomName && (
+              <>
+                <span style={{ fontFamily: "'Pacifico', cursive", fontSize: 28, color: "#9DC183", display: "block", margin: "12px 0" }}>&amp;</span>
+                <h1 style={{ fontFamily: "'Pacifico', cursive", fontSize: 52, color: "#E2725B", margin: 0, lineHeight: 1.2 }}>
+                  {invitation.groomName}
+                </h1>
+                {invitation.groomParentsName && (
+                  <p style={{ color: "#9DC183", fontSize: 13, fontWeight: 500, letterSpacing: "0.05em", textTransform: "uppercase", marginTop: 4 }}>
+                    {eventType === "wedding" ? `${text.sonOf} ${invitation.groomParentsName}` : invitation.groomParentsName}
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* QURANIC VERSE / BLESSED QUOTE */}
+        <div style={{ padding: "80px 24px", maxWidth: 600, margin: "0 auto", textAlign: "center", zIndex: 2 }}>
+          <ScrollReveal>
+            <div className="boho-card" style={{ padding: "40px 30px" }}>
+              <span style={{ fontSize: 28, color: "#9DC183", display: "block", marginBottom: 12 }}>🌿</span>
+              {eventType === "wedding" ? (
+                <>
+                  <p style={{ fontFamily: "'Pacifico', cursive", fontSize: 18, color: "#E2725B", margin: 0, lineHeight: 1.6 }}>
+                    &ldquo;And We created you in pairs&rdquo;
+                  </p>
+                  <p style={{ fontFamily: "'Roboto', sans-serif", fontSize: 10.5, color: "#9DC183", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: 8, fontWeight: 700 }}>
+                    — Quran 78:8
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p style={{ fontFamily: "'Pacifico', cursive", fontSize: 16, color: "#E2725B", margin: 0, lineHeight: 1.6 }}>
+                    &ldquo;Love, laughter, and beautiful memories in a warm meadow celebration.&rdquo;
+                  </p>
+                  <p style={{ fontFamily: "'Roboto', sans-serif", fontSize: 10.5, color: "#9DC183", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: 8, fontWeight: 700 }}>
+                    — Welcome blessings
+                  </p>
+                </>
+              )}
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* TIME COUNTDOWN */}
+        <div style={{ padding: "40px 24px", maxWidth: 500, margin: "0 auto", zIndex: 2 }}>
+          <ScrollReveal>
+            <p style={{ textAlign: "center", color: "#9DC183", fontFamily: "'Roboto', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 24 }}>
+              {text.countdown}
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }} dir="ltr">
+              {[["days", timeLeft.days, text.days], ["hours", timeLeft.hours, text.hours], ["mins", timeLeft.minutes, text.mins], ["secs", timeLeft.seconds, text.secs]].map(([label, val, transName]) => (
+                <div key={label} style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.8)", border: "1px dashed rgba(226, 114, 91, 0.4)",
+                  borderRadius: "50% 50% 60% 40% / 40% 60% 40% 60%", padding: "20px 8px", textAlign: "center",
+                  boxShadow: "0 8px 20px rgba(226,114,91,0.05)"
+                }}>
+                  <span style={{ color: "#E2725B", fontSize: 32, fontWeight: 700, display: "block", lineHeight: 1, fontFamily: "'Roboto', sans-serif" }}>
+                    {String(val).padStart(2, "0")}
+                  </span>
+                  <span style={{ color: "#9DC183", fontFamily: "'Roboto', sans-serif", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", marginTop: 6, display: "block", fontWeight: 700 }}>
+                    {transName}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* CUSTOM ANNOUNCEMENT NOTE */}
+        {customStyle.customNote && (
+          <div style={{ padding: "40px 24px", maxWidth: 600, margin: "0 auto", zIndex: 2 }}>
+            <ScrollReveal>
+              <div className="boho-card" style={{ borderRadius: "30% 70% 40% 60% / 50% 40% 60% 50%" }}>
+                <p style={{
+                  margin: 0,
+                  fontSize: 15,
+                  color: "#333333",
+                  fontStyle: "italic",
+                  lineHeight: 1.7,
+                  whiteSpace: "pre-line",
+                  fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : "'Roboto', sans-serif"
+                }}>
+                  {customStyle.customNote}
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        )}
+
+        {/* DATE, TIME & MAPS VENUE LOCATION */}
+        <div style={{ padding: "60px 24px", maxWidth: 600, margin: "0 auto", zIndex: 2 }}>
+          <ScrollReveal>
+            <div className="boho-card" style={{ textAlign: "center" }}>
+              <span style={{ fontSize: 24, display: "block", marginBottom: 12 }}>📅</span>
+              <p style={{ color: "#9DC183", fontFamily: "'Roboto', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8 }}>
+                {text.dateVenue}
+              </p>
+              <p style={{ color: "#E2725B", fontSize: 22, fontWeight: 700, marginBottom: 4, fontFamily: "'Roboto', sans-serif" }}>{fmt}</p>
+              <p style={{ color: "#9DC183", fontSize: 15, fontWeight: 500, marginBottom: 20 }}>at {fmtTime}</p>
+              
+              <div style={{ borderTop: "1px dashed rgba(157, 193, 131, 0.4)", paddingTop: 20 }}>
+                <p style={{ color: "#E2725B", fontSize: 18, fontWeight: 700, marginBottom: 6, fontFamily: "'Roboto', sans-serif" }}>{invitation.venue.name}</p>
+                <p style={{ color: "#555555", fontSize: 14, lineHeight: 1.6 }}>{invitation.venue.address}</p>
+              </div>
+
+              {invitation.venue.googleMapsUrl && (
+                <a href={invitation.venue.googleMapsUrl} target="_blank" rel="noopener noreferrer"
+                  className="boho-btn-pulse"
+                  style={{ display: "inline-block", marginTop: 24, padding: "10px 24px", fontSize: 11, textDecoration: "none" }}>
+                  📍 {text.openMaps}
+                </a>
+              )}
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* SCHEDULE TIMELINE */}
+        {invitation.details?.schedule?.length > 0 && (
+          <div style={{ padding: "60px 24px", maxWidth: 500, margin: "0 auto", zIndex: 2 }}>
+            <ScrollReveal>
+              <p style={{ textAlign: "center", color: "#9DC183", fontFamily: "'Roboto', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 28 }}>
+                {text.timelineTitle}
+              </p>
+            </ScrollReveal>
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              {invitation.details.schedule.map((ev, i) => {
+                const d = new Date(ev.time);
+                return (
+                  <ScrollReveal key={i}>
+                    <div className="boho-card" style={{
+                      padding: "24px 30px", display: "flex", alignItems: "center", gap: 20,
+                      borderRadius: i % 2 === 0 ? "40% 60% 50% 50% / 50% 50% 60% 40%" : "60% 40% 60% 40% / 40% 60% 40% 60%"
+                    }}>
+                      <div style={{ fontSize: 24, flexShrink: 0 }}>🌸</div>
+                      <div>
+                        <p style={{ color: "#E2725B", fontSize: 18, fontWeight: 700, margin: "0 0 4px", fontFamily: "'Roboto', sans-serif" }}>{ev.name}</p>
+                        <p style={{ color: "#9DC183", fontFamily: "'Roboto', sans-serif", fontSize: 12, fontWeight: 700, margin: "0 0 6px" }}>
+                          {d.toLocaleDateString("en-US", { weekday: "short", month: "long", day: "numeric" })} · {d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                        </p>
+                        {ev.description && (
+                          <p style={{ color: "#555555", fontSize: 12.5, margin: 0, lineHeight: 1.5 }}>{ev.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* PHOTO GALLERY CAROUSEL */}
+        {hasPhotos && galleryPhotos.length > 1 && (
+          <div style={{ padding: "60px 24px", maxWidth: 600, margin: "0 auto", zIndex: 2 }}>
+            <ScrollReveal>
+              <p style={{ textAlign: "center", color: "#9DC183", fontFamily: "'Roboto', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 28 }}>
+                Meadow Memories
+              </p>
+              <div style={{ border: "2px solid rgba(157, 193, 131, 0.3)", borderRadius: "40% 60% 50% 50% / 50% 50% 60% 40%", overflow: "hidden", background: "#FFFDD0", padding: 8, position: "relative" }}>
+                <div style={{ borderRadius: "35% 55% 45% 45% / 45% 45% 55% 35%", overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
+                  {galleryPhotos.map((pic, index) => (
+                    <img
+                      key={index}
+                      src={pic}
+                      alt="Boho Gallery"
+                      style={{
+                        position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block",
+                        opacity: index === activePhotoIdx ? 1 : 0,
+                        transform: index === activePhotoIdx ? "scale(1)" : "scale(1.08)",
+                        transition: "opacity 1.5s ease-out, transform 1.5s ease-out",
+                        zIndex: index === activePhotoIdx ? 2 : 1,
+                        pointerEvents: index === activePhotoIdx ? "auto" : "none",
+                      }}
+                    />
+                  ))}
+                  
+                  <button
+                    type="button"
+                    onClick={() => setActivePhotoIdx((prev) => (prev === 0 ? galleryPhotos.length - 1 : prev - 1))}
+                    style={{
+                      position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)",
+                      background: "rgba(226, 114, 91, 0.8)", color: "#FFFDD0", border: "none", borderRadius: "50%",
+                      width: 36, height: 36, display: "flex", alignItems: "center", justifyItems: "center", justifyContent: "center",
+                      cursor: "pointer", fontSize: 20, zIndex: 10, outline: "none", fontWeight: "bold"
+                    }}
+                  >
+                    ‹
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setActivePhotoIdx((prev) => (prev === galleryPhotos.length - 1 ? 0 : prev + 1))}
+                    style={{
+                      position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)",
+                      background: "rgba(226, 114, 91, 0.8)", color: "#FFFDD0", border: "none", borderRadius: "50%",
+                      width: 36, height: 36, display: "flex", alignItems: "center", justifyItems: "center", justifyContent: "center",
+                      cursor: "pointer", fontSize: 20, zIndex: 10, outline: "none", fontWeight: "bold"
+                    }}
+                  >
+                    ›
+                  </button>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        )}
+
+        {/* RSVP FORM REGISTRY */}
+        <div style={{ padding: "80px 24px 100px", maxWidth: 550, margin: "0 auto", zIndex: 2 }}>
+          <ScrollReveal>
+            <div className="boho-card" style={{ padding: "44px 36px" }}>
+              <span style={{ fontSize: 24, display: "block", marginBottom: 12, textAlign: "center" }}>💌</span>
+              <h2 style={{ textAlign: "center", fontFamily: "'Pacifico', cursive", fontSize: 28, color: "#E2725B", margin: "0 0 10px" }}>
+                {text.rsvpTitle}
+              </h2>
+              <p style={{ textAlign: "center", color: "#9DC183", fontSize: 13, marginBottom: 28, fontWeight: 500 }}>
+                {text.rsvpSub}
+              </p>
+
+              {rsvpSubmitted ? (
+                <div style={{
+                  padding: "24px", background: "rgba(157, 193, 131, 0.15)", border: "1px dashed #9DC183",
+                  borderRadius: 16, textAlign: "center"
+                }}>
+                  <p style={{ color: "#E2725B", fontSize: 18, fontWeight: 700, margin: "0 0 6px", fontFamily: "'Roboto', sans-serif" }}>✨ Thank you!</p>
+                  <p style={{ color: "#333333", fontSize: 13, margin: 0 }}>Your wishes and blessings have been successfully registered.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleRsvpSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                  <div>
+                    <label style={{ display: "block", color: "#E2725B", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your lovely name..."
+                      value={rsvpForm.name}
+                      onChange={(e) => setRsvpForm(p => ({ ...p, name: e.target.value }))}
+                      className="boho-input"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", color: "#E2725B", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="your.email@example.com"
+                      value={rsvpForm.email}
+                      onChange={(e) => setRsvpForm(p => ({ ...p, email: e.target.value }))}
+                      className="boho-input"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", color: "#E2725B", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                      Warm Wishes &amp; Blessings
+                    </label>
+                    <textarea
+                      placeholder="Write your beautiful blessings..."
+                      rows={4}
+                      value={rsvpForm.blessing}
+                      onChange={(e) => setRsvpForm(p => ({ ...p, blessing: e.target.value }))}
+                      className="boho-input"
+                      style={{ resize: "none" }}
+                    />
+                  </div>
+
+                  {rsvpErr && (
+                    <p style={{ color: "#E2725B", fontSize: 12, margin: 0, textAlign: "center", fontWeight: 500 }}>
+                      ⚠️ {rsvpErr}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={submittingRsvp}
+                    className="boho-btn-pulse"
+                    style={{ padding: "14px 20px", marginTop: 8 }}
+                  >
+                    {submittingRsvp ? "Sending..." : "Submit Wishes & Blessings"}
+                  </button>
+                </form>
+              )}
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* BOTTOM REGISTRY CARD AND CONTACT INFO */}
+        <div style={{ padding: "60px 24px 80px", textAlign: "center", background: "rgba(157, 193, 131, 0.1)", zIndex: 2 }}>
+          <ScrollReveal>
+            <p style={{ fontFamily: "'Pacifico', cursive", fontSize: 20, color: "#E2725B", marginBottom: 12 }}>
+              With Love,
+            </p>
+            <p style={{ color: "#9DC183", fontSize: 15, fontWeight: 700, margin: 0, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              {invitation.brideName} {invitation.groomName ? `& ${invitation.groomName}` : ""}
+            </p>
+
+            {invitation.coupleEmail && (
+              <p style={{ marginTop: 12, fontSize: 14 }}>
+                For any details, reach out to us at:{" "}
+                <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#E2725B", textDecoration: "none", fontWeight: 700, borderBottom: "1px solid #E2725B" }}>
+                  {invitation.coupleEmail}
+                </a>
+              </p>
+            )}
+
+            <div style={{ paddingTop: 36, marginTop: 48, borderTop: "1px dashed rgba(157, 193, 131, 0.3)" }}>
+              <p style={{ color: "#9DC183", fontFamily: "'Roboto', sans-serif", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700 }}>
+                Taabir Digital Invitations · Powered by Flynx
+              </p>
+            </div>
+          </ScrollReveal>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={{ 
       background: T.bg, 
@@ -1804,6 +2293,8 @@ export default function InviteViewer({ invitation }) {
         renderMinimalistRomance()
       ) : tplId === "dark-moody-elegant" ? (
         renderDarkMoody()
+      ) : tplId === "bohemian-terracotta" ? (
+        renderBohemianTerracotta()
       ) : (
         <div 
           style={{
