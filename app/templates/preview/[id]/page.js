@@ -401,6 +401,49 @@ const DEMO_DATA = {
       btnBgColor: "#FF7F50",
       btnTextColor: "#FFFFFF"
     }
+  },
+  "summer-poolparty": {
+    id: "__demo_summer_poolparty__",
+    brideName: "Minhaj's Pool",
+    brideParentsName: "Mr. & Mrs. Khan",
+    weddingDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Blue Lagoon Villa Resort",
+      address: "456 Sand Dune Oasis Beachway, Palms City",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200"
+    ],
+    eventType: "birthday",
+    musicUrl: "",
+    coupleEmail: "summer.vibes@bluelagoonresort.com",
+    theme: { templateId: "summer-poolparty" },
+    details: {
+      schedule: [
+        {
+          name: "Welcome Tropical Cocktails",
+          time: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Refreshing frozen mocktails, finger bites, and cool beach beats!",
+          venue: "Oasis Poolside Deck"
+        },
+        {
+          name: "Splash Pool Volleyball & Water Slide",
+          time: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+          description: "Friendly water sports matches, massive slide diving, and water balloon fun!",
+          venue: "Oasis Lagoon Deep End"
+        }
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#FF7F50",
+      btnTextColor: "#FFFFFF"
+    }
   }
 };
 
@@ -415,7 +458,8 @@ export async function generateMetadata({ params }) {
     "royal-glamour": "Royal Glamour & Glassmorphism",
     "neon-nightclub": "Neon Nightclub",
     "elegant-milestone": "Elegant Milestone",
-    "playful-kidsparty": "Playful & Interactive"
+    "playful-kidsparty": "Playful & Interactive",
+    "summer-poolparty": "Summer Pool Party"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

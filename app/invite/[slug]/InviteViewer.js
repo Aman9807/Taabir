@@ -327,6 +327,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#FFD700",
         border: "rgba(255,127,80,0.35)"
       }
+    : activePaletteId === "summer-poolparty"
+    ? {
+        bg: "#7FFFD4", 
+        door: "#FFDAB9", 
+        seam: "#C2B280", 
+        card: "#FFFFFF",
+        text: "#2E4F4F",
+        sub: "#C2B280",
+        gold: "#FFDAB9",
+        border: "rgba(127,255,212,0.35)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -2732,18 +2743,56 @@ export default function InviteViewer({ invitation }) {
           .kids-swipe-hint {
             animation: swipeBounce 1.2s ease-in-out infinite;
           }
+
+          @keyframes driftCloudLeft {
+            0% { transform: translateX(-200px); }
+            100% { transform: translateX(100vw); }
+          }
+          @keyframes driftCloudRight {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-200px); }
+          }
+          
+          .kids-drift-left-1 {
+            animation: driftCloudLeft 45s linear infinite;
+          }
+          .kids-drift-left-2 {
+            animation: driftCloudLeft 60s linear infinite;
+          }
+          .kids-drift-right-1 {
+            animation: driftCloudRight 50s linear infinite;
+          }
+          .kids-drift-right-2 {
+            animation: driftCloudRight 70s linear infinite;
+          }
         `}</style>
 
-        {/* Floating Clouds Background decor (wiggling) */}
-        <div style={{ position: "absolute", top: "10%", left: "5%", zIndex: 1, pointerEvents: "none" }} className="kids-wiggle">
-          <svg width="80" height="50" viewBox="0 0 80 50" fill="rgba(255,255,255,0.7)">
-            <path d="M10 30 C 10 20, 20 15, 30 20 C 35 10, 50 10, 60 20 C 70 20, 75 30, 70 40 C 65 48, 15 48, 10 30 Z" />
-          </svg>
-        </div>
-        <div style={{ position: "absolute", top: "25%", right: "8%", zIndex: 1, pointerEvents: "none", animationDelay: "1s" }} className="kids-wiggle">
-          <svg width="100" height="60" viewBox="0 0 100 60" fill="rgba(255,255,255,0.6)">
-            <path d="M15 35 C 15 25, 25 20, 35 25 C 42 12, 60 12, 70 25 C 80 25, 87 35, 82 47 C 76 56, 20 56, 15 35 Z" />
-          </svg>
+        {/* Continuous Drifting Clouds Background */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "100%", zIndex: 1, pointerEvents: "none", overflow: "hidden" }}>
+          {/* Cloud 1 */}
+          <div className="kids-drift-left-1" style={{ position: "absolute", top: "5%", width: 140 }}>
+            <svg viewBox="0 0 120 80" fill="rgba(255,255,255,0.85)">
+              <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+            </svg>
+          </div>
+          {/* Cloud 2 */}
+          <div className="kids-drift-right-1" style={{ position: "absolute", top: "18%", width: 100, animationDelay: "-15s" }}>
+            <svg viewBox="0 0 120 80" fill="rgba(255,255,255,0.7)">
+              <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+            </svg>
+          </div>
+          {/* Cloud 3 */}
+          <div className="kids-drift-left-2" style={{ position: "absolute", top: "45%", width: 120, animationDelay: "-30s" }}>
+            <svg viewBox="0 0 120 80" fill="rgba(255,255,255,0.75)">
+              <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+            </svg>
+          </div>
+          {/* Cloud 4 */}
+          <div className="kids-drift-right-2" style={{ position: "absolute", top: "65%", width: 160, animationDelay: "-10s" }}>
+            <svg viewBox="0 0 120 80" fill="rgba(255,255,255,0.65)">
+              <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+            </svg>
+          </div>
         </div>
 
         {/* Dynamic Clickable Floating Balloons */}
@@ -3070,6 +3119,464 @@ export default function InviteViewer({ invitation }) {
             </p>
           </div>
         </div>
+      </div>
+    );
+  };
+
+  const renderSummerPoolparty = () => {
+    const defaultCover = "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=800";
+    const coverPhoto = invitation.photoUrl || defaultCover;
+
+    const day = targetDate.getDate();
+    const month = targetDate.toLocaleDateString("en-US", { month: "short" }).toUpperCase();
+    const year = targetDate.getFullYear();
+
+    const CoconutTreeSVG = ({ className, style }) => (
+      <div className={className} style={{ pointerEvents: "none", zIndex: 3, ...style }}>
+        <svg viewBox="0 0 100 140" style={{ width: "100%", height: "100%", overflow: "visible" }} className="coconut-tree">
+          {/* Trunk segments */}
+          <path d="M 50,135 Q 40,90 50,35" fill="none" stroke="#8B5A2B" strokeWidth="8" strokeLinecap="round" />
+          {/* Bark ring patterns */}
+          <path d="M 50,135 Q 40,90 50,35" fill="none" stroke="#C2B280" strokeWidth="6" strokeLinecap="round" strokeDasharray="3 6" />
+
+          {/* Hanging Coconuts */}
+          <circle cx="44" cy="36" r="6.5" fill="#5C3D2E" stroke="#4A3B32" strokeWidth="1" />
+          <circle cx="56" cy="37" r="7" fill="#6F4E37" stroke="#4A3B32" strokeWidth="1" />
+          <circle cx="50" cy="43" r="6" fill="#4E3629" stroke="#4A3B32" strokeWidth="1" />
+
+          {/* Swaying Green Fronds */}
+          <path d="M 50,35 Q 25,10 5,22 Q 25,28 50,35" fill="#2E7D32" />
+          <path d="M 50,35 Q 20,38 2,52 Q 22,48 50,35" fill="#1B5E20" />
+          <path d="M 50,35 Q 75,10 95,22 Q 75,28 50,35" fill="#2E7D32" />
+          <path d="M 50,35 Q 80,38 98,52 Q 78,48 50,35" fill="#1B5E20" />
+          <path d="M 50,35 Q 50,2 45,-8 Q 55,2 50,35" fill="#4CAF50" />
+        </svg>
+      </div>
+    );
+
+    return (
+      <div 
+        style={{
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          width: "100vw",
+          maxWidth: "100%",
+          margin: "0 auto",
+          fontFamily: "'Nunito', sans-serif",
+          color: "#2E4F4F",
+          position: "relative",
+          zIndex: 10,
+          background: "linear-gradient(180deg, #7FFFD4 0%, #FAF9F5 50%, #FFDAB9 100%)",
+          minHeight: "100vh",
+          overflow: "hidden",
+        }}
+      >
+        {/* Summer Pool/Beach Party Styles */}
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@400;600;700;800;900&display=swap');
+          
+          .summer-header {
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #2E4F4F;
+            text-shadow: 2px 2px 0px #FFDAB9, 4px 4px 0px rgba(194, 178, 128, 0.4);
+          }
+
+          .summer-accent-text {
+            color: #FF7F50;
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.05em;
+          }
+
+          .summer-text-body {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+          }
+
+          .summer-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 6px solid #FFDAB9;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(46,79,79,0.12), inset 0 -8px 0 rgba(194,178,128,0.2);
+            padding: 36px 28px;
+            width: 100%;
+            max-width: 520px;
+            margin: 40px auto;
+            position: relative;
+            z-index: 5;
+            transition: all 0.3s;
+          }
+
+          .summer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(46,79,79,0.18), inset 0 -8px 0 rgba(194,178,128,0.2);
+          }
+
+          .summer-slide-up-reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            animation: summerSlideUp 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+          }
+
+          @keyframes summerSlideUp {
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          @keyframes waveRipple {
+            0% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-20%) scaleY(1.08); }
+            100% { transform: translateX(0) scaleY(1); }
+          }
+
+          .summer-wave-1 {
+            animation: waveRipple 6s ease-in-out infinite;
+          }
+
+          .summer-wave-2 {
+            animation: waveRipple 4s ease-in-out infinite alternate;
+          }
+
+          @keyframes windBreeze {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(4deg) skewX(1deg); }
+            100% { transform: rotate(0deg); }
+          }
+          
+          .coconut-tree {
+            animation: windBreeze 5s ease-in-out infinite;
+            transform-origin: bottom center;
+            will-change: transform;
+          }
+
+          @media (max-width: 768px) {
+            .coconut-tree-left {
+              left: -15px !important;
+              bottom: 4% !important;
+              width: 80px !important;
+              height: 120px !important;
+              opacity: 0.35 !important;
+            }
+            .coconut-tree-right {
+              right: -15px !important;
+              top: 15% !important;
+              width: 80px !important;
+              height: 120px !important;
+              opacity: 0.35 !important;
+            }
+            .summer-date-badge {
+              right: 8px !important;
+              top: 100px !important;
+              transform: scale(0.7) rotate(12deg) !important;
+            }
+          }
+        `}</style>
+
+        {/* SVG Wave Divider Top */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 180, overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
+          <svg viewBox="0 0 1440 200" style={{ width: "200%", height: "100%", fill: "#7FFFD4", opacity: 0.5 }} className="summer-wave-1">
+            <path d="M0,96L120,112C240,128,480,160,720,160C960,160,1200,128,1320,112L1440,96L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z" />
+          </svg>
+          <svg viewBox="0 0 1440 200" style={{ width: "200%", height: "100%", fill: "#FFDAB9", opacity: 0.4, position: "absolute", top: 10, left: -50 }} className="summer-wave-2">
+            <path d="M0,64L120,80C240,96,480,128,720,128C960,128,1200,96,1320,80L1440,64L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z" />
+          </svg>
+        </div>
+
+        {/* Swaying Coconut Trees */}
+        <CoconutTreeSVG 
+          className="coconut-tree-left"
+          style={{ position: "absolute", left: "2%", bottom: "8%", width: 180, height: 250 }} 
+        />
+        <CoconutTreeSVG 
+          className="coconut-tree-right"
+          style={{ position: "absolute", right: "2%", top: "18%", width: 180, height: 250 }} 
+        />
+
+        {/* Floating Premium Date Sticker */}
+        <div 
+          className="summer-date-badge"
+          style={{
+            position: "absolute",
+            right: "5%",
+            top: "140px",
+            zIndex: 15,
+            width: 105,
+            height: 105,
+            background: "linear-gradient(135deg, #FF7F50 0%, #FFDAB9 100%)",
+            borderRadius: "32px",
+            boxShadow: "0 15px 35px rgba(255,127,80,0.3)",
+            border: "5px solid #FFFFFF",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "'Anton', sans-serif",
+            color: "#2E4F4F",
+            transform: "rotate(8deg)",
+            transition: "all 0.3s"
+          }}
+        >
+          <span style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: "#FFFFFF", textShadow: "1px 1px 0px rgba(0,0,0,0.15)" }}>
+            {month}
+          </span>
+          <span style={{ fontSize: 32, display: "block", color: "#FFFFFF", textShadow: "2px 2px 0px rgba(46,79,79,0.3)", lineHeight: 0.9, margin: "2px 0" }}>
+            {day}
+          </span>
+          <span style={{ fontSize: 11, color: "#2E4F4F", fontWeight: 800, opacity: 0.9 }}>
+            {year}
+          </span>
+        </div>
+
+        {/* Main Scrolling Content */}
+        <div style={{ position: "relative", zIndex: 10, padding: "120px 24px 80px", maxWidth: 600, margin: "0 auto" }}>
+          
+          {/* SECTION 1: Cover Header */}
+          <div className="summer-card summer-slide-up-reveal" style={{ animationDelay: "0.1s" }}>
+            <div style={{ position: "relative", borderRadius: 28, overflow: "hidden", border: "6px solid #7FFFD4", marginBottom: 28 }}>
+              <img src={coverPhoto} alt="Summer Pool Cover" style={{ width: "100%", height: 250, objectFit: "cover" }} />
+              <div style={{ position: "absolute", top: 16, left: 16, backgroundColor: "#FF7F50", color: "#FFFFFF", padding: "6px 16px", borderRadius: 16, fontFamily: "'Anton', sans-serif", fontSize: 13, letterSpacing: "0.05em" }}>
+                🌊 SUMMER PARTY VIBES
+              </div>
+            </div>
+
+            <h1 className="summer-header" style={{ fontSize: 44, textAlign: "center", marginBottom: 12, lineHeight: 1.05 }}>
+              {invitation.brideName}'s Pool Party!
+            </h1>
+            <p style={{ fontSize: 20, textAlign: "center", fontWeight: 800, color: "#FF7F50", fontFamily: "'Anton', sans-serif", letterSpacing: "0.08em", marginBottom: 24 }}>
+              💥 SPLASH & CHILL 💥
+            </p>
+
+            <div style={{ background: "#FAF9F5", padding: 20, borderRadius: 24, border: "4px dashed #C2B280", textAlign: "center" }}>
+              <span className="summer-header" style={{ display: "block", fontSize: 20, color: "#7FFFD4", textShadow: "1px 1px 0px #2E4F4F" }}>
+                {fmt}
+              </span>
+              <span className="summer-text-body" style={{ fontSize: 15, color: "#2E4F4F", opacity: 0.8, display: "block", marginTop: 4 }}>
+                Starting at {fmtTime}
+              </span>
+            </div>
+          </div>
+
+          {/* SECTION 2: Countdown Timer */}
+          <div className="summer-card summer-slide-up-reveal" style={{ animationDelay: "0.2s" }}>
+            <h2 className="summer-header" style={{ fontSize: 28, textAlign: "center", marginBottom: 20 }}>
+              ⏱️ Dive In In...
+            </h2>
+            <div style={{ display: "flex", justifyContent: "center", gap: 14 }}>
+              {[
+                { val: timeLeft.days || 0, label: "Days" },
+                { val: timeLeft.hours || 0, label: "Hours" },
+                { val: timeLeft.minutes || 0, label: "Mins" },
+                { val: timeLeft.seconds || 0, label: "Secs" }
+              ].map((unit, idx) => (
+                <div key={idx} style={{ 
+                  flex: 1, 
+                  background: "linear-gradient(135deg, #7FFFD4 0%, #FFFFFF 100%)", 
+                  border: "3px solid #FFDAB9", 
+                  borderRadius: 20, 
+                  padding: "14px 8px", 
+                  textAlign: "center",
+                  boxShadow: "0 8px 20px rgba(0,0,0,0.04)"
+                }}>
+                  <span style={{ fontSize: 26, fontFamily: "'Anton', sans-serif", display: "block", color: "#2E4F4F" }}>
+                    {unit.val}
+                  </span>
+                  <span style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", color: "#C2B280", letterSpacing: "0.05em" }}>
+                    {unit.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* SECTION 3: Venue Details */}
+          <div className="summer-card summer-slide-up-reveal" style={{ animationDelay: "0.3s" }}>
+            <h2 className="summer-header" style={{ fontSize: 28, textAlign: "center", marginBottom: 20 }}>
+              🌴 The Oasis
+            </h2>
+            <div style={{ textAlign: "center", spaceY: 16 }}>
+              <div style={{ fontSize: 60, marginBottom: 12 }}>🏖️</div>
+              <h3 className="summer-text-body" style={{ fontSize: 18, fontWeight: 800, color: "#2E4F4F", marginBottom: 6 }}>
+                {invitation.venue.name}
+              </h3>
+              <p className="summer-text-body" style={{ fontSize: 14, color: "#555555", leading: 1.5, marginBottom: 20 }}>
+                {invitation.venue.address}
+              </p>
+              {invitation.venue.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-block",
+                    padding: "14px 32px",
+                    background: "linear-gradient(135deg, #FF7F50 0%, #FFDAB9 100%)",
+                    color: "#FFFFFF",
+                    fontFamily: "'Anton', sans-serif",
+                    fontSize: 14,
+                    letterSpacing: "0.05em",
+                    borderRadius: 20,
+                    textDecoration: "none",
+                    boxShadow: "0 8px 25px rgba(255,127,80,0.3)",
+                    transition: "transform 0.2s"
+                  }}
+                  className="hover:scale-105 active:scale-95"
+                >
+                  📍 OPEN IN MAPS
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* SECTION 4: Schedule */}
+          {invitation.details && invitation.details.schedule && invitation.details.schedule.length > 0 && (
+            <div className="summer-card summer-slide-up-reveal" style={{ animationDelay: "0.4s" }}>
+              <h2 className="summer-header" style={{ fontSize: 28, textAlign: "center", marginBottom: 28 }}>
+                🍹 Party Agenda
+              </h2>
+              <div style={{ position: "relative", paddingLeft: 16 }}>
+                {invitation.details.schedule.map((event, idx) => {
+                  const eventDate = new Date(event.time);
+                  const eventFmtTime = eventDate.toLocaleTimeString(lang === "ur" ? "ur-PK" : "en-US", { hour: "2-digit", minute: "2-digit" });
+                  return (
+                    <div key={idx} style={{ 
+                      position: "relative",
+                      paddingLeft: 24,
+                      borderLeft: "4px solid #7FFFD4",
+                      paddingBottom: 28
+                    }}>
+                      <div style={{
+                        position: "absolute", left: -10, top: 4,
+                        width: 16, height: 16, borderRadius: "50%",
+                        backgroundColor: "#FF7F50", border: "3px solid #FFFFFF"
+                      }} />
+                      <span className="summer-accent-text" style={{ fontSize: 13, display: "block" }}>
+                        {eventFmtTime}
+                      </span>
+                      <h4 className="summer-text-body" style={{ fontSize: 17, fontWeight: 800, color: "#2E4F4F", margin: "2px 0" }}>
+                        {event.name}
+                      </h4>
+                      {event.venue && (
+                        <p style={{ fontSize: 12, color: "#C2B280", fontWeight: 700, margin: "2px 0" }}>
+                          📍 {event.venue}
+                        </p>
+                      )}
+                      {event.description && (
+                        <p style={{ fontSize: 13, color: "#666666", margin: "4px 0 0", lineHeight: 1.5 }}>
+                          {event.description}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* SECTION 5: RSVP Form */}
+          <div className="summer-card summer-slide-up-reveal" style={{ animationDelay: "0.5s" }}>
+            <h2 className="summer-header" style={{ fontSize: 28, textAlign: "center", marginBottom: 8 }}>
+              📬 Reserve a Lounge Card
+            </h2>
+            <p className="summer-text-body" style={{ fontSize: 13, color: "#666666", textAlign: "center", marginBottom: 32 }}>
+              Grab your shades and RSVP below
+            </p>
+
+            {rsvpDone ? (
+              <div style={{ textAlign: "center", padding: "20px 0" }}>
+                <span style={{ fontSize: "3.5rem", display: "block", marginBottom: 12 }}>🍹</span>
+                <h4 className="summer-header" style={{ fontSize: 20, color: "#FF7F50", marginBottom: 8 }}>Reservations Logged!</h4>
+                <p className="summer-text-body" style={{ fontSize: 14, color: "#555555" }}>Thank you! See you at the poolside.</p>
+              </div>
+            ) : (
+              <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <div>
+                  <label className="summer-text-body" style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", color: "#C2B280", display: "block", marginBottom: 6 }}>
+                    Your Name
+                  </label>
+                  <input 
+                    type="text"
+                    required
+                    style={{
+                      width: "100%", padding: "14px 20px", borderRadius: 16,
+                      border: "3px solid #7FFFD4", backgroundColor: "#FFFFFF",
+                      color: "#2E4F4F", fontFamily: "'Nunito', sans-serif", fontWeight: 700,
+                      outline: "none"
+                    }}
+                    value={rsvp.name}
+                    onChange={(e) => setRsvp(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g. Captain Minhaj Khan"
+                  />
+                </div>
+
+                <div>
+                  <label className="summer-text-body" style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", color: "#C2B280", display: "block", marginBottom: 6 }}>
+                    Wishes / Secret Cocktails
+                  </label>
+                  <textarea 
+                    style={{
+                      width: "100%", height: 100, padding: "14px 20px", borderRadius: 16,
+                      border: "3px solid #7FFFD4", backgroundColor: "#FFFFFF",
+                      color: "#2E4F4F", fontFamily: "'Nunito', sans-serif", fontWeight: 700,
+                      resize: "none", outline: "none"
+                    }}
+                    value={rsvp.blessing}
+                    onChange={(e) => setRsvp(prev => ({ ...prev, blessing: e.target.value }))}
+                    placeholder="Write secret pool cocktail recipes or blessing wishes..."
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={rsvpLoading}
+                  style={{
+                    width: "100%", padding: "16px",
+                    background: "linear-gradient(135deg, #7FFFD4 0%, #FFDAB9 100%)",
+                    color: "#2E4F4F", fontFamily: "'Anton', sans-serif", fontSize: 15,
+                    letterSpacing: "0.06em", border: "none", borderRadius: 20,
+                    cursor: "pointer", boxShadow: "0 8px 25px rgba(127,255,212,0.3)",
+                    transition: "transform 0.2s"
+                  }}
+                  className="hover:scale-[1.02] active:scale-95"
+                >
+                  {rsvpLoading ? "Sending..." : "JOIN THE SHINDIG! 🌊"}
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* SECTION 6: Footer */}
+          {invitation.coupleEmail && (
+            <p className="summer-text-body" style={{ textAlign: "center", fontSize: 13, color: "#2E4F4F", opacity: 0.6 }}>
+              Questions? Drop a line:{" "}
+              <a 
+                href={`mailto:${invitation.coupleEmail}`}
+                style={{ color: "#FF7F50", textDecoration: "none", fontWeight: 800 }}
+              >
+                {invitation.coupleEmail}
+              </a>
+            </p>
+          )}
+
+          <div style={{ marginTop: 40, borderTop: "2px solid rgba(194,178,128,0.2)", paddingTop: 20, textAlign: "center" }}>
+            <p className="summer-text-body" style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#C2B280" }}>
+              Taabir Summer Oasis Theme · Powered by Flynx
+            </p>
+          </div>
+
+        </div>
+
+        {/* SVG Wave Divider Bottom */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 180, overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
+          <svg viewBox="0 0 1440 200" style={{ width: "200%", height: "100%", fill: "#FFDAB9", opacity: 0.5, transform: "rotate(180deg)" }} className="summer-wave-1">
+            <path d="M0,96L120,112C240,128,480,160,720,160C960,160,1200,128,1320,112L1440,96L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z" />
+          </svg>
+        </div>
+
       </div>
     );
   };
@@ -4186,7 +4693,7 @@ export default function InviteViewer({ invitation }) {
       )}
 
       {/* FLOATING DESIGN CUSTOMIZER WIDGET */}
-      (
+      {showPaletteMenu !== undefined && (
         <div className="fixed bottom-4 left-4 z-[999] font-sans">
           {showPaletteMenu ? (
             <div 
@@ -4381,7 +4888,7 @@ export default function InviteViewer({ invitation }) {
             </button>
           )}
         </div>
-      )
+      )}
 
       {/* DYNAMIC OPENING GATEWAYS */}
       {phase !== "open" && (
@@ -4468,14 +4975,79 @@ export default function InviteViewer({ invitation }) {
             </div>
           )}
 
-          {/* LUMINOUS FADE ZOOM */}
+          {/* LUMINOUS FADE ZOOM / CLOUD BURST */}
           {animStyle === "fade-zoom" && (
             <div style={{
-              position: "absolute", inset: 0, background: T.door,
+              position: "absolute", inset: 0, 
+              background: T.door, 
               opacity: phase === "opening" ? 0 : 1,
-              transform: phase === "opening" ? "scale(1.15)" : "scale(1)",
-              transition: "opacity 1.1s ease-in-out, transform 1.1s ease-in-out",
-            }} />
+              transition: "opacity 1.2s ease-in-out",
+              overflow: "hidden"
+            }}>
+              {activePaletteId === "playful-kidsparty" && (
+                <div style={{ position: "absolute", inset: 0, zIndex: 10 }}>
+                  {/* Top Left Cloud */}
+                  <svg 
+                    viewBox="0 0 120 80" 
+                    style={{
+                      position: "absolute", top: "50%", left: "50%",
+                      width: 320, height: 200, fill: "#FFFFFF", opacity: 0.95,
+                      transform: phase === "opening" 
+                        ? "translate(-120vw, -120vh) scale(4)" 
+                        : "translate(-180px, -180px) scale(1)",
+                      transition: "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)"
+                    }}
+                  >
+                    <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+                  </svg>
+
+                  {/* Top Right Cloud */}
+                  <svg 
+                    viewBox="0 0 120 80" 
+                    style={{
+                      position: "absolute", top: "50%", left: "50%",
+                      width: 320, height: 200, fill: "#FFFFFF", opacity: 0.95,
+                      transform: phase === "opening" 
+                        ? "translate(120vw, -120vh) scale(4)" 
+                        : "translate(-20px, -180px) scale(1)",
+                      transition: "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)"
+                    }}
+                  >
+                    <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+                  </svg>
+
+                  {/* Bottom Left Cloud */}
+                  <svg 
+                    viewBox="0 0 120 80" 
+                    style={{
+                      position: "absolute", top: "50%", left: "50%",
+                      width: 320, height: 200, fill: "#FFFFFF", opacity: 0.95,
+                      transform: phase === "opening" 
+                        ? "translate(-120vw, 120vh) scale(4)" 
+                        : "translate(-180px, -20px) scale(1)",
+                      transition: "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)"
+                    }}
+                  >
+                    <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+                  </svg>
+
+                  {/* Bottom Right Cloud */}
+                  <svg 
+                    viewBox="0 0 120 80" 
+                    style={{
+                      position: "absolute", top: "50%", left: "50%",
+                      width: 320, height: 200, fill: "#FFFFFF", opacity: 0.95,
+                      transform: phase === "opening" 
+                        ? "translate(120vw, 120vh) scale(4)" 
+                        : "translate(-20px, -20px) scale(1)",
+                      transition: "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)"
+                    }}
+                  >
+                    <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+                  </svg>
+                </div>
+              )}
+            </div>
           )}
 
           {/* Central Seam line for doors */}
@@ -4564,6 +5136,8 @@ export default function InviteViewer({ invitation }) {
         renderElegantMilestone()
       ) : activeLayoutId === "playful-kidsparty" ? (
         renderPlayfulKidsParty()
+      ) : activeLayoutId === "summer-poolparty" ? (
+        renderSummerPoolparty()
       ) : (
         <div 
           style={{

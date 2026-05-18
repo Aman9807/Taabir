@@ -238,6 +238,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-600",
     featureColor: "text-slate-700",
     btnSecondaryClass: "bg-sky-900/5 hover:bg-sky-900/10 text-slate-800 border-slate-200"
+  },
+  {
+    id: "summer-poolparty",
+    name: "Summer Pool & Beach Party",
+    badge: "Fluid & Refreshing",
+    vibe: "A refreshing, vibrant digital invitation featuring smooth continuous SVG Wave-Ripple animations, beautiful drifting bubbles, and Slide-Up text reveals.",
+    primaryColor: "bg-[#7FFFD4]",
+    textColor: "text-[#FFDAB9]",
+    paletteColors: ["#7FFFD4", "#FFDAB9", "#C2B280", "#FAF9F5"],
+    fonts: "Anton, Nunito",
+    features: [
+      "Continuous SVG Wave-Ripple Section Dividers (5s)",
+      "Drifting Translucent Water Bubble Particles",
+      "Nunito Soft Casually Animating Slide-Up Text Content (1.2s)",
+      "Anton Bold, High-Impact Summer Headline Typography",
+      "Subtle Sand-Trimmed Glassmorphic Card Blocks",
+      "Themed Splash Cocktails RSVP & Directions Maps"
+    ],
+    bgClass: "bg-teal-50 border-[#7FFFD4]/40",
+    image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=800",
+    cardTheme: "light",
+    badgeClass: "bg-teal-500/10 text-teal-700 border-teal-500/30",
+    titleColor: "text-slate-900 group-hover:text-teal-600",
+    vibeColor: "text-slate-600",
+    featureColor: "text-slate-700",
+    btnSecondaryClass: "bg-teal-900/5 hover:bg-teal-900/10 text-slate-800 border-slate-200"
   }
 ];
 
