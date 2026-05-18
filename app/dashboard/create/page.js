@@ -28,6 +28,7 @@ export default function CreateInvitationPage() {
     photoUrl: "",
     musicUrl: "",
     templateId: "emerald-noir",
+    paletteId: "emerald-noir",
     btnBgColor: "#D4AF37", // Premium gold
     btnTextColor: "#FFFFFF",
     doorAnimation: "sliding-doors",
@@ -57,6 +58,23 @@ export default function CreateInvitationPage() {
       router.push("/login");
     }
   }, [user, loading, router]);
+
+  const getPaletteColors = (palId) => {
+    const isIvory = palId === "ivory-classic" || palId === "ivory-elegance";
+    if (palId === "minimalist-romance") {
+      return { bg: "#FFFFF0", door: "#FFFFF0", text: "#333333", gold: "#F7E7CE" };
+    } else if (palId === "emerald-noir") {
+      return { bg: "#001C12", door: "#012B1B", text: "#FAF9F5", gold: "#C5A880" };
+    } else if (palId === "dark-moody-elegant") {
+      return { bg: "#0F0F0F", door: "#043927", text: "#FFFFFF", gold: "#D4AF37" };
+    } else if (palId === "bohemian-terracotta") {
+      return { bg: "#FFFDD0", door: "#E2725B", text: "#333333", gold: "#E2725B" };
+    } else if (isIvory) {
+      return { bg: "#FAF9F5", door: "#FAF9F5", text: "#2c2317", gold: "#800020" };
+    } else {
+      return { bg: "#040B16", door: "#06101E", text: "#E2E8F0", gold: "#D4AF37" };
+    }
+  };
 
   // Handle standard input updates
   const handleChange = (e) => {
@@ -331,6 +349,7 @@ export default function CreateInvitationPage() {
         headerGrace: formData.headerGrace.trim() || "Under the Grace of Almighty Allah",
         theme: {
           templateId: templateId || "emerald-noir",
+          paletteId: formData.paletteId || templateId || "emerald-noir",
           primaryColor: templateId === "emerald-noir" ? "#C5A880" : templateId === "minimalist-romance" ? "#F7E7CE" : "#A78BFA", 
           secondaryColor: templateId === "emerald-noir" ? "#022E1F" : templateId === "minimalist-romance" ? "#FFFFF0" : "#FAF9F5", 
           fontFamily: "Playfair Display",
@@ -1009,6 +1028,56 @@ export default function CreateInvitationPage() {
                 </div>
               </div>
 
+              {/* Choose Theme Color Palette */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-3 font-sans">
+                  Choose Theme Color Palette (Initial Colors) *
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 font-sans">
+                  {[
+                    { id: "emerald-noir", label: "Emerald Noir", preview: ["#001C12", "#C5A880", "#FAF9F5"], desc: "Deep Emerald & Gold" },
+                    { id: "minimalist-romance", label: "Minimalist Romance", preview: ["#FFFFF0", "#F7E7CE", "#333333"], desc: "Luxury Cream & Ivory" },
+                    { id: "dark-moody-elegant", label: "Dark Moody & Elegant", preview: ["#0F0F0F", "#043927", "#D4AF37"], desc: "Emerald Green & Gold" },
+                    { id: "bohemian-terracotta", label: "Bohemian Terracotta", preview: ["#FFFDD0", "#E2725B", "#9DC183"], desc: "Terracotta & Sage" },
+                    { id: "ivory-classic", label: "Ivory Classic", preview: ["#FAF9F5", "#800020", "#2c2317"], desc: "Cream & Deep Burgundy" },
+                    { id: "midnight-gold", label: "Midnight Gold", preview: ["#040B16", "#D4AF37", "#E2E8F0"], desc: "Starry Navy & Gold" }
+                  ].map((pal) => {
+                    const isSelected = formData.paletteId === pal.id;
+                    return (
+                      <button
+                        key={pal.id}
+                        type="button"
+                        onClick={() => {
+                          setFormData(prev => ({ 
+                            ...prev, 
+                            paletteId: pal.id,
+                            btnBgColor: pal.id === "minimalist-romance" ? "#F7E7CE" : pal.id === "bohemian-terracotta" ? "#E2725B" : pal.id === "ivory-classic" ? "#800020" : "#D4AF37",
+                            btnTextColor: pal.id === "minimalist-romance" ? "#333333" : pal.id === "bohemian-terracotta" ? "#FFFDD0" : "#FFFFFF"
+                          }));
+                        }}
+                        className={`flex flex-col items-center justify-between p-3 rounded-xl border-2 transition-all text-left w-full bg-white ${
+                          isSelected ? "border-amber-500 shadow-md bg-amber-50/5" : "border-slate-200 hover:border-slate-300"
+                        }`}
+                      >
+                        <div className="flex gap-1 mb-2.5">
+                          {pal.preview.map((c, i) => (
+                            <span 
+                              key={i} 
+                              style={{ backgroundColor: c }} 
+                              className="w-3.5 h-3.5 rounded-full border border-slate-200" 
+                            />
+                          ))}
+                        </div>
+                        <div className="text-center w-full">
+                          <span className="block text-[10px] font-bold text-slate-800 leading-tight truncate">{pal.label}</span>
+                          <span className="block text-[8px] text-slate-400 mt-0.5 truncate">{pal.desc}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* URL Custom slug */}
               <div>
                 <label htmlFor="slug" className="block text-sm font-semibold text-slate-700">
@@ -1235,19 +1304,13 @@ export default function CreateInvitationPage() {
                     <div 
                       className={`absolute inset-0 transition-colors duration-300 flex flex-col items-center justify-center p-3 text-center`}
                       style={{ 
-                        background: formData.templateId === "emerald-noir" ? "#001C12" :
-                                    formData.templateId === "ivory-classic" ? "#F5F3EB" :
-                                    formData.templateId === "midnight-royal" ? "#0A192F" : 
-                                    formData.templateId === "minimalist-romance" ? "#FFFFF0" : "#FAF9F5"
+                        background: getPaletteColors(formData.paletteId || formData.templateId).bg
                       }}
                     >
                       <span 
                         className="font-serif text-[10px] font-bold block tracking-wider uppercase mb-1"
                         style={{ 
-                          color: formData.templateId === "emerald-noir" ? "#C5A880" :
-                                 formData.templateId === "ivory-classic" ? "#705832" :
-                                 formData.templateId === "midnight-royal" ? "#D4AF37" :
-                                 formData.templateId === "minimalist-romance" ? "#333333" : "#800020"
+                          color: getPaletteColors(formData.paletteId || formData.templateId).gold
                         }}
                       >
                         {formData.brideName ? formData.brideName[0] : "T"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
@@ -1257,12 +1320,9 @@ export default function CreateInvitationPage() {
 
                     {/* Animated Cover overlay */}
                     <div 
-                      className={`absolute inset-0 bg-slate-900 transition-all duration-700 ease-in-out flex items-center justify-center z-10`}
+                      className={`absolute inset-0 transition-all duration-700 ease-in-out flex items-center justify-center z-10`}
                       style={{
-                        background: formData.templateId === "emerald-noir" ? "#012B1B" :
-                                    formData.templateId === "ivory-classic" ? "#EAE6D9" :
-                                    formData.templateId === "midnight-royal" ? "#071224" : 
-                                    formData.templateId === "minimalist-romance" ? "#FFFFF0" : "#FAF9F5",
+                        background: getPaletteColors(formData.paletteId || formData.templateId).door,
                         opacity: previewingAnim && formData.doorAnimation === "fade-zoom" ? 0 : 1,
                         transform: !previewingAnim ? "none" : 
                                    formData.doorAnimation === "sliding-doors" ? "scaleX(0)" :

@@ -41,8 +41,8 @@ export default function InviteViewer({ invitation }) {
 
   // Read styling preferences
   const customStyle = invitation.styling || {};
-  const btnBg = customStyle.btnBgColor || (tplId === "ivory-elegance" ? "#800020" : "#D4AF37");
-  const btnText = customStyle.btnTextColor || "#FFFFFF";
+  let btnBg = customStyle.btnBgColor || (tplId === "ivory-elegance" ? "#800020" : "#D4AF37");
+  let btnText = customStyle.btnTextColor || "#FFFFFF";
   const animStyle = customStyle.doorAnimation || (tplId === "ivory-elegance" ? "velvet-curtains" : "sliding-doors");
   const hasScratch = !!customStyle.enableScratchCard;
   const hasLang = !!customStyle.enableLanguageSwitcher;
@@ -304,6 +304,10 @@ export default function InviteViewer({ invitation }) {
         gold: "#D4AF37", 
         border: "rgba(212,175,55,0.18)" 
       };
+
+  const isPaletteDefault = activePaletteId === tplId;
+  btnBg = isPaletteDefault && customStyle.btnBgColor ? customStyle.btnBgColor : T.gold;
+  btnText = isPaletteDefault && customStyle.btnTextColor ? customStyle.btnTextColor : (activePaletteId === "minimalist-romance" || activePaletteId === "bohemian-terracotta" ? "#333333" : "#FFFFFF");
 
   const renderMinimalistRomance = () => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
