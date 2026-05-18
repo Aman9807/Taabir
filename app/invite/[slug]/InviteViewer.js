@@ -250,6 +250,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#F7E7CE",
         border: "rgba(247,231,206,0.3)"
       }
+    : activePaletteId === "royal-glamour"
+    ? {
+        bg: "#0A1128", 
+        door: "#050B1A", 
+        seam: "#B76E79", 
+        card: "rgba(255, 255, 255, 0.08)", 
+        text: "#FFFFFF", 
+        sub: "#E2C4C9", 
+        gold: "#B76E79", 
+        border: "rgba(183, 110, 121, 0.2)"
+      }
     : activePaletteId === "emerald-noir"
     ? {
         bg: "#001C12", 
@@ -2080,11 +2091,491 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderRoyalGlamour = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+    const customBg = invitation.backgroundImage || galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200";
+
+    return (
+      <div 
+        style={{
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s ease-out, transform 1.5s ease-out",
+          width: "100%",
+          margin: "0 auto",
+          backgroundColor: "#0A1128", // Deep Royal Navy Blue
+          color: "#FFFFFF",
+          fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "'Lato', sans-serif",
+        }}
+      >
+        {/* Dynamic Google Fonts injection self-contained */}
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+          
+          @keyframes starPulse {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.1); }
+          }
+          .glass-overlay-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 36px 28px;
+            margin-bottom: 24px;
+            transition: transform 0.3s ease;
+          }
+          .glass-overlay-card:hover {
+            transform: translateY(-2px);
+          }
+          .glamour-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+          }
+          .glamour-input:focus {
+            border-color: #B76E79;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(183, 110, 121, 0.3);
+          }
+          .glamour-star {
+            animation: starPulse 4s ease-in-out infinite;
+          }
+          .bullet-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #B76E79;
+            border: 2px solid #0A1128;
+            box-shadow: 0 0 8px #B76E79;
+            position: absolute;
+            left: -6.5px;
+            top: 5px;
+          }
+        `}</style>
+
+        {/* SECTION 1: SOPHISTICATED GLASS HERO */}
+        <div 
+          style={{
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            overflow: "hidden",
+            backgroundImage: `radial-gradient(circle at center, #0F1D4A 0%, #060B1E 100%)`
+          }}
+        >
+          {/* Parallax Starry particles */}
+          <div className="absolute inset-0 opacity-30 pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-1.5 h-1.5 bg-white glamour-star" style={{ animationDelay: "0.5s" }} />
+            <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-white glamour-star" style={{ animationDelay: "1.2s" }} />
+            <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-pink-100 glamour-star" style={{ animationDelay: "2s" }} />
+            <div className="absolute bottom-1/3 right-1/3 w-1 h-1 bg-white glamour-star" style={{ animationDelay: "0.2s" }} />
+          </div>
+
+          <div style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 540, padding: "0 24px" }}>
+            <GlassScrollReveal>
+              <div 
+                className="glass-overlay-card"
+                style={{ 
+                  textAlign: "center", 
+                  padding: "54px 36px", 
+                  border: "2px solid rgba(183, 110, 121, 0.25)" 
+                }}
+              >
+                <p style={{ color: "#B76E79", fontSize: 26, fontFamily: "'Noto Naskh Arabic', serif", marginBottom: 12, lineHeight: 1.6 }}>
+                  {invitation.headerArabic || "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"}
+                </p>
+                <p style={{ color: "#FFFFFF", fontFamily: "'Lato', sans-serif", fontSize: 10, letterSpacing: "0.25em", textTransform: "uppercase", opacity: 0.7, marginBottom: 32 }}>
+                  {invitation.headerGrace || "Under the Grace of Almighty Allah"}
+                </p>
+                
+                <p style={{ color: "#B76E79", fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontStyle: "italic", letterSpacing: "0.08em", margin: "0 0 16px" }}>
+                  {eventType === "wedding" ? text.wedding : 
+                   eventType === "birthday" ? text.birthday : 
+                   eventType === "anniversary" ? text.anniversary : 
+                   text.general}
+                </p>
+
+                <h1 style={{ color: "#FFFFFF", fontFamily: "'Cormorant Garamond', serif", fontSize: 38, fontWeight: 300, lineHeight: 1.2, margin: "0 0 24px", letterSpacing: "0.08em" }}>
+                  {invitation.brideName}
+                  {invitation.groomName && (
+                    <>
+                      <span style={{ display: "block", fontSize: 22, color: "#B76E79", margin: "10px 0" }}>&amp;</span>
+                      {invitation.groomName}
+                    </>
+                  )}
+                </h1>
+
+                <div style={{ width: 60, height: 1, background: "linear-gradient(to right, transparent, #B76E79, transparent)", margin: "0 auto 28px" }} />
+
+                <p style={{ color: "#FFFFFF", fontFamily: "'Lato', sans-serif", fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.9 }}>
+                  {fmt}
+                </p>
+              </div>
+            </GlassScrollReveal>
+          </div>
+        </div>
+
+        {/* SECTION 2: INTRO CARD */}
+        <div style={{ padding: "80px 24px 40px", maxWidth: 540, margin: "0 auto" }}>
+          <GlassScrollReveal>
+            <div className="glass-overlay-card" style={{ textAlign: "center" }}>
+              <span className="text-2xl block mb-4">🥂</span>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: "#B76E79", fontWeight: 400, marginBottom: 18, letterSpacing: "0.05em" }}>
+                {lang === "ur" ? "تقریب میں خوش آمدید" : "A Royal Celebration"}
+              </h2>
+              
+              <p style={{ fontSize: 15, lineHeight: 1.7, opacity: 0.8, fontWeight: 300, margin: "0 auto 28px", maxWidth: 440 }}>
+                {lang === "ur" ? (
+                  `ہم انتہائی خلوص اور محبت کے ساتھ آپ کو اس حسین و پروقار تقریب میں شرکت کی دعوت دیتے ہیں۔ آپ کی آمد ہماری خوشیوں کو دوبالا کرے گی۔`
+                ) : (
+                  `We cordially invite you to witness and celebrate the union of love, grace, and new beginnings. Please grace our celebrations with your prayers and presence.`
+                )}
+              </p>
+
+              {/* Parents Section */}
+              <div style={{ borderTop: "1px dashed rgba(255,255,255,0.15)", paddingTop: 28 }}>
+                <p style={{ color: "#B76E79", fontFamily: "'Cormorant Garamond', serif", fontSize: 13, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>
+                  Invited By the Proud Parents
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, fontSize: 14 }}>
+                  {invitation.brideParentsName && (
+                    <p style={{ margin: 0, opacity: 0.95 }}>
+                      <span style={{ opacity: 0.65 }}>Parents of Bride:</span> {invitation.brideParentsName}
+                    </p>
+                  )}
+                  {invitation.groomParentsName && (
+                    <p style={{ margin: 0, opacity: 0.95 }}>
+                      <span style={{ opacity: 0.65 }}>Parents of Groom:</span> {invitation.groomParentsName}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </GlassScrollReveal>
+        </div>
+
+        {/* SECTION 3: DATE & TIMER CARD */}
+        <div style={{ padding: "20px 24px 40px", maxWidth: 540, margin: "0 auto" }}>
+          <GlassScrollReveal>
+            <div className="glass-overlay-card" style={{ textAlign: "center" }}>
+              <span className="text-2xl block mb-4">📅</span>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, color: "#B76E79", fontWeight: 400, marginBottom: 16, letterSpacing: "0.05em" }}>
+                {text.dateVenue}
+              </h2>
+              
+              <p style={{ fontSize: 18, fontWeight: 300, margin: "0 0 6px", letterSpacing: "0.05em" }}>
+                {fmt}
+              </p>
+              <p style={{ fontSize: 14, opacity: 0.7, margin: "0 0 24px" }}>
+                {fmtTime}
+              </p>
+
+              {/* Venue details */}
+              <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 12, padding: 20, marginBottom: 28 }}>
+                <p style={{ fontSize: 11, color: "#B76E79", letterSpacing: "0.2em", margin: "0 0 8px" }}>
+                  📍 THE VENUE
+                </p>
+                <p style={{ fontSize: 16, fontWeight: 600, margin: "0 0 6px" }}>
+                  {invitation.venue?.name}
+                </p>
+                <p style={{ fontSize: 13, opacity: 0.75, margin: "0 0 16px", lineHeight: 1.5 }}>
+                  {invitation.venue?.address}
+                </p>
+
+                {invitation.venue?.googleMapsUrl && (
+                  <a 
+                    href={invitation.venue.googleMapsUrl}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-bold transition-all"
+                    style={{ 
+                      backgroundColor: "#B76E79", 
+                      color: "#FFFFFF",
+                      boxShadow: "0 4px 15px rgba(183,110,121,0.3)",
+                      textDecoration: "none"
+                    }}
+                  >
+                    {text.openMaps}
+                  </a>
+                )}
+              </div>
+
+              {/* Countdown Ticker */}
+              <div>
+                <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#B76E79", marginBottom: 14 }}>
+                  {text.countdown}
+                </p>
+                <div style={{ display: "flex", justifyContent: "center", gap: 14 }}>
+                  {[
+                    { val: timeLeft.days, label: text.days },
+                    { val: timeLeft.hours, label: text.hours },
+                    { val: timeLeft.minutes, label: text.mins },
+                    { val: timeLeft.seconds, label: text.secs }
+                  ].map((unit, i) => (
+                    <div 
+                      key={i} 
+                      style={{ 
+                        width: 68, 
+                        padding: "10px 0", 
+                        background: "rgba(255,255,255,0.05)", 
+                        border: "1px solid rgba(255,255,255,0.08)", 
+                        borderRadius: 10 
+                      }}
+                    >
+                      <span className="block text-xl font-bold leading-none" style={{ color: "#FFFFFF" }}>{unit.val}</span>
+                      <span className="block text-[8.5px] uppercase tracking-wider mt-1.5 opacity-60">{unit.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </GlassScrollReveal>
+        </div>
+
+        {/* SECTION 4: SCRATCH CARD (IF ENABLED) */}
+        {hasScratch && (
+          <div style={{ padding: "20px 24px 40px", maxWidth: 540, margin: "0 auto" }}>
+            <GlassScrollReveal>
+              <div className="glass-overlay-card" style={{ display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
+                <span className="text-2xl block mb-3">✨</span>
+                <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: "#B76E79", fontWeight: 400, marginBottom: 10, letterSpacing: "0.05em" }}>
+                  Scratch To Reveal Date
+                </h2>
+                <p style={{ fontSize: 12, opacity: 0.6, marginBottom: 20, textAlign: "center" }}>
+                  Wipe or rub the metallic layer below to reveal the exclusive date!
+                </p>
+
+                <div style={{ width: 280, height: 180, position: "relative", overflow: "hidden", borderRadius: 16 }}>
+                  {/* Revealed Date behind */}
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    background: "rgba(255,255,255,0.03)",
+                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                    border: "1px solid rgba(255,255,255,0.08)"
+                  }}>
+                    <span style={{ fontSize: 11, letterSpacing: "0.2em", color: "#B76E79", textTransform: "uppercase" }}>SAVE THE DATE</span>
+                    <span style={{ fontSize: 20, fontWeight: 700, margin: "6px 0", color: "#FFFFFF" }}>{fmt}</span>
+                    <span style={{ fontSize: 12, opacity: 0.7 }}>We can't wait to see you!</span>
+                  </div>
+
+                  {/* Canvas Cover */}
+                  <canvas 
+                    id="scratchCanvas"
+                    style={{ position: "absolute", inset: 0, cursor: "grab", zIndex: 1 }}
+                  />
+                </div>
+              </div>
+            </GlassScrollReveal>
+          </div>
+        )}
+
+        {/* SECTION 5: SCHEDULE TIMELINE SCHEDULE */}
+        <div style={{ padding: "20px 24px 40px", maxWidth: 540, margin: "0 auto" }}>
+          <GlassScrollReveal>
+            <div className="glass-overlay-card">
+              <h2 style={{ textAlign: "center", fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: "#B76E79", fontWeight: 400, marginBottom: 32, letterSpacing: "0.05em" }}>
+                {text.timelineTitle}
+              </h2>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+                {invitation.details.schedule.map((ev, i) => {
+                  const d = new Date(ev.time);
+                  return (
+                    <div key={i} className="timeline-node">
+                      <div className="bullet-circle" />
+                      <div style={{ marginLeft: 12 }}>
+                        <p style={{ color: "#FFFFFF", fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 500, margin: "0 0 4px" }}>
+                          {ev.name}
+                        </p>
+                        <p style={{ color: "#B76E79", fontSize: 12, fontWeight: 400, margin: "0 0 8px", opacity: 0.9 }}>
+                          {d.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-US", { weekday: "long", month: "long", day: "numeric" })} · {d.toLocaleTimeString(lang === "ur" ? "ur-PK" : "en-US", { hour: "2-digit", minute: "2-digit" })}
+                        </p>
+                        {ev.venue && (
+                          <p style={{ fontSize: 13, opacity: 0.8, margin: "0 0 4px" }}>
+                            📍 {ev.venue}
+                          </p>
+                        )}
+                        {ev.description && (
+                          <p style={{ fontSize: 13, opacity: 0.6, margin: 0, fontStyle: "italic" }}>
+                            {ev.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </GlassScrollReveal>
+        </div>
+
+        {/* SECTION 6: PHOTO GALLERY SLIDESHOW */}
+        {hasPhotos && (
+          <div style={{ padding: "20px 24px 40px", maxWidth: 540, margin: "0 auto" }}>
+            <GlassScrollReveal>
+              <div className="glass-overlay-card" style={{ paddingBottom: 24 }}>
+                <h2 style={{ textAlign: "center", fontFamily: "'Cormorant Garamond', serif", fontSize: 28, color: "#B76E79", fontWeight: 400, marginBottom: 28, letterSpacing: "0.05em" }}>
+                  Invitation Gallery
+                </h2>
+
+                <div style={{ position: "relative", width: "100%", height: 320, borderRadius: 16, overflow: "hidden", boxShadow: "0 10px 25px rgba(0,0,0,0.4)" }}>
+                  {galleryPhotos.map((url, index) => {
+                    const isActive = index === activePhotoIdx;
+                    return (
+                      <div
+                        key={index}
+                        style={{
+                          position: "absolute", inset: 0,
+                          backgroundImage: `url(${url})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          opacity: isActive ? 1 : 0,
+                          transform: isActive ? "scale(1)" : "scale(1.08)",
+                          transition: "opacity 1.2s ease-in-out, transform 1.2s ease-in-out",
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* Slideshow Bullets */}
+                {galleryPhotos.length > 1 && (
+                  <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 16 }}>
+                    {galleryPhotos.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setActivePhotoIdx(index)}
+                        style={{
+                          width: 8, height: 8, borderRadius: "50%",
+                          backgroundColor: index === activePhotoIdx ? "#B76E79" : "rgba(255,255,255,0.25)",
+                          border: "none", cursor: "pointer", transition: "all 0.2s"
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </GlassScrollReveal>
+          </div>
+        )}
+
+        {/* SECTION 7: INTERACTIVE RSVP WIDGET */}
+        <div style={{ padding: "20px 24px 60px", maxWidth: 540, margin: "0 auto" }}>
+          <GlassScrollReveal>
+            <div className="glass-overlay-card">
+              {rsvpDone ? (
+                <div style={{ textAlign: "center", padding: "24px 0" }}>
+                  <span className="text-3xl block mb-3">💖</span>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: "#B76E79", fontWeight: 400, marginBottom: 10 }}>
+                    {text.successTitle}
+                  </h3>
+                  <p style={{ fontSize: 14, opacity: 0.8, lineHeight: 1.6 }}>
+                    {text.successDesc}
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={submitRsvp}>
+                  <h3 style={{ textAlign: "center", fontFamily: "'Cormorant Garamond', serif", fontSize: 26, color: "#B76E79", fontWeight: 400, margin: "0 0 6px" }}>
+                    {text.rsvpTitle}
+                  </h3>
+                  <p style={{ textAlign: "center", fontSize: 13, opacity: 0.6, margin: "0 0 28px" }}>
+                    {text.rsvpDesc}
+                  </p>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label style={labelStyle(T)}>{text.fullName}</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={rsvp.name}
+                        onChange={(e) => setRsvp(prev => ({ ...prev, name: e.target.value }))}
+                        placeholder="Enter your full name"
+                        className="glamour-input"
+                      />
+                    </div>
+
+                    <div>
+                      <label style={labelStyle(T)}>{text.blessing}</label>
+                      <textarea
+                        rows={3}
+                        value={rsvp.blessing}
+                        onChange={(e) => setRsvp(prev => ({ ...prev, blessing: e.target.value }))}
+                        placeholder="Add your warm wishes & blessings..."
+                        className="glamour-input"
+                      />
+                    </div>
+
+                    <button 
+                      type="submit" 
+                      disabled={rsvpLoading}
+                      style={{
+                        width: "100%", padding: "14px 0", borderRadius: 12,
+                        backgroundColor: "#B76E79", color: "#FFFFFF",
+                        fontSize: 13, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase",
+                        border: "none", cursor: "pointer", transition: "all 0.3s",
+                        boxShadow: "0 4px 15px rgba(183,110,121,0.3)"
+                      }}
+                      className="hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      {rsvpLoading ? text.sending : text.sendRsvp}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </GlassScrollReveal>
+        </div>
+
+        {/* SECTION 8: ROYAL FOOTER */}
+        <div style={{ padding: "60px 24px 80px", textAlign: "center", borderTop: "1px dashed rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.15)" }}>
+          <GlassScrollReveal>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontStyle: "italic", color: "#B76E79", marginBottom: 12 }}>
+              With Love & Blessings,
+            </p>
+            <p style={{ fontSize: 16, fontWeight: 600, margin: "0 0 24px", letterSpacing: "0.05em" }}>
+              {invitation.brideName} {invitation.groomName ? `& ${invitation.groomName}` : ""}
+            </p>
+
+            {invitation.coupleEmail && (
+              <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>
+                Need assistance? Email us at:{" "}
+                <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#B76E79", textDecoration: "none", fontWeight: 700 }}>
+                  {invitation.coupleEmail}
+                </a>
+              </p>
+            )}
+
+            <div style={{ paddingTop: 36, marginTop: 44, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.4 }}>
+                Taabir Premium Invitations · Powered by Flynx
+              </p>
+            </div>
+          </GlassScrollReveal>
+        </div>
+      </div>
+    );
+  };
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
     { id: "dark-moody-elegant", name: "Dark Moody & Elegant", icon: "🖤" },
     { id: "bohemian-terracotta", name: "Bohemian Terracotta", icon: "🌿" },
+    { id: "royal-glamour", name: "Royal Glamour & Glassmorphism", icon: "💎" },
   ];
 
   const palettes = [
@@ -2094,6 +2585,7 @@ export default function InviteViewer({ invitation }) {
     { id: "bohemian-terracotta", name: "Bohemian Terracotta", preview: ["#FFFDD0", "#E2725B", "#9DC183"] },
     { id: "ivory-classic", name: "Ivory Classic", preview: ["#FAF9F5", "#800020", "#2c2317"] },
     { id: "midnight-gold", name: "Midnight Gold", preview: ["#040B16", "#D4AF37", "#E2E8F0"] },
+    { id: "royal-glamour", name: "Royal Glamour", preview: ["#0A1128", "#B76E79", "#FFFFFF"] },
   ];
 
   return (
@@ -2496,6 +2988,8 @@ export default function InviteViewer({ invitation }) {
         renderDarkMoody()
       ) : activeLayoutId === "bohemian-terracotta" ? (
         renderBohemianTerracotta()
+      ) : activeLayoutId === "royal-glamour" ? (
+        renderRoyalGlamour()
       ) : (
         <div 
           style={{
@@ -3139,6 +3633,49 @@ function ScrollReveal({ children, duration = "1.2s", ease = "cubic-bezier(0.16, 
       }}
     >
       {children}
+    </div>
+  );
+}
+
+function GlassScrollReveal({ children }) {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
+    );
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        filter: isVisible ? "blur(0px)" : "blur(12px)",
+        transform: isVisible ? "translateY(0)" : "translateY(40px)",
+        transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+    >
+      <div
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transition: "opacity 0.8s ease-in-out",
+          transitionDelay: "0.5s",
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }
