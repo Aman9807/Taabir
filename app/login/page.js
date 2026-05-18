@@ -70,7 +70,8 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Link href="/">
-            <img src="/icon.svg" alt="Taabir Logo" className="h-12 w-12 drop-shadow-md rounded-xl" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon.svg" alt="Taabir Logo" className="h-12 w-12 drop-shadow-md rounded-2xl hover:scale-105 transition-transform" />
           </Link>
         </div>
 

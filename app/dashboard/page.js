@@ -157,6 +157,7 @@ export default function DashboardPage() {
         {/* Top Navbar */}
         <div className="flex flex-col sm:flex-row items-center justify-between bg-white border border-slate-100 shadow-sm rounded-2xl p-6 mb-8 gap-4">
           <Link href="/" className="flex items-center gap-4 hover:opacity-90 transition-all group shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/icon.svg" alt="Taabir Logo" className="h-10 w-10 shrink-0 shadow-md rounded-xl group-hover:scale-105 transition-transform duration-300" />
             <div>
               <h1 className="text-xl font-bold text-slate-900 tracking-tight group-hover:text-amber-700 transition-colors">Taabir Dashboard</h1>

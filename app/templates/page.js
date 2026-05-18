@@ -133,6 +133,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-700",
     featureColor: "text-slate-600",
     btnSecondaryClass: "bg-[#E2725B]/15 hover:bg-[#E2725B]/25 text-[#E2725B] border-transparent"
+  },
+  {
+    id: "royal-glamour",
+    name: "Royal Glamour & Glassmorphism",
+    badge: "Frosted Luxury",
+    vibe: "High-end glamorous wedding & birthday layout. Frost glass overlays, deep royal navy canvas, elegant rose gold elements, and scroll blur-reveals.",
+    primaryColor: "bg-[#0A1128]",
+    textColor: "text-[#FFFFFF]",
+    paletteColors: ["#0A1128", "#B76E79", "#FFFFFF", "rgba(255,255,255,0.08)"],
+    fonts: "Cormorant Garamond, Lato",
+    features: [
+      "Vibrant HSL Royal Navy & Rose Gold Accents",
+      "Frosted Glassmorphic Overlay Event Cards",
+      "Slide-Up-with-Blur-Reveal Scrolling Effect",
+      "Sophisticated Cormorant Garamond Titles",
+      "Pulsating Golden Stars & Slow Photo Zooms",
+      "Integrated Modern RSVP Widget & Countdown"
+    ],
+    bgClass: "bg-[#0A1128] border-pink-500/20",
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-pink-500/10 text-pink-400 border-pink-500/30",
+    titleColor: "text-white group-hover:text-pink-300",
+    vibeColor: "text-slate-300",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-pink-500/15 hover:bg-pink-500/25 text-[#FFFFFF] border-transparent"
   }
 ];
 

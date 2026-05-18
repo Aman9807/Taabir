@@ -67,7 +67,9 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3">
-              <img src="/icon.svg" alt="Taabir Logo" className="h-10 w-10 drop-shadow-md" />
+              <span className="h-10 w-10 rounded-full border border-amber-500 flex items-center justify-center text-slate-800 font-serif text-xl font-bold bg-amber-50 shadow-sm">
+                T
+              </span>
               <span className="font-serif text-xl font-bold text-slate-900 tracking-wide">TAABIR</span>
             </Link>
           </div>
@@ -163,7 +165,9 @@ export default function AboutPage() {
       <footer className="border-t border-slate-100 bg-slate-50/50 py-12 relative z-10 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex items-center justify-center gap-2">
-            <img src="/icon.svg" alt="Taabir Logo" className="h-6 w-6 drop-shadow-sm" />
+            <span className="h-6 w-6 rounded-full border border-amber-500 flex items-center justify-center text-slate-800 font-serif text-[10px] font-bold bg-amber-50 shadow-sm">
+              T
+            </span>
             <span className="font-serif text-sm font-bold text-slate-900 tracking-wider">TAABIR</span>
           </div>
 
