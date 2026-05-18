@@ -55,6 +55,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-600",
     featureColor: "text-slate-700",
     btnSecondaryClass: "bg-slate-900/5 hover:bg-slate-900/10 text-slate-800 border-slate-200"
+  },
+  {
+    id: "minimalist-romance",
+    name: "Minimalist Romance",
+    badge: "Modern & Spacious",
+    vibe: "Clean spacious layouts, towering full-viewport parallax hero visuals, deep charcoal serif typography, and warm champagne accents.",
+    primaryColor: "bg-[#FFFFF0]",
+    textColor: "text-[#333333]",
+    paletteColors: ["#FFFFF0", "#F7E7CE", "#333333", "#FFFFFF"],
+    fonts: "Playfair Display, Lora",
+    features: [
+      "Spacious Full-Viewport Hero Page Sections",
+      "Continuous Slow Parallax Scrolling Imagery",
+      "Sophisticated Playfair Display & Lora Serif Styling",
+      "Scroll-Triggered Fade-In-Up Animations (1.5s)",
+      "Gentle RSVP Button Pulse Animation Loop",
+      "Interactive Date Scratcher & Message Sync"
+    ],
+    bgClass: "bg-[#FFFFF0] border-amber-200/40",
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
+    cardTheme: "light",
+    badgeClass: "bg-yellow-500/10 text-yellow-800 border-yellow-500/30",
+    titleColor: "text-slate-900 group-hover:text-yellow-600",
+    vibeColor: "text-slate-600",
+    featureColor: "text-slate-700",
+    btnSecondaryClass: "bg-slate-900/5 hover:bg-slate-900/10 text-slate-800 border-slate-200"
   }
 ];
 

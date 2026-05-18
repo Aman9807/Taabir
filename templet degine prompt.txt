@@ -1,0 +1,52 @@
+1. The Minimalist Modern Romance
+​Prompt: Generate a modern, single-page scrolling web invitation for a wedding. The layout should be clean and spacious with full-viewport hero image sections.
+​Colors: Ivory (#FFFFF0), Champagne (#F7E7CE), and Charcoal (#333333) for text.
+​Fonts: Playfair Display for primary headers and names, Lora for body text.
+​Animations: Use a Fade-In-Up animation for all text blocks triggered on scroll (Duration: 1.5s, Ease-out). Background images should feature a continuous, slow Parallax scroll effect. The RSVP button should have a gentle Pulse animation (Duration: 2s loop).
+​2. Dark Moody & Elegant
+​Prompt: Create a luxurious, dark-themed digital wedding invitation formatted as an immersive web story.
+​Colors: Deep Emerald (#043927), Rich Gold (#D4AF37), and Onyx (#0F0F0F).
+​Fonts: Cinzel for elegant, cinematic headers, and Montserrat for crisp, readable event details.
+​Animations: Hero text should use a Reveal-from-Left masking effect (Duration: 1.2s). Use a Ken Burns effect (slow zoom-in) on the background hero images (Duration: 8s loop). Timeline items should Slide-In-Right with a staggered delay of 0.3s.
+​3. Bohemian Terracotta Dream
+​Prompt: Design a warm, boho-chic web invitation with a fluid, organic scrolling layout, avoiding rigid boxes.
+​Colors: Terracotta (#E2725B), Sage Green (#9DC183), and Warm Cream (#FFFDD0).
+​Fonts: Pacifico for accent words and section titles, Roboto for clean body typography.
+​Animations: Elements should appear using a Zoom-In-Fade (Duration: 1.2s). Add a custom Floating/Levitate animation to decorative botanical vectors (Duration: 4s loop, moving up and down by 10px).
+​4. Royal Glamour & Glassmorphism
+​Prompt: Generate a high-end, glamorous wedding invitation using modern web design trends like glassmorphism (frosted glass overlays over background images).
+​Colors: Navy Blue (#000080), Rose Gold (#B76E79), and Crisp White (#FFFFFF).
+​Fonts: Cormorant Garamond for sophisticated titles, Lato for body text.
+​Animations: The frosted glass event cards should Slide-Up-with-Blur-Reveal (Duration: 1s) as the user scrolls. Use a Fade-In for text inside the cards (Duration: 0.8s, delayed by 0.5s after the card appears).
+​🎂 Birthday Invitations
+​5. Neon Nightclub (18th/21st Birthday)
+​Prompt: Build an energetic, high-contrast, modern landing page for a milestone birthday party.
+​Colors: Pitch Black (#000000), Neon Pink (#FF10F0), and Electric Blue (#00FFFF).
+​Fonts: Permanent Marker for edgy headers, Open Sans for event details.
+​Animations: The main title should have a Neon-Flicker effect on load (Duration: 0.5s, random intervals). Event detail cards should Bounce-In-Down when scrolled into view (Duration: 1s).
+​6. Elegant Milestone (50th/60th Birthday)
+​Prompt: Create a sophisticated, magazine-style web layout for a milestone birthday dinner.
+​Colors: Burgundy (#800020), Silver (#C0C0C0), and Slate Gray (#708090).
+​Fonts: Great Vibes for the birthday person's name, Merriweather for the remaining text.
+​Animations: A very slow Cross-Fade between background images (Duration: 3s). Text should elegantly Fade-In (Duration: 2s) with zero movement to maintain a mature, classic feel.
+​7. Playful & Interactive (Kids/Themed Birthday)
+​Prompt: Design a bright, fun, and highly interactive digital invitation with a horizontal scrolling layout (or section-by-section snap scroll).
+​Colors: Sunshine Yellow (#FFD700), Sky Blue (#87CEEB), and Coral (#FF7F50).
+​Fonts: Fredoka One for chunky, friendly headers, Quicksand for rounded, easy-to-read body text.
+​Animations: Decorative elements (like balloons or stars) should have a continuous Wiggle/Shake animation (Duration: 2s loop). Text blocks should Pop-In (scale from 0 to 1 with an overshoot/bounce, Duration: 0.8s).
+​🎉 Party & Event Invitations
+​8. Summer Pool/Beach Party
+​Prompt: Generate a vibrant, fluid web invitation for a summer party. The layout should feel refreshing and dynamic.
+​Colors: Aqua Marine (#7FFFD4), Peach (#FFDAB9), and Sand (#C2B280).
+​Fonts: Anton for bold, impactful headlines, Nunito for soft, casual body text.
+​Animations: Background section dividers should use an SVG Wave-Ripple continuous animation (Duration: 5s loop). Text content should Slide-Up-Fade from the bottom of the screen (Duration: 1.2s).
+​9. Sleek Corporate Gala / Launch Party
+​Prompt: Build a professional, ultra-modern, and minimalist web invitation for a corporate event or gala.
+​Colors: Midnight Blue (#191970), Platinum (#E5E4E2), and White (#FFFFFF).
+​Fonts: Oswald for strong, uppercase headers, Helvetica Neue (or Arial) for strict, clean data presentation.
+​Animations: Use a clean Wipe-Left-to-Right reveal for headers (Duration: 0.8s). The RSVP form should use a smooth Accordion-Expand animation when clicked (Duration: 0.4s).
+​10. Cozy Holiday / Dinner Party
+​Prompt: Create a warm, immersive, scrolling invitation for an intimate dinner or holiday party.
+​Colors: Forest Green (#228B22), Cranberry Red (#9E1B32), and Warm Gold (#CFB53B).
+​Fonts: Dancing Script for a handwritten feel on titles, Garamond for classic body text.
+​Animations: Include a subtle Falling-Particles (like snow or embers) background animation (Continuous). Image galleries of the venue or food should Fade-In while slightly zooming out (Scale 1.1 to 1.0, Duration: 1.5s).

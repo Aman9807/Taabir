@@ -74,11 +74,62 @@ const DEMO_DATA = {
       ],
     },
   },
+  "minimalist-romance": {
+    id: "__demo_minimalist_romance__",
+    brideName: "Olivia",
+    brideParentsName: "Mr. & Mrs. William Bennett",
+    groomName: "Ethan",
+    groomParentsName: "Mr. & Mrs. Thomas Hayes",
+    weddingDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(), // 60 days from now
+    venue: {
+      name: "The Glass Greenhouse Sanctuary",
+      address: "450 Champagne Ridge Road, Napa Valley, California",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200",
+      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200"
+    ],
+    musicUrl: "",
+    coupleEmail: "olivia.ethan.wedding@gmail.com",
+    theme: { templateId: "minimalist-romance" },
+    details: {
+      schedule: [
+        {
+          name: "Welcome Cocktails & Canapés",
+          time: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "An intimate sundowner to kickstart our celebration weekend.",
+          venue: "The Oak Pavilion Grounds"
+        },
+        {
+          name: "Vow Exchange & Ceremony",
+          time: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Join us as we exchange vows under the twilight sky.",
+          venue: "The Glass Sanctuary"
+        },
+        {
+          name: "Gala Dinner & Reception",
+          time: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
+          description: "An evening of laughter, dancing, and fine wine.",
+          venue: "The Orchard Ballroom"
+        },
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#F7E7CE",
+      btnTextColor: "#333333"
+    }
+  },
 };
 
 export async function generateMetadata({ params }) {
   const id = params.id;
-  const labels = { "emerald-noir": "Emerald Noir", "ivory-classic": "Ivory Classic" };
+  const labels = { "emerald-noir": "Emerald Noir", "ivory-classic": "Ivory Classic", "minimalist-romance": "Minimalist Romance" };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,
     description: "Live preview of this Taabir digital wedding invitation template.",

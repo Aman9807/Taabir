@@ -253,7 +253,11 @@ export default function DashboardPage() {
                 <div>
                   <div className="flex flex-wrap gap-1.5 items-center">
                     <span className="text-[9px] uppercase font-bold tracking-wider text-amber-600 bg-amber-50 px-2 py-0.5 rounded font-mono">
-                      {invite.theme?.templateId === "emerald-noir" ? "Emerald Noir" : "Ivory Classic"}
+                      {invite.theme?.templateId === "emerald-noir"
+                        ? "Emerald Noir"
+                        : invite.theme?.templateId === "minimalist-romance"
+                        ? "Minimalist Romance"
+                        : "Ivory Classic"}
                     </span>
                     <span className="text-[9px] uppercase font-bold tracking-wider text-teal-600 bg-teal-50 px-2 py-0.5 rounded font-mono">
                       {invite.eventType === "wedding"

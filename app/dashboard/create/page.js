@@ -288,8 +288,8 @@ export default function CreateInvitationPage() {
         headerGrace: formData.headerGrace.trim() || "Under the Grace of Almighty Allah",
         theme: {
           templateId: templateId || "emerald-noir",
-          primaryColor: templateId === "emerald-noir" ? "#C5A880" : "#A78BFA", 
-          secondaryColor: templateId === "emerald-noir" ? "#022E1F" : "#FAF9F5", 
+          primaryColor: templateId === "emerald-noir" ? "#C5A880" : templateId === "minimalist-romance" ? "#F7E7CE" : "#A78BFA", 
+          secondaryColor: templateId === "emerald-noir" ? "#022E1F" : templateId === "minimalist-romance" ? "#FFFFF0" : "#FAF9F5", 
           fontFamily: "Playfair Display",
         },
         styling: {
@@ -847,7 +847,8 @@ export default function CreateInvitationPage() {
                     { id: "emerald-noir", label: "Emerald Noir", desc: "Luxury gold & deep green", color: "#001C12", textColor: "#C5A880", tag: "Classic" },
                     { id: "ivory-classic", label: "Ivory Classic", desc: "Elegant cream & royal gold", color: "#F5F3EB", textColor: "#705832", tag: "Classic" },
                     { id: "midnight-royal", label: "Midnight Royal", desc: "Luxury starry navy with double-door parting", color: "#0A192F", textColor: "#D4AF37", tag: "Premium Interactive" },
-                    { id: "ivory-elegance", label: "Ivory Elegance", desc: "Warm white card with parting velvet curtains", color: "#FAF9F5", textColor: "#800020", tag: "Premium Interactive" }
+                    { id: "ivory-elegance", label: "Ivory Elegance", desc: "Warm white card with parting velvet curtains", color: "#FAF9F5", textColor: "#800020", tag: "Premium Interactive" },
+                    { id: "minimalist-romance", label: "Minimalist Romance", desc: "Clean layout, full-viewport parallax hero sections", color: "#FFFFF0", textColor: "#333333", tag: "Premium Scroll" }
                   ].map((tpl) => (
                     <div key={tpl.id} className={`border-2 rounded-2xl overflow-hidden transition-all relative ${
                       formData.templateId === tpl.id ? "border-amber-500 shadow-md" : "border-slate-200 hover:border-slate-300"
@@ -881,6 +882,8 @@ export default function CreateInvitationPage() {
                               setFormData(prev => ({ ...prev, doorAnimation: "sliding-doors", btnBgColor: "#D4AF37", btnTextColor: "#FFFFFF" }));
                             } else if (tpl.id === "ivory-elegance") {
                               setFormData(prev => ({ ...prev, doorAnimation: "velvet-curtains", btnBgColor: "#800020", btnTextColor: "#FFFFFF" }));
+                            } else if (tpl.id === "minimalist-romance") {
+                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#F7E7CE", btnTextColor: "#333333" }));
                             }
                             // Auto trigger animation preview
                             setPreviewingAnim(true);
@@ -1122,7 +1125,8 @@ export default function CreateInvitationPage() {
                       style={{ 
                         background: formData.templateId === "emerald-noir" ? "#001C12" :
                                     formData.templateId === "ivory-classic" ? "#F5F3EB" :
-                                    formData.templateId === "midnight-royal" ? "#0A192F" : "#FAF9F5"
+                                    formData.templateId === "midnight-royal" ? "#0A192F" : 
+                                    formData.templateId === "minimalist-romance" ? "#FFFFF0" : "#FAF9F5"
                       }}
                     >
                       <span 
@@ -1130,7 +1134,8 @@ export default function CreateInvitationPage() {
                         style={{ 
                           color: formData.templateId === "emerald-noir" ? "#C5A880" :
                                  formData.templateId === "ivory-classic" ? "#705832" :
-                                 formData.templateId === "midnight-royal" ? "#D4AF37" : "#800020"
+                                 formData.templateId === "midnight-royal" ? "#D4AF37" :
+                                 formData.templateId === "minimalist-romance" ? "#333333" : "#800020"
                         }}
                       >
                         {formData.brideName ? formData.brideName[0] : "T"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
@@ -1144,7 +1149,8 @@ export default function CreateInvitationPage() {
                       style={{
                         background: formData.templateId === "emerald-noir" ? "#012B1B" :
                                     formData.templateId === "ivory-classic" ? "#EAE6D9" :
-                                    formData.templateId === "midnight-royal" ? "#071224" : "#FAF9F5",
+                                    formData.templateId === "midnight-royal" ? "#071224" : 
+                                    formData.templateId === "minimalist-romance" ? "#FFFFF0" : "#FAF9F5",
                         opacity: previewingAnim && formData.doorAnimation === "fade-zoom" ? 0 : 1,
                         transform: !previewingAnim ? "none" : 
                                    formData.doorAnimation === "sliding-doors" ? "scaleX(0)" :
