@@ -319,7 +319,7 @@ export default function InviteViewer({ invitation }) {
     : activePaletteId === "playful-kidsparty"
     ? {
         bg: "#87CEEB", // Sky Blue
-        door: "#FFD700", // Sunshine Yellow
+        door: "#87CEEB", // Sky Blue
         seam: "#FF7F50", // Coral
         card: "#FFFFFF",
         text: "#333333",

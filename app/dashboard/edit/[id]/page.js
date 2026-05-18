@@ -170,7 +170,7 @@ export default function EditInvitationPage() {
     } else if (palId === "elegant-milestone") {
       return { bg: "#0F0F0F", door: "#4A0012", text: "#FFFFFF", gold: "#C0C0C0" };
     } else if (palId === "playful-kidsparty") {
-      return { bg: "#87CEEB", door: "#FFD700", text: "#333333", gold: "#FF7F50" };
+      return { bg: "#87CEEB", door: "#87CEEB", text: "#333333", gold: "#FF7F50" };
     } else if (isIvory) {
       return { bg: "#FAF9F5", door: "#FAF9F5", text: "#2c2317", gold: "#800020" };
     } else {
