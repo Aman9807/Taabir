@@ -165,10 +165,10 @@ const TEMPLATES = [
     id: "neon-nightclub",
     name: "Neon Nightclub (Milestone VIP)",
     badge: "Edgy Birthday VIP",
-    vibe: "High-contrast, energetic digital landing page. Neon pink flickering headers, open street map links, custom neon glowing panels, and bounce-in event detail card scroll reveals.",
+    vibe: "High-contrast, energetic digital landing page. Neon green flickering headers, open street map links, custom neon glowing panels, and bounce-in event detail card scroll reveals.",
     primaryColor: "bg-[#000000]",
-    textColor: "text-[#FF10F0]",
-    paletteColors: ["#000000", "#FF10F0", "#00FFFF", "#FFFFFF"],
+    textColor: "text-[#00FF66]",
+    paletteColors: ["#000000", "#00FF66", "#00FFFF", "#FFFFFF"],
     fonts: "Permanent Marker, Open Sans",
     features: [
       "Vibrant Pitch Black Background with Animated Mesh",
@@ -178,14 +178,14 @@ const TEMPLATES = [
       "High Contrast Electric Blue Map Location Action",
       "Instantly Integrated VIP RSVP Registration Form"
     ],
-    bgClass: "bg-black border-pink-500/30",
+    bgClass: "bg-black border-[#00FF66]/30",
     image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800",
     cardTheme: "dark",
-    badgeClass: "bg-pink-500/10 text-pink-400 border-pink-500/30",
-    titleColor: "text-white group-hover:text-pink-300",
+    badgeClass: "bg-[#00FF66]/10 text-[#00FF66] border-[#00FF66]/30",
+    titleColor: "text-white group-hover:text-[#00FF66]",
     vibeColor: "text-slate-300",
     featureColor: "text-slate-200",
-    btnSecondaryClass: "bg-pink-500/15 hover:bg-pink-500/25 text-[#FFFFFF] border-transparent"
+    btnSecondaryClass: "bg-[#00FF66]/15 hover:bg-[#00FF66]/25 text-[#FFFFFF] border-transparent"
   }
 ];
 

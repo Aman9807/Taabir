@@ -298,11 +298,11 @@ export default function InviteViewer({ invitation }) {
     ? {
         bg: "#000000", 
         door: "#000000", 
-        seam: "#FF10F0", 
+        seam: "#00FF66", 
         card: "rgba(255,255,255,0.04)", 
         text: "#FFFFFF", 
         sub: "#00FFFF", 
-        gold: "#FF10F0", 
+        gold: "#00FF66", 
         border: "rgba(0,255,255,0.25)"
       }
     : isIvory
@@ -2606,8 +2606,8 @@ export default function InviteViewer({ invitation }) {
           
           @keyframes neonPulse {
             0%, 100% {
-              box-shadow: 0 0 10px #FF10F0, 0 0 20px rgba(255,16,240,0.4), inset 0 0 8px rgba(255,16,240,0.3);
-              border-color: #FF10F0;
+              box-shadow: 0 0 10px #00FF66, 0 0 20px rgba(0,255,102,0.4), inset 0 0 8px rgba(0,255,102,0.3);
+              border-color: #00FF66;
             }
             50% {
               box-shadow: 0 0 18px #00FFFF, 0 0 35px rgba(0,255,255,0.5), inset 0 0 15px rgba(0,255,255,0.4);
@@ -2618,9 +2618,9 @@ export default function InviteViewer({ invitation }) {
             0%, 18%, 22%, 25%, 53%, 57%, 100% {
               text-shadow: 
                 0 0 4px #fff,
-                0 0 12px #FF10F0,
-                0 0 25px #FF10F0,
-                0 0 60px #FF10F0;
+                0 0 12px #00FF66,
+                0 0 25px #00FF66,
+                0 0 60px #00FF66;
               color: #fff;
               opacity: 1;
             }
@@ -2656,23 +2656,23 @@ export default function InviteViewer({ invitation }) {
             transition: all 0.3s ease;
           }
           .neon-glow-card:hover {
-            border-color: #FF10F0;
-            box-shadow: 0 0 20px rgba(255,16,240,0.5), inset 0 0 12px rgba(255,16,240,0.2);
+            border-color: #00FF66;
+            box-shadow: 0 0 20px rgba(0,255,102,0.5), inset 0 0 12px rgba(0,255,102,0.2);
             transform: translateY(-5px);
           }
           .neon-btn {
             font-family: 'Permanent Marker', cursive;
             background: transparent;
             color: #FFFFFF;
-            border: 2px solid #FF10F0;
-            text-shadow: 0 0 6px #FF10F0;
-            box-shadow: 0 0 8px rgba(255,16,240,0.4);
+            border: 2px solid #00FF66;
+            text-shadow: 0 0 6px #00FF66;
+            box-shadow: 0 0 8px rgba(0,255,102,0.4);
             transition: all 0.2s ease-in-out;
           }
           .neon-btn:hover {
-            background: #FF10F0;
+            background: #00FF66;
             color: #000000;
-            box-shadow: 0 0 20px #FF10F0, 0 0 40px #FF10F0;
+            box-shadow: 0 0 20px #00FF66, 0 0 40px #00FF66;
             text-shadow: none;
           }
           .cyber-input {
@@ -2683,8 +2683,8 @@ export default function InviteViewer({ invitation }) {
             transition: all 0.3s ease;
           }
           .cyber-input:focus {
-            border-color: #FF10F0;
-            box-shadow: 0 0 10px rgba(255,16,240,0.5);
+            border-color: #00FF66;
+            box-shadow: 0 0 10px rgba(0,255,102,0.5);
             outline: none;
           }
           
@@ -2725,10 +2725,10 @@ export default function InviteViewer({ invitation }) {
           <div 
             style={{
               height: 4,
-              background: "linear-gradient(90deg, #FF10F0, #00FFFF, #FF10F0)",
+              background: "linear-gradient(90deg, #00FF66, #00FFFF, #00FF66)",
               backgroundSize: "200% 200%",
               animation: "borderRotate 6s ease infinite",
-              boxShadow: "0 0 20px #00FFFF, 0 0 40px #FF10F0"
+              boxShadow: "0 0 20px #00FFFF, 0 0 40px #00FF66"
             }}
           />
 
@@ -2787,9 +2787,9 @@ export default function InviteViewer({ invitation }) {
               style={{
                 width: 140,
                 height: 3,
-                backgroundColor: "#FF10F0",
+                backgroundColor: "#00FF66",
                 margin: "0 auto 36px",
-                boxShadow: "0 0 10px #FF10F0, 0 0 20px #FF10F0",
+                boxShadow: "0 0 10px #00FF66, 0 0 20px #00FF66",
                 borderRadius: 2
               }}
             />
@@ -2820,8 +2820,8 @@ export default function InviteViewer({ invitation }) {
                   style={{
                     fontFamily: "'Permanent Marker', cursive",
                     fontSize: 26,
-                    color: "#FF10F0",
-                    textShadow: "0 0 6px #FF10F0",
+                    color: "#00FF66",
+                    textShadow: "0 0 6px #00FF66",
                     margin: "0 0 16px",
                     letterSpacing: "0.05em"
                   }}
@@ -2898,9 +2898,9 @@ export default function InviteViewer({ invitation }) {
 
                 <div style={{ display: "flex", justifyContent: "center", gap: 12 }}>
                   {[
-                    { val: timeLeft.days, lbl: text.days, color: "#FF10F0" },
+                    { val: timeLeft.days, lbl: text.days, color: "#00FF66" },
                     { val: timeLeft.hours, lbl: text.hours, color: "#00FFFF" },
-                    { val: timeLeft.minutes, lbl: text.mins, color: "#FF10F0" },
+                    { val: timeLeft.minutes, lbl: text.mins, color: "#00FF66" },
                     { val: timeLeft.seconds, lbl: text.secs, color: "#00FFFF" }
                   ].map((unit, i) => (
                     <div 
@@ -2951,8 +2951,8 @@ export default function InviteViewer({ invitation }) {
                     style={{
                       fontFamily: "'Permanent Marker', cursive",
                       fontSize: 26,
-                      color: "#FF10F0",
-                      textShadow: "0 0 6px #FF10F0",
+                      color: "#00FF66",
+                      textShadow: "0 0 6px #00FF66",
                       margin: "0 0 28px",
                       textAlign: "center",
                       letterSpacing: "0.05em"
@@ -2972,8 +2972,8 @@ export default function InviteViewer({ invitation }) {
                             width: 16,
                             height: 16,
                             borderRadius: "50%",
-                            backgroundColor: "#FF10F0",
-                            boxShadow: "0 0 8px #FF10F0",
+                            backgroundColor: "#00FF66",
+                            boxShadow: "0 0 8px #00FF66",
                             border: "3px solid #000000"
                           }}
                         />
@@ -3021,7 +3021,7 @@ export default function InviteViewer({ invitation }) {
                     📸 VIP SNEAK PEEK
                   </h3>
 
-                  <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", aspectRatio: "4/3", border: "2px solid #FF10F0", boxShadow: "0 0 15px rgba(255,16,240,0.3)" }}>
+                  <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", aspectRatio: "4/3", border: "2px solid #00FF66", boxShadow: "0 0 15px rgba(0,255,102,0.3)" }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
                       src={galleryPhotos[activePhotoIdx]} 
@@ -3033,13 +3033,13 @@ export default function InviteViewer({ invitation }) {
                       <>
                         <button 
                           onClick={() => setActivePhotoIdx(prev => (prev === 0 ? galleryPhotos.length - 1 : prev - 1))}
-                          style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.8)", border: "1px solid #FF10F0", color: "#FF10F0", cursor: "pointer", fontWeight: "bold" }}
+                          style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.8)", border: "1px solid #00FF66", color: "#00FF66", cursor: "pointer", fontWeight: "bold" }}
                         >
                           ‹
                         </button>
                         <button 
                           onClick={() => setActivePhotoIdx(prev => (prev === galleryPhotos.length - 1 ? 0 : prev + 1))}
-                          style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.8)", border: "1px solid #FF10F0", color: "#FF10F0", cursor: "pointer", fontWeight: "bold" }}
+                          style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.8)", border: "1px solid #00FF66", color: "#00FF66", cursor: "pointer", fontWeight: "bold" }}
                         >
                           ›
                         </button>
@@ -3067,8 +3067,8 @@ export default function InviteViewer({ invitation }) {
                   style={{
                     fontFamily: "'Permanent Marker', cursive",
                     fontSize: 26,
-                    color: "#FF10F0",
-                    textShadow: "0 0 6px #FF10F0",
+                    color: "#00FF66",
+                    textShadow: "0 0 6px #00FF66",
                     margin: "0 0 12px",
                     textAlign: "center",
                     letterSpacing: "0.05em"
@@ -3127,7 +3127,7 @@ export default function InviteViewer({ invitation }) {
                     </div>
 
                     <div>
-                      <label style={{ fontSize: 11, fontWeight: 800, color: "#FF10F0", display: "block", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                      <label style={{ fontSize: 11, fontWeight: 800, color: "#00FF66", display: "block", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
                         VIP PASS CONFIRMATION
                       </label>
                       <div style={{ display: "flex", gap: 12 }}>
@@ -3138,9 +3138,9 @@ export default function InviteViewer({ invitation }) {
                             flex: 1,
                             padding: 12,
                             borderRadius: 12,
-                            background: rsvp.attending === "yes" ? "#FF10F0" : "rgba(0,0,0,0.5)",
+                            background: rsvp.attending === "yes" ? "#00FF66" : "rgba(0,0,0,0.5)",
                             color: rsvp.attending === "yes" ? "#000000" : "#FFFFFF",
-                            border: "1px solid #FF10F0",
+                            border: "1px solid #00FF66",
                             fontWeight: "bold",
                             fontSize: 13,
                             cursor: "pointer",
@@ -3211,26 +3211,28 @@ export default function InviteViewer({ invitation }) {
           {/* ======================================================== */}
           <div style={{ padding: "60px 24px 80px", textAlign: "center", borderTop: "1px dashed rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.3)", position: "relative", zIndex: 10 }}>
             <BounceInDownScrollReveal>
-              <p style={{ fontFamily: "'Permanent Marker', cursive", fontSize: 24, color: "#FF10F0", textShadow: "0 0 6px #FF10F0", marginBottom: 12 }}>
-                BE THERE OR BE SQUARE!
-              </p>
-              <p style={{ fontSize: 16, fontWeight: 600, margin: "0 0 24px", color: "#FFFFFF" }}>
-                {invitation.brideName} {invitation.groomName ? `& ${invitation.groomName}` : ""}
-              </p>
-
-              {invitation.coupleEmail && (
-                <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>
-                  Questions? Drop a line:{" "}
-                  <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#00FFFF", textDecoration: "none", fontWeight: 700 }}>
-                    {invitation.coupleEmail}
-                  </a>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+                <p style={{ fontFamily: "'Permanent Marker', cursive", fontSize: 24, color: "#00FF66", textShadow: "0 0 6px #00FF66", marginBottom: 12 }}>
+                  BE THERE OR BE SQUARE!
                 </p>
-              )}
-
-              <div style={{ paddingTop: 36, marginTop: 44, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.4 }}>
-                  Taabir Premium Invitations · Powered by Flynx
+                <p style={{ fontSize: 16, fontWeight: 600, margin: "0 0 24px", color: "#FFFFFF" }}>
+                  {invitation.brideName} {invitation.groomName ? `& ${invitation.groomName}` : ""}
                 </p>
+
+                {invitation.coupleEmail && (
+                  <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>
+                    Questions? Drop a line:{" "}
+                    <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#00FFFF", textDecoration: "none", fontWeight: 700 }}>
+                      {invitation.coupleEmail}
+                    </a>
+                  </p>
+                )}
+
+                <div style={{ paddingTop: 36, marginTop: 44, borderTop: "1px solid rgba(255,255,255,0.06)", width: "100%" }}>
+                  <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.4 }}>
+                    Taabir Premium Invitations · Powered by Flynx
+                  </p>
+                </div>
               </div>
             </BounceInDownScrollReveal>
           </div>
@@ -3257,7 +3259,7 @@ export default function InviteViewer({ invitation }) {
     { id: "ivory-classic", name: "Ivory Classic", preview: ["#FAF9F5", "#800020", "#2c2317"] },
     { id: "midnight-gold", name: "Midnight Gold", preview: ["#040B16", "#D4AF37", "#E2E8F0"] },
     { id: "royal-glamour", name: "Royal Glamour", preview: ["#0A1128", "#B76E79", "#FFFFFF"] },
-    { id: "neon-nightclub", name: "Neon Nightclub", preview: ["#000000", "#FF10F0", "#00FFFF"] },
+    { id: "neon-nightclub", name: "Neon Nightclub", preview: ["#000000", "#00FF66", "#00FFFF"] },
   ];
 
   return (
