@@ -358,6 +358,49 @@ const DEMO_DATA = {
       btnBgColor: "#800020",
       btnTextColor: "#FFFFFF"
     }
+  },
+  "playful-kidsparty": {
+    id: "__demo_playful_kidsparty__",
+    brideName: "Teddy's 5th",
+    brideParentsName: "Mr. & Mrs. Anderson",
+    weddingDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Playful Kingdom Castle",
+      address: "123 Balloon Valley Avenue, Dreamland",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1200",
+      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200"
+    ],
+    eventType: "birthday",
+    musicUrl: "",
+    coupleEmail: "birthday.fun@playfulkingdom.com",
+    theme: { templateId: "playful-kidsparty" },
+    details: {
+      schedule: [
+        {
+          name: "Bubble Magic Show",
+          time: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "A super magic show with giant bubbles, friendly clowns, and face painting!",
+          venue: "The Magic Garden Patio"
+        },
+        {
+          name: "Cake Pop & Balloon Explosion",
+          time: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000).toISOString(),
+          description: "Blowing out candles, yummy cupcake towers, and pop-the-balloon minigames!",
+          venue: "Royal Banquet Castle Hall"
+        }
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#FF7F50",
+      btnTextColor: "#FFFFFF"
+    }
   }
 };
 
@@ -371,7 +414,8 @@ export async function generateMetadata({ params }) {
     "bohemian-terracotta": "Bohemian Terracotta",
     "royal-glamour": "Royal Glamour & Glassmorphism",
     "neon-nightclub": "Neon Nightclub",
-    "elegant-milestone": "Elegant Milestone"
+    "elegant-milestone": "Elegant Milestone",
+    "playful-kidsparty": "Playful & Interactive"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

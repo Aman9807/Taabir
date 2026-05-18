@@ -212,6 +212,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-300",
     featureColor: "text-slate-200",
     btnSecondaryClass: "bg-red-500/15 hover:bg-red-500/25 text-[#FFFFFF] border-transparent"
+  },
+  {
+    id: "playful-kidsparty",
+    name: "Playful & Interactive Kids Party",
+    badge: "Bright & Horizontal",
+    vibe: "A fun-filled, bright digital invitation featuring a unique section-by-section snap-scroll layout, floating clouds, wiggling balloons, and pop-in titles.",
+    primaryColor: "bg-[#87CEEB]",
+    textColor: "text-[#FFD700]",
+    paletteColors: ["#87CEEB", "#FFD700", "#FF7F50", "#FAF9F5"],
+    fonts: "Fredoka One, Quicksand",
+    features: [
+      "Horizontal Scrolling Snap-to-Section Layout",
+      "Interactive Balloons with Tap-to-Pop Minigames",
+      "Continuous Playful Clouds & Balloon Wiggles (2s)",
+      "Chunky Friendly Fredoka One Header Typography",
+      "Dynamic Scale Pop-In Overshoot Animations (0.8s)",
+      "Fully Integrated Birthday RSVP & Gift Blessings Deck"
+    ],
+    bgClass: "bg-sky-100 border-[#87CEEB]/40",
+    image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=800",
+    cardTheme: "light",
+    badgeClass: "bg-sky-500/10 text-sky-700 border-sky-500/30",
+    titleColor: "text-slate-900 group-hover:text-sky-600",
+    vibeColor: "text-slate-600",
+    featureColor: "text-slate-700",
+    btnSecondaryClass: "bg-sky-900/5 hover:bg-sky-900/10 text-slate-800 border-slate-200"
   }
 ];
 

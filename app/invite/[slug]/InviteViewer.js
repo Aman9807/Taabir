@@ -316,6 +316,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#C0C0C0", 
         border: "rgba(192, 192, 192, 0.25)"
       }
+    : activePaletteId === "playful-kidsparty"
+    ? {
+        bg: "#87CEEB", // Sky Blue
+        door: "#FFD700", // Sunshine Yellow
+        seam: "#FF7F50", // Coral
+        card: "#FFFFFF",
+        text: "#333333",
+        sub: "#FF7F50",
+        gold: "#FFD700",
+        border: "rgba(255,127,80,0.35)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -2592,6 +2603,477 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderPlayfulKidsParty = () => {
+    const defaultCover = "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=800";
+    const coverPhoto = invitation.photoUrl || defaultCover;
+
+    return (
+      <div 
+        style={{
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          width: "100vw",
+          maxWidth: "100%",
+          margin: "0 auto",
+          fontFamily: "'Quicksand', sans-serif",
+          color: "#333333",
+          position: "relative",
+          zIndex: 10,
+          overflow: "hidden",
+        }}
+      >
+        {/* Playful & Interactive Kids Custom CSS Styles */}
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&display=swap');
+          
+          .kids-header {
+            font-family: 'Fredoka One', cursive;
+            color: #FF7F50; /* Coral */
+            text-shadow: 3px 3px 0px #FFD700; /* Yellow shadow */
+            letter-spacing: 0.02em;
+          }
+          
+          .kids-subheader {
+            font-family: 'Fredoka One', cursive;
+            color: #87CEEB; /* Sky Blue */
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+          }
+
+          .kids-text {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+          }
+
+          .kids-popin {
+            animation: popInBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          }
+
+          .kids-wiggle {
+            animation: wiggleAnim 2s ease-in-out infinite alternate;
+          }
+
+          .kids-snap-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Hide scrollbars */
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            height: calc(100vh - 120px);
+            min-height: 580px;
+          }
+          .kids-snap-container::-webkit-scrollbar {
+            display: none;
+          }
+
+          .kids-snap-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            scroll-snap-align: start;
+            box-sizing: border-box;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+          }
+
+          .kids-card {
+            background: #FFFFFF;
+            border: 8px solid #FFD700;
+            border-radius: 36px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1), inset 0 -10px 0 rgba(0,0,0,0.05);
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 96%;
+            overflow-y: auto;
+            position: relative;
+            scrollbar-width: none;
+            transform: scale(0.98);
+            transition: all 0.3s;
+          }
+          .kids-card::-webkit-scrollbar {
+            display: none;
+          }
+
+          .kids-card:hover {
+            transform: scale(1);
+          }
+
+          @keyframes floatBalloon {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-50vh) rotate(15deg); }
+            100% { transform: translateY(-120vh) rotate(-15deg); }
+          }
+          @keyframes wiggleAnim {
+            0% { transform: rotate(-6deg) translateY(-2px); }
+            100% { transform: rotate(6deg) translateY(2px); }
+          }
+          @keyframes balloonExplode {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.6); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
+          }
+          @keyframes popInBounce {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.1); }
+            90% { transform: scale(0.96); }
+            100% { transform: scale(1); opacity: 1; }
+          }
+          @keyframes swipeBounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(6px); }
+          }
+          
+          .kids-swipe-hint {
+            animation: swipeBounce 1.2s ease-in-out infinite;
+          }
+        `}</style>
+
+        {/* Floating Clouds Background decor (wiggling) */}
+        <div style={{ position: "absolute", top: "10%", left: "5%", zIndex: 1, pointerEvents: "none" }} className="kids-wiggle">
+          <svg width="80" height="50" viewBox="0 0 80 50" fill="rgba(255,255,255,0.7)">
+            <path d="M10 30 C 10 20, 20 15, 30 20 C 35 10, 50 10, 60 20 C 70 20, 75 30, 70 40 C 65 48, 15 48, 10 30 Z" />
+          </svg>
+        </div>
+        <div style={{ position: "absolute", top: "25%", right: "8%", zIndex: 1, pointerEvents: "none", animationDelay: "1s" }} className="kids-wiggle">
+          <svg width="100" height="60" viewBox="0 0 100 60" fill="rgba(255,255,255,0.6)">
+            <path d="M15 35 C 15 25, 25 20, 35 25 C 42 12, 60 12, 70 25 C 80 25, 87 35, 82 47 C 76 56, 20 56, 15 35 Z" />
+          </svg>
+        </div>
+
+        {/* Dynamic Clickable Floating Balloons */}
+        <BalloonFloater color="#FF7F50" left={15} delay={0} size={50} />
+        <BalloonFloater color="#FFD700" left={45} delay={3} size={55} />
+        <BalloonFloater color="#90EE90" left={75} delay={1} size={48} />
+        <BalloonFloater color="#FF69B4" left={30} delay={6} size={52} />
+        <BalloonFloater color="#20B2AA" left={60} delay={8} size={50} />
+        <BalloonFloater color="#FFA500" left={85} delay={4} size={56} />
+
+        {/* Horizontal Snap Scroll Container */}
+        <div className="kids-snap-container">
+          
+          {/* SLIDE 1: Welcome Cover Card */}
+          <div className="kids-snap-slide">
+            <div className="kids-card kids-popin">
+              <div style={{ position: "relative", borderRadius: 24, overflow: "hidden", border: "5px solid #87CEEB", marginBottom: 20 }}>
+                <img src={coverPhoto} alt="Celebration Cover" style={{ width: "100%", height: 200, objectFit: "cover" }} />
+                <div style={{ position: "absolute", top: 12, left: 12, backgroundColor: "#FF7F50", color: "#FFFFFF", padding: "4px 12px", borderRadius: 12, fontFamily: "'Fredoka One', cursive", fontSize: 12 }}>
+                  🎈 YOU'RE INVITED!
+                </div>
+              </div>
+              <h1 className="kids-header" style={{ fontSize: 32, textAlign: "center", marginBottom: 12, lineHeight: 1.1 }}>
+                {invitation.brideName}'s Birthday Party!
+              </h1>
+              <p style={{ fontSize: 16, textAlign: "center", fontWeight: 700, color: "#FF7F50", fontFamily: "'Fredoka One', cursive", marginBottom: 8 }}>
+                🎉 LET'S CELEBRATE! 🎉
+              </p>
+              <div style={{ background: "#FAF9F5", padding: 16, borderRadius: 20, border: "3px dashed #87CEEB", textAlign: "center", marginTop: 12 }}>
+                <span className="kids-header" style={{ display: "block", fontSize: 18, color: "#87CEEB", textShadow: "none" }}>
+                  {fmt}
+                </span>
+                <span className="kids-text" style={{ fontSize: 14, color: "#555555" }}>
+                  Starting at {fmtTime}
+                </span>
+              </div>
+              
+              {/* Animated Swipe Indicator */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginTop: 24, opacity: 0.7 }}>
+                <span className="kids-text" style={{ fontSize: 12, fontWeight: 700, color: "#777777" }}>Swipe to explore</span>
+                <span className="kids-swipe-hint" style={{ fontSize: 14, color: "#FF7F50", fontWeight: "bold" }}>➔</span>
+              </div>
+            </div>
+          </div>
+
+          {/* SLIDE 2: Birthday Star Profile / Story */}
+          <div className="kids-snap-slide">
+            <div className="kids-card">
+              <h2 className="kids-header" style={{ fontSize: 28, textAlign: "center", marginBottom: 16 }}>
+                👑 The Birthday Star!
+              </h2>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }} className="kids-wiggle">
+                <div style={{ fontSize: 72 }}>🎂</div>
+              </div>
+              <p className="kids-text" style={{ fontSize: 15, lineHeight: 1.6, textAlign: "center", color: "#555555", marginBottom: 20 }}>
+                {invitation.welcomeMessage || "I'm having a super fun birthday party filled with games, cakes, and awesome friends! I'd love for you to join me on my special day!"}
+              </p>
+              <div style={{ borderTop: "4px dashed #FFD700", paddingTop: 16, textAlign: "center" }}>
+                <span className="kids-header" style={{ fontSize: 14, color: "#FF7F50", textShadow: "none", textTransform: "uppercase" }}>
+                  Parents / Hosts
+                </span>
+                <p className="kids-text" style={{ fontSize: 15, fontWeight: 700, margin: "4px 0 0", color: "#333333" }}>
+                  {invitation.brideParentsName || "Family & Friends"}
+                </p>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "center", gap: 4, marginTop: 24 }}>
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FFD700" }}></span>
+                <span style={{ width: 16, height: 8, borderRadius: 4, background: "#FF7F50" }}></span>
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FFD700" }}></span>
+              </div>
+            </div>
+          </div>
+
+          {/* SLIDE 3: Schedule & Timeline */}
+          <div className="kids-snap-slide">
+            <div className="kids-card">
+              <h2 className="kids-header" style={{ fontSize: 28, textAlign: "center", marginBottom: 20 }}>
+                🎪 Fun Agenda!
+              </h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {invitation.details?.schedule?.map((item, idx) => (
+                  <div 
+                    key={idx} 
+                    style={{ 
+                      background: idx % 2 === 0 ? "rgba(135,206,235,0.15)" : "rgba(255,127,80,0.12)", 
+                      padding: 16, 
+                      borderRadius: 20, 
+                      border: idx % 2 === 0 ? "3px solid #87CEEB" : "3px solid #FF7F50",
+                      position: "relative",
+                      overflow: "hidden"
+                    }}
+                  >
+                    <span className="kids-header" style={{ display: "block", fontSize: 16, color: idx % 2 === 0 ? "#87CEEB" : "#FF7F50", textShadow: "none", marginBottom: 4 }}>
+                      🎈 {item.name}
+                    </span>
+                    <span className="kids-text" style={{ fontSize: 12, display: "block", color: "#777777", marginBottom: 6 }}>
+                      🕒 {new Date(item.time).toLocaleTimeString(lang === "ur" ? "ur" : lang === "hi" ? "hi" : "en", { hour: "2-digit", minute: "2-digit" })}
+                    </span>
+                    <p className="kids-text" style={{ fontSize: 13, margin: 0, color: "#555555" }}>
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* SLIDE 4: Venue & Maps */}
+          <div className="kids-snap-slide">
+            <div className="kids-card">
+              <h2 className="kids-header" style={{ fontSize: 28, textAlign: "center", marginBottom: 16 }}>
+                📍 Party Castle!
+              </h2>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }} className="kids-wiggle">
+                <span style={{ fontSize: 64 }}>🏰</span>
+              </div>
+              <h3 className="kids-header" style={{ fontSize: 18, textAlign: "center", color: "#87CEEB", textShadow: "none", marginBottom: 8 }}>
+                {invitation.venue?.name || "The Fun Castle Plaza"}
+              </h3>
+              <p className="kids-text" style={{ fontSize: 14, textAlign: "center", color: "#666666", lineHeight: 1.5, marginBottom: 20 }}>
+                {invitation.venue?.address || "123 Party Castle Lane, Magic Town"}
+              </p>
+              
+              {invitation.venue?.googleMapsUrl && (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <a 
+                    href={invitation.venue.googleMapsUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="kids-text"
+                    style={{
+                      display: "inline-block",
+                      backgroundColor: "#FF7F50",
+                      color: "#FFFFFF",
+                      padding: "12px 24px",
+                      borderRadius: 20,
+                      fontWeight: "bold",
+                      fontSize: 14,
+                      textDecoration: "none",
+                      boxShadow: "0 6px 0 #d45f34, 0 10px 20px rgba(0,0,0,0.15)",
+                      transition: "transform 0.1s",
+                      transform: "translateY(0)"
+                    }}
+                    onMouseDown={(e) => e.currentTarget.style.transform = "translateY(4px)"}
+                    onMouseUp={(e) => e.currentTarget.style.transform = "translateY(0)"}
+                  >
+                    🏰 GET DIRECTIONS ➔
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* SLIDE 5: Kids Interactive RSVP */}
+          <div className="kids-snap-slide">
+            <div className="kids-card">
+              <h2 className="kids-header" style={{ fontSize: 28, textAlign: "center", marginBottom: 12 }}>
+                💌 RSVP Time!
+              </h2>
+              <p className="kids-text" style={{ fontSize: 13, textAlign: "center", color: "#666666", marginBottom: 20 }}>
+                Let us know if you can join the magical celebration!
+              </p>
+
+              {rsvpDone ? (
+                <div style={{ textAlign: "center", padding: "20px 0" }} className="kids-popin">
+                  <div style={{ fontSize: 64, marginBottom: 12 }} className="kids-wiggle">🎉</div>
+                  <h3 className="kids-header" style={{ fontSize: 22, color: "#87CEEB", textShadow: "none", marginBottom: 8 }}>
+                    {text.successTitle}
+                  </h3>
+                  <p className="kids-text" style={{ fontSize: 14, color: "#555555" }}>
+                    {text.successDesc}
+                  </p>
+                </div>
+              ) : (
+                <form 
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (!rsvp.name.trim()) return;
+                    setRsvpLoading(true);
+                    try {
+                      const rsvpsRef = collection(db, "invitations", invitation.id, "rsvps");
+                      await addDoc(rsvpsRef, {
+                        ...rsvp,
+                        submittedAt: new Date().toISOString()
+                      });
+                      setRsvpDone(true);
+                    } catch (err) {
+                      console.error("RSVP Failure:", err);
+                    } finally {
+                      setRsvpLoading(false);
+                    }
+                  }}
+                  style={{ display: "flex", flexDirection: "column", gap: 14 }}
+                >
+                  <div>
+                    <label className="kids-text" style={{ fontSize: 11, fontWeight: 700, color: "#FF7F50", display: "block", marginBottom: 6 }}>
+                      {text.fullName.toUpperCase()} *
+                    </label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="Your chunky name!"
+                      style={{
+                        width: "100%", padding: "12px 16px", borderRadius: 16,
+                        border: "3px solid #87CEEB", outline: "none", fontSize: 13,
+                        fontFamily: "'Quicksand', sans-serif", fontWeight: 600, boxSizing: "border-box"
+                      }}
+                      value={rsvp.name}
+                      onChange={(e) => setRsvp(prev => ({ ...prev, name: e.target.value }))}
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", gap: 10, margin: "6px 0" }}>
+                    <button 
+                      type="button"
+                      onClick={() => setRsvp(prev => ({ ...prev, attending: "yes" }))}
+                      className="kids-text"
+                      style={{
+                        flex: 1,
+                        padding: 12,
+                        borderRadius: 16,
+                        background: rsvp.attending === "yes" ? "#FFD700" : "#FAF9F5",
+                        color: rsvp.attending === "yes" ? "#333333" : "#777777",
+                        border: "3px solid #FFD700",
+                        fontWeight: "bold",
+                        fontSize: 13,
+                        cursor: "pointer",
+                        boxShadow: rsvp.attending === "yes" ? "0 4px 0 #c2a300" : "none"
+                      }}
+                    >
+                      🎈 COUNT ME IN
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={() => setRsvp(prev => ({ ...prev, attending: "no" }))}
+                      className="kids-text"
+                      style={{
+                        flex: 1,
+                        padding: 12,
+                        borderRadius: 16,
+                        background: rsvp.attending === "no" ? "#FF7F50" : "#FAF9F5",
+                        color: rsvp.attending === "no" ? "#FFFFFF" : "#777777",
+                        border: "3px solid #FF7F50",
+                        fontWeight: "bold",
+                        fontSize: 13,
+                        cursor: "pointer",
+                        boxShadow: rsvp.attending === "no" ? "0 4px 0 #cc5b31" : "none"
+                      }}
+                    >
+                      😭 CAN'T MAKE IT
+                    </button>
+                  </div>
+
+                  <div>
+                    <label className="kids-text" style={{ fontSize: 11, fontWeight: 700, color: "#FF7F50", display: "block", marginBottom: 6 }}>
+                      {text.blessing.toUpperCase()}
+                    </label>
+                    <textarea 
+                      placeholder="Leave a sweet blessing / note!"
+                      rows={3}
+                      style={{
+                        width: "100%", padding: "12px 16px", borderRadius: 16,
+                        border: "3px solid #87CEEB", outline: "none", fontSize: 13,
+                        fontFamily: "'Quicksand', sans-serif", fontWeight: 600, resize: "none", boxSizing: "border-box"
+                      }}
+                      value={rsvp.blessing}
+                      onChange={(e) => setRsvp(prev => ({ ...prev, blessing: e.target.value }))}
+                    />
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={rsvpLoading}
+                    className="kids-header"
+                    style={{
+                      padding: 16,
+                      borderRadius: 18,
+                      fontSize: 14,
+                      cursor: "pointer",
+                      marginTop: 8,
+                      border: "none",
+                      backgroundColor: "#FF7F50",
+                      color: "#FFFFFF",
+                      boxShadow: "0 6px 0 #d45f34, 0 10px 15px rgba(0,0,0,0.1)",
+                      textShadow: "none"
+                    }}
+                  >
+                    {rsvpLoading ? text.sending : "REGISTER NOW ➔"}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+
+        </div>
+
+        {/* Interactive progress pagination indicators */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 10, padding: "16px 0 32px" }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#FFFFFF", background: "#FF7F50", padding: "4px 12px", borderRadius: 12 }}>
+            💡 Swipe left or right! 💡
+          </span>
+        </div>
+
+        {/* Playful Kids Footer */}
+        <div style={{ padding: "40px 24px 60px", textAlign: "center", borderTop: "4px dashed #FFD700", background: "rgba(255,255,255,0.85)", position: "relative", zIndex: 10 }}>
+          <p className="kids-header" style={{ fontSize: 20, color: "#FF7F50", margin: "0 0 12px", textShadow: "2px 2px 0 #FFD700" }}>
+            SEE YOU THERE!
+          </p>
+          <p className="kids-text" style={{ fontSize: 14, fontWeight: 700, margin: "0 0 16px", color: "#333333" }}>
+            {invitation.brideName} {invitation.groomName ? `& ${invitation.groomName}` : ""}
+          </p>
+          {invitation.coupleEmail && (
+            <p className="kids-text" style={{ fontSize: 12, color: "#666666", margin: 0 }}>
+              Questions? Drop a line:{" "}
+              <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#FF7F50", textDecoration: "none", fontWeight: 700 }}>
+                {invitation.coupleEmail}
+              </a>
+            </p>
+          )}
+          <div style={{ marginTop: 24, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 16 }}>
+            <p className="kids-text" style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.5 }}>
+              Taabir Playful Kids Theme · Powered by Flynx
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderElegantMilestone = () => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
     const hasPhotos = galleryPhotos.length > 0;
@@ -4080,6 +4562,8 @@ export default function InviteViewer({ invitation }) {
         renderNeonNightclub()
       ) : activeLayoutId === "elegant-milestone" ? (
         renderElegantMilestone()
+      ) : activeLayoutId === "playful-kidsparty" ? (
+        renderPlayfulKidsParty()
       ) : (
         <div 
           style={{
@@ -4872,4 +5356,56 @@ function ElegantFadeInScrollReveal({ children }) {
     </div>
   );
 }
+
+function BalloonFloater({ color, left, delay, size }) {
+  const [popped, setPopped] = useState(false);
+  const [exploding, setExploding] = useState(false);
+
+  const handlePop = () => {
+    if (popped || exploding) return;
+    setExploding(true);
+    setTimeout(() => {
+      setPopped(true);
+    }, 300); // match explosion animation
+  };
+
+  if (popped) return null;
+
+  return (
+    <div
+      onClick={handlePop}
+      style={{
+        position: "absolute",
+        left: `${left}%`,
+        bottom: "-100px",
+        width: size,
+        height: size * 1.2,
+        backgroundColor: color,
+        borderRadius: "50% 50% 50% 50% / 40% 40% 60% 60%",
+        cursor: "pointer",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 50,
+        boxShadow: "inset -8px -8px 0 rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.15)",
+        animation: exploding 
+          ? "balloonExplode 0.3s forwards cubic-bezier(0.1, 0.8, 0.3, 1)" 
+          : `floatBalloon 12s linear ${delay}s infinite, wiggleAnim 2s ease-in-out infinite alternate`,
+        transformOrigin: "bottom center",
+        userSelect: "none",
+      }}
+    >
+      {/* Balloon reflection specular spot */}
+      <div style={{ position: "absolute", top: "15%", left: "20%", width: size * 0.25, height: size * 0.15, background: "rgba(255,255,255,0.6)", borderRadius: "50%", transform: "rotate(-30deg)" }} />
+      {/* Balloon string knot */}
+      <div style={{ position: "absolute", bottom: "-6px", width: 8, height: 6, backgroundColor: color, clipPath: "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)" }} />
+      {/* Balloon string */}
+      <div style={{ position: "absolute", bottom: "-46px", width: 2, height: 40, borderLeft: "1px dashed rgba(255,255,255,0.5)" }} />
+      {/* Tiny text invite overlay */}
+      <span style={{ fontFamily: "'Fredoka One', cursive", fontSize: 9, color: "white", textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}>POP!</span>
+    </div>
+  );
+}
+
 

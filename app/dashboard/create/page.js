@@ -75,6 +75,8 @@ export default function CreateInvitationPage() {
       return { bg: "#000000", door: "#000000", text: "#FFFFFF", gold: "#00FF66" };
     } else if (palId === "elegant-milestone") {
       return { bg: "#0F0F0F", door: "#4A0012", text: "#FFFFFF", gold: "#C0C0C0" };
+    } else if (palId === "playful-kidsparty") {
+      return { bg: "#87CEEB", door: "#FFD700", text: "#333333", gold: "#FF7F50" };
     } else if (isIvory) {
       return { bg: "#FAF9F5", door: "#FAF9F5", text: "#2c2317", gold: "#800020" };
     } else {
@@ -689,7 +691,7 @@ export default function CreateInvitationPage() {
                 </div>
 
                 {/* Premium Parallax Background Optional Field */}
-                {(formData.templateId === "minimalist-romance" || formData.templateId === "dark-moody-elegant" || formData.templateId === "royal-glamour" || formData.templateId === "neon-nightclub" || formData.templateId === "elegant-milestone") && (
+                {(formData.templateId === "minimalist-romance" || formData.templateId === "dark-moody-elegant" || formData.templateId === "royal-glamour" || formData.templateId === "neon-nightclub" || formData.templateId === "elegant-milestone" || formData.templateId === "playful-kidsparty") && (
                   <div className="sm:col-span-2 space-y-3 bg-amber-50/25 p-5 rounded-2xl border border-amber-200/50">
                     <label className="block text-sm font-bold text-amber-900 font-sans">
                       Premium Theme Dedicated Background Image (Optional)
@@ -984,7 +986,8 @@ export default function CreateInvitationPage() {
                     { id: "bohemian-terracotta", label: "Bohemian Terracotta Dream", desc: "Warm boho-chic, organic shapes & floating botanical SVGs", color: "#FFFDD0", textColor: "#E2725B", tag: "Premium Scroll" },
                     { id: "royal-glamour", label: "Royal Glamour & Glassmorphism", desc: "Frosted glass events over glamorous starry navy blue & rose gold", color: "#0A1128", textColor: "#B76E79", tag: "Premium Scroll" },
                     { id: "neon-nightclub", label: "Neon Nightclub", desc: "Milestone birthday, Permanent Marker fonts, title load flicker & bounce events", color: "#000000", textColor: "#00FF66", tag: "Premium Scroll" },
-                    { id: "elegant-milestone", label: "Elegant Milestone", desc: "Sophisticated editorial magazine, slow cross-fade backgrounds, 2s stationary fades", color: "#800020", textColor: "#C0C0C0", tag: "Premium Scroll" }
+                    { id: "elegant-milestone", label: "Elegant Milestone", desc: "Sophisticated editorial magazine, slow cross-fade backgrounds, 2s stationary fades", color: "#800020", textColor: "#C0C0C0", tag: "Premium Scroll" },
+                    { id: "playful-kidsparty", label: "Playful & Interactive", desc: "Kids party, horizontal snap-scroll pages, continuous balloon/star wiggles, pop-in titles", color: "#87CEEB", textColor: "#FFD700", tag: "Premium Snap Scroll" }
                   ].map((tpl) => (
                     <div key={tpl.id} className={`border-2 rounded-2xl overflow-hidden transition-all relative ${
                       formData.templateId === tpl.id ? "border-amber-500 shadow-md" : "border-slate-200 hover:border-slate-300"
@@ -1030,6 +1033,8 @@ export default function CreateInvitationPage() {
                               setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#00FF66", btnTextColor: "#000000" }));
                             } else if (tpl.id === "elegant-milestone") {
                               setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#800020", btnTextColor: "#FFFFFF" }));
+                            } else if (tpl.id === "playful-kidsparty") {
+                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#FF7F50", btnTextColor: "#FFFFFF" }));
                             }
                             // Auto trigger animation preview
                             setPreviewingAnim(true);
@@ -1058,7 +1063,8 @@ export default function CreateInvitationPage() {
                     { id: "midnight-gold", label: "Midnight Gold", preview: ["#040B16", "#D4AF37", "#E2E8F0"], desc: "Starry Navy & Gold" },
                     { id: "royal-glamour", label: "Royal Glamour", preview: ["#0A1128", "#B76E79", "#FFFFFF"], desc: "Royal Navy & Rose Gold" },
                     { id: "neon-nightclub", label: "Neon Nightclub", preview: ["#000000", "#00FF66", "#00FFFF"], desc: "Pitch Black & Neon Green" },
-                    { id: "elegant-milestone", label: "Elegant Milestone", preview: ["#800020", "#C0C0C0", "#708090"], desc: "Burgundy, Silver & Slate" }
+                    { id: "elegant-milestone", label: "Elegant Milestone", preview: ["#800020", "#C0C0C0", "#708090"], desc: "Burgundy, Silver & Slate" },
+                    { id: "playful-kidsparty", label: "Playful Kids Party", preview: ["#87CEEB", "#FFD700", "#FF7F50"], desc: "Sky Blue, Yellow & Coral" }
                   ].map((pal) => {
                     const isSelected = formData.paletteId === pal.id;
                     return (
@@ -1069,8 +1075,8 @@ export default function CreateInvitationPage() {
                           setFormData(prev => ({ 
                             ...prev, 
                             paletteId: pal.id,
-                            btnBgColor: pal.id === "minimalist-romance" ? "#F7E7CE" : pal.id === "bohemian-terracotta" ? "#E2725B" : pal.id === "ivory-classic" ? "#800020" : pal.id === "royal-glamour" ? "#B76E79" : pal.id === "neon-nightclub" ? "#00FF66" : pal.id === "elegant-milestone" ? "#800020" : "#D4AF37",
-                            btnTextColor: pal.id === "minimalist-romance" ? "#333333" : pal.id === "bohemian-terracotta" ? "#FFFDD0" : pal.id === "neon-nightclub" ? "#000000" : "#FFFFFF"
+                            btnBgColor: pal.id === "minimalist-romance" ? "#F7E7CE" : pal.id === "bohemian-terracotta" ? "#E2725B" : pal.id === "ivory-classic" ? "#800020" : pal.id === "royal-glamour" ? "#B76E79" : pal.id === "neon-nightclub" ? "#00FF66" : pal.id === "elegant-milestone" ? "#800020" : pal.id === "playful-kidsparty" ? "#FF7F50" : "#D4AF37",
+                            btnTextColor: pal.id === "minimalist-romance" ? "#333333" : pal.id === "bohemian-terracotta" ? "#FFFDD0" : pal.id === "neon-nightclub" ? "#000000" : pal.id === "playful-kidsparty" ? "#FFFFFF" : "#FFFFFF"
                           }));
                         }}
                         className={`flex flex-col items-center justify-between p-3 rounded-xl border-2 transition-all text-left w-full bg-white ${
