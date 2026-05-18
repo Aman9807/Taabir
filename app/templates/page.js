@@ -100,7 +100,7 @@ const TEMPLATES = [
       "Interactive Golden Date Scratcher Canvas"
     ],
     bgClass: "bg-[#0f0f0f] border-amber-500/25",
-    image: "https://images.unsplash.com/photo-1519225495810-7517c5a6538a?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
     cardTheme: "dark",
     badgeClass: "bg-amber-500/10 text-amber-400 border-amber-500/30",
     titleColor: "text-white group-hover:text-amber-300",
@@ -126,7 +126,7 @@ const TEMPLATES = [
       "Integrated Soft Terracotta RSVP forms"
     ],
     bgClass: "bg-[#FFFDD0] border-amber-600/20",
-    image: "https://images.unsplash.com/photo-1519225495810-7517c300ea64?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800",
     cardTheme: "light",
     badgeClass: "bg-[#E2725B]/10 text-[#E2725B] border-[#E2725B]/20",
     titleColor: "text-[#E2725B] group-hover:text-[#d65c43]",

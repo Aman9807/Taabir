@@ -137,10 +137,10 @@ const DEMO_DATA = {
       address: "100 Golden Gates Avenue, Versailles, France",
       googleMapsUrl: "https://www.google.com/maps",
     },
-    photoUrl: "https://images.unsplash.com/photo-1519225495810-7517c5a6538a?q=80&w=1200",
+    photoUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
     photos: [
-      "https://images.unsplash.com/photo-1519225495810-7517c5a6538a?q=80&w=1200",
       "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+      "https://images.unsplash.com/photo-1519225495810-7517c5a6538a?q=80&w=1200",
       "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200"
     ],
     musicUrl: "",
@@ -188,9 +188,9 @@ const DEMO_DATA = {
       address: "450 Organic Valley Road, Sedona, Arizona",
       googleMapsUrl: "https://www.google.com/maps",
     },
-    photoUrl: "https://images.unsplash.com/photo-1519225495810-7517c300ea64?q=80&w=1200",
+    photoUrl: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200",
     photos: [
-      "https://images.unsplash.com/photo-1519225495810-7517c300ea64?q=80&w=1200",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200",
       "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
       "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200"
     ],

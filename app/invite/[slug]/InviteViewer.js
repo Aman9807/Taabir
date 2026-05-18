@@ -670,11 +670,11 @@ export default function InviteViewer({ invitation }) {
                   <p style={{ color: "#333333", fontSize: 15, fontFamily: "'Lora', serif", fontStyle: "italic", marginBottom: 28, opacity: 0.7 }}>at {fmtTime}</p>
                   
                   <div style={{ borderTop: "1px solid rgba(247, 231, 206, 0.4)", paddingTop: 24 }}>
-                    <p style={{ color: "#333333", fontSize: 17, fontFamily: "'Playfair Display', serif", fontWeight: 500, marginBottom: 6 }}>{invitation.venue.name}</p>
-                    <p style={{ color: "#333333", fontSize: 14, fontFamily: "'Lora', serif", opacity: 0.8 }}>{invitation.venue.address}</p>
+                    <p style={{ color: "#333333", fontSize: 17, fontFamily: "'Playfair Display', serif", fontWeight: 500, marginBottom: 6 }}>{invitation.venue?.name}</p>
+                    <p style={{ color: "#333333", fontSize: 14, fontFamily: "'Lora', serif", opacity: 0.8 }}>{invitation.venue?.address}</p>
                   </div>
 
-                  {invitation.venue.googleMapsUrl && (
+                  {invitation.venue?.googleMapsUrl && (
                     <a href={invitation.venue.googleMapsUrl} target="_blank" rel="noopener noreferrer"
                       style={{ display: "inline-block", marginTop: 24, color: "#333333", fontFamily: "'Playfair Display', serif", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", textDecoration: "none", borderBottom: "1px solid #333333", paddingBottom: 2, fontWeight: 600 }}>
                       {text.openMaps}
@@ -1618,7 +1618,7 @@ export default function InviteViewer({ invitation }) {
   const renderBohemianTerracotta = () => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
     const hasPhotos = galleryPhotos.length > 0;
-    const customBg = invitation.backgroundImage || galleryPhotos[0] || "https://images.unsplash.com/photo-1519225495810-7517c300ea64?q=80&w=1200";
+    const customBg = invitation.backgroundImage || galleryPhotos[0] || "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200";
 
     return (
       <div 
@@ -1873,11 +1873,11 @@ export default function InviteViewer({ invitation }) {
               <p style={{ color: "#9DC183", fontSize: 15, fontWeight: 500, marginBottom: 20 }}>at {fmtTime}</p>
               
               <div style={{ borderTop: "1px dashed rgba(157, 193, 131, 0.4)", paddingTop: 20 }}>
-                <p style={{ color: "#E2725B", fontSize: 18, fontWeight: 700, marginBottom: 6, fontFamily: "'Roboto', sans-serif" }}>{invitation.venue.name}</p>
-                <p style={{ color: "#555555", fontSize: 14, lineHeight: 1.6 }}>{invitation.venue.address}</p>
+                <p style={{ color: "#E2725B", fontSize: 18, fontWeight: 700, marginBottom: 6, fontFamily: "'Roboto', sans-serif" }}>{invitation.venue?.name}</p>
+                <p style={{ color: "#555555", fontSize: 14, lineHeight: 1.6 }}>{invitation.venue?.address}</p>
               </div>
 
-              {invitation.venue.googleMapsUrl && (
+              {invitation.venue?.googleMapsUrl && (
                 <a href={invitation.venue.googleMapsUrl} target="_blank" rel="noopener noreferrer"
                   className="boho-btn-pulse"
                   style={{ display: "inline-block", marginTop: 24, padding: "10px 24px", fontSize: 11, textDecoration: "none" }}>
@@ -1991,7 +1991,7 @@ export default function InviteViewer({ invitation }) {
                 {text.rsvpSub}
               </p>
 
-              {rsvpSubmitted ? (
+              {rsvpDone ? (
                 <div style={{
                   padding: "24px", background: "rgba(157, 193, 131, 0.15)", border: "1px dashed #9DC183",
                   borderRadius: 16, textAlign: "center"
@@ -2000,7 +2000,7 @@ export default function InviteViewer({ invitation }) {
                   <p style={{ color: "#333333", fontSize: 13, margin: 0 }}>Your wishes and blessings have been successfully registered.</p>
                 </div>
               ) : (
-                <form onSubmit={handleRsvpSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                   <div>
                     <label style={{ display: "block", color: "#E2725B", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
                       Full Name *
@@ -2009,24 +2009,25 @@ export default function InviteViewer({ invitation }) {
                       type="text"
                       required
                       placeholder="Your lovely name..."
-                      value={rsvpForm.name}
-                      onChange={(e) => setRsvpForm(p => ({ ...p, name: e.target.value }))}
+                      value={rsvp.name}
+                      onChange={(e) => setRsvp(p => ({ ...p, name: e.target.value }))}
                       className="boho-input"
                     />
                   </div>
 
                   <div>
                     <label style={{ display: "block", color: "#E2725B", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
-                      Email Address *
+                      Will you attend?
                     </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="your.email@example.com"
-                      value={rsvpForm.email}
-                      onChange={(e) => setRsvpForm(p => ({ ...p, email: e.target.value }))}
+                    <select
+                      value={rsvp.attending}
+                      onChange={(e) => setRsvp(p => ({ ...p, attending: e.target.value }))}
                       className="boho-input"
-                    />
+                      style={{ cursor: "pointer" }}
+                    >
+                      <option value="yes">Yes, with pleasure!</option>
+                      <option value="no">Regretfully, no</option>
+                    </select>
                   </div>
 
                   <div>
@@ -2036,26 +2037,20 @@ export default function InviteViewer({ invitation }) {
                     <textarea
                       placeholder="Write your beautiful blessings..."
                       rows={4}
-                      value={rsvpForm.blessing}
-                      onChange={(e) => setRsvpForm(p => ({ ...p, blessing: e.target.value }))}
+                      value={rsvp.blessing}
+                      onChange={(e) => setRsvp(p => ({ ...p, blessing: e.target.value }))}
                       className="boho-input"
                       style={{ resize: "none" }}
                     />
                   </div>
 
-                  {rsvpErr && (
-                    <p style={{ color: "#E2725B", fontSize: 12, margin: 0, textAlign: "center", fontWeight: 500 }}>
-                      ⚠️ {rsvpErr}
-                    </p>
-                  )}
-
                   <button
                     type="submit"
-                    disabled={submittingRsvp}
+                    disabled={rsvpLoading}
                     className="boho-btn-pulse"
                     style={{ padding: "14px 20px", marginTop: 8 }}
                   >
-                    {submittingRsvp ? "Sending..." : "Submit Wishes & Blessings"}
+                    {rsvpLoading ? "Sending..." : "Submit Wishes & Blessings"}
                   </button>
                 </form>
               )}
@@ -2543,11 +2538,11 @@ export default function InviteViewer({ invitation }) {
               <p style={{ color: T.sub, fontSize: 13, marginBottom: 16 }}>at {fmtTime}</p>
               
               <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 14 }}>
-                <p style={{ color: T.text, fontSize: 15, fontWeight: 500, marginBottom: 4 }}>{invitation.venue.name}</p>
-                <p style={{ color: T.sub, fontSize: 12.5 }}>{invitation.venue.address}</p>
+                <p style={{ color: T.text, fontSize: 15, fontWeight: 500, marginBottom: 4 }}>{invitation.venue?.name}</p>
+                <p style={{ color: T.sub, fontSize: 12.5 }}>{invitation.venue?.address}</p>
               </div>
 
-              {invitation.venue.googleMapsUrl && (
+              {invitation.venue?.googleMapsUrl && (
                 <a href={invitation.venue.googleMapsUrl} target="_blank" rel="noopener noreferrer"
                   style={{ display: "inline-block", marginTop: 16, color: T.gold, fontFamily: "sans-serif", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", borderBottom: `1px solid ${T.gold}40`, paddingBottom: 2 }}>
                   {text.openMaps}
