@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AboutPage() {
+  const { user } = useAuth();
   const features = [
     {
       icon: "🚪",
@@ -66,10 +68,9 @@ export default function AboutPage() {
       <header className="border-b border-slate-100 bg-white/70 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="h-10 w-10 rounded-full border border-amber-500 flex items-center justify-center text-slate-800 font-serif text-xl font-bold bg-amber-50 shadow-sm">
-                T
-              </span>
+            <Link href="/" className="flex items-center gap-3 group">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icon.svg" alt="Taabir Logo" className="h-10 w-10 drop-shadow-md group-hover:scale-105 transition-transform" />
               <span className="font-serif text-xl font-bold text-slate-900 tracking-wide">TAABIR</span>
             </Link>
           </div>
@@ -78,15 +79,26 @@ export default function AboutPage() {
             <Link href="/" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
               Home
             </Link>
-            <Link href="/login" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
-              Sign In
-            </Link>
-            <Link
-              href="/register"
-              className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
-            >
-              Create Free Card
-            </Link>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
+                >
+                  Create Free Card
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </header>
@@ -165,9 +177,8 @@ export default function AboutPage() {
       <footer className="border-t border-slate-100 bg-slate-50/50 py-12 relative z-10 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex items-center justify-center gap-2">
-            <span className="h-6 w-6 rounded-full border border-amber-500 flex items-center justify-center text-slate-800 font-serif text-[10px] font-bold bg-amber-50 shadow-sm">
-              T
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon.svg" alt="Taabir Logo" className="h-6 w-6 drop-shadow-sm" />
             <span className="font-serif text-sm font-bold text-slate-900 tracking-wider">TAABIR</span>
           </div>
 

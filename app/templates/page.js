@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 const TEMPLATES = [
   {
@@ -159,10 +160,37 @@ const TEMPLATES = [
     vibeColor: "text-slate-300",
     featureColor: "text-slate-200",
     btnSecondaryClass: "bg-pink-500/15 hover:bg-pink-500/25 text-[#FFFFFF] border-transparent"
+  },
+  {
+    id: "neon-nightclub",
+    name: "Neon Nightclub (Milestone VIP)",
+    badge: "Edgy Birthday VIP",
+    vibe: "High-contrast, energetic digital landing page. Neon pink flickering headers, open street map links, custom neon glowing panels, and bounce-in event detail card scroll reveals.",
+    primaryColor: "bg-[#000000]",
+    textColor: "text-[#FF10F0]",
+    paletteColors: ["#000000", "#FF10F0", "#00FFFF", "#FFFFFF"],
+    fonts: "Permanent Marker, Open Sans",
+    features: [
+      "Vibrant Pitch Black Background with Animated Mesh",
+      "Dynamic Neon Flicker Main Title Effect on Load",
+      "Event Cards with Bounce-In-Down Scroll Reveals",
+      "Interactive Digital Countdowns with Glowing Frames",
+      "High Contrast Electric Blue Map Location Action",
+      "Instantly Integrated VIP RSVP Registration Form"
+    ],
+    bgClass: "bg-black border-pink-500/30",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-pink-500/10 text-pink-400 border-pink-500/30",
+    titleColor: "text-white group-hover:text-pink-300",
+    vibeColor: "text-slate-300",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-pink-500/15 hover:bg-pink-500/25 text-[#FFFFFF] border-transparent"
   }
 ];
 
 export default function TemplatesPage() {
+  const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   return (
@@ -184,12 +212,21 @@ export default function TemplatesPage() {
             <Link href="/" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
               Back to Home
             </Link>
-            <Link
-              href="/register"
-              className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
-            >
-              Get Started Free
-            </Link>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/register"
+                className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
+              >
+                Get Started Free
+              </Link>
+            )}
           </nav>
         </div>
       </header>

@@ -226,6 +226,94 @@ const DEMO_DATA = {
       btnBgColor: "#E2725B",
       btnTextColor: "#FFFDD0"
     }
+  },
+  "royal-glamour": {
+    id: "__demo_royal_glamour__",
+    brideName: "Isabella",
+    brideParentsName: "Mr. & Mrs. Arthur Sterling",
+    groomName: "Maximilian",
+    groomParentsName: "Mr. & Mrs. Charles Bennett",
+    weddingDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Sterling Glasshouse",
+      address: "100 Grand Boulevard, Beverly Hills, California",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200",
+      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200"
+    ],
+    musicUrl: "",
+    coupleEmail: "isabella.max.wedding@sterlingglass.com",
+    theme: { templateId: "royal-glamour" },
+    details: {
+      schedule: [
+        {
+          name: "Vows & Ring Exchange",
+          time: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "A private ceremony at our grand garden chapel.",
+          venue: "Chapel of Stars"
+        },
+        {
+          name: "Glamour Cocktail & Glass Reception",
+          time: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+          description: "Champagne towers, premium live band, and high-end banquet feast.",
+          venue: "Sterling Glasshouse Grand Pavilion"
+        }
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#B76E79",
+      btnTextColor: "#FFFFFF"
+    }
+  },
+  "neon-nightclub": {
+    id: "__demo_neon_nightclub__",
+    brideName: "Tyler",
+    brideParentsName: "The Milestone Party VIP Committee",
+    groomName: "VIP Guest",
+    weddingDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Neon Underground Club & Lounge",
+      address: "21st Avenue, Manhattan, New York",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1200"
+    ],
+    musicUrl: "",
+    coupleEmail: "tyler.21st.vip@neonunderground.com",
+    theme: { templateId: "neon-nightclub" },
+    details: {
+      schedule: [
+        {
+          name: "VIP Early Access & Glow bar opens",
+          time: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Signature neon cocktails, glow paints, and electric lounge pre-beats.",
+          venue: "The Siren Lounge Bar"
+        },
+        {
+          name: "The Main Set & Neon Flicker Show",
+          time: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000).toISOString(),
+          description: "Milestone champagne shower, high-contrast EDM set, and laser light reveal.",
+          venue: "Neon Main Stage Floor"
+        }
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#FF10F0",
+      btnTextColor: "#000000"
+    }
   }
 };
 
@@ -236,7 +324,9 @@ export async function generateMetadata({ params }) {
     "ivory-classic": "Ivory Classic", 
     "minimalist-romance": "Minimalist Romance",
     "dark-moody-elegant": "Dark Moody & Elegant",
-    "bohemian-terracotta": "Bohemian Terracotta"
+    "bohemian-terracotta": "Bohemian Terracotta",
+    "royal-glamour": "Royal Glamour & Glassmorphism",
+    "neon-nightclub": "Neon Nightclub"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

@@ -165,6 +165,8 @@ export default function EditInvitationPage() {
       return { bg: "#FFFDD0", door: "#E2725B", text: "#333333", gold: "#E2725B" };
     } else if (palId === "royal-glamour") {
       return { bg: "#0A1128", door: "#050B1A", text: "#FFFFFF", gold: "#B76E79" };
+    } else if (palId === "neon-nightclub") {
+      return { bg: "#000000", door: "#000000", text: "#FFFFFF", gold: "#FF10F0" };
     } else if (isIvory) {
       return { bg: "#FAF9F5", door: "#FAF9F5", text: "#2c2317", gold: "#800020" };
     } else {
@@ -778,7 +780,7 @@ export default function EditInvitationPage() {
                 </div>
 
                 {/* Premium Parallax Background Optional Field */}
-                {(formData.templateId === "minimalist-romance" || formData.templateId === "dark-moody-elegant" || formData.templateId === "royal-glamour") && (
+                {(formData.templateId === "minimalist-romance" || formData.templateId === "dark-moody-elegant" || formData.templateId === "royal-glamour" || formData.templateId === "neon-nightclub") && (
                   <div className="sm:col-span-2 space-y-3 bg-amber-50/25 p-5 rounded-2xl border border-amber-200/50">
                     <label className="block text-sm font-bold text-amber-900 font-sans">
                       Premium Theme Dedicated Background Image (Optional)
@@ -1063,7 +1065,8 @@ export default function EditInvitationPage() {
                     { id: "minimalist-romance", label: "Minimalist Romance", desc: "Clean layout, full-viewport parallax hero sections", color: "#FFFFF0", textColor: "#333333", tag: "Premium Scroll" },
                     { id: "dark-moody-elegant", label: "Dark Moody & Elegant", desc: "Cinematic immersive story, slow Ken Burns, rich gold & onyx", color: "#0F0F0F", textColor: "#D4AF37", tag: "Premium Scroll" },
                     { id: "bohemian-terracotta", label: "Bohemian Terracotta Dream", desc: "Warm boho-chic, organic shapes & floating botanical SVGs", color: "#FFFDD0", textColor: "#E2725B", tag: "Premium Scroll" },
-                    { id: "royal-glamour", label: "Royal Glamour & Glassmorphism", desc: "Frosted glass events over glamorous starry navy blue & rose gold", color: "#0A1128", textColor: "#B76E79", tag: "Premium Scroll" }
+                    { id: "royal-glamour", label: "Royal Glamour & Glassmorphism", desc: "Frosted glass events over glamorous starry navy blue & rose gold", color: "#0A1128", textColor: "#B76E79", tag: "Premium Scroll" },
+                    { id: "neon-nightclub", label: "Neon Nightclub", desc: "Milestone birthday, Permanent Marker fonts, title load flicker & bounce events", color: "#000000", textColor: "#FF10F0", tag: "Premium Scroll" }
                   ].map((tpl) => (
                     <div key={tpl.id} className={`border-2 rounded-2xl overflow-hidden transition-all relative ${
                       formData.templateId === tpl.id ? "border-amber-500 shadow-md" : "border-slate-200 hover:border-slate-300"
@@ -1105,6 +1108,8 @@ export default function EditInvitationPage() {
                               setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#E2725B", btnTextColor: "#FFFDD0" }));
                             } else if (tpl.id === "royal-glamour") {
                               setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#B76E79", btnTextColor: "#FFFFFF" }));
+                            } else if (tpl.id === "neon-nightclub") {
+                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#FF10F0", btnTextColor: "#000000" }));
                             }
                             // Auto trigger animation preview
                             setPreviewingAnim(true);
@@ -1131,7 +1136,8 @@ export default function EditInvitationPage() {
                     { id: "bohemian-terracotta", label: "Bohemian Terracotta", preview: ["#FFFDD0", "#E2725B", "#9DC183"], desc: "Terracotta & Sage" },
                     { id: "ivory-classic", label: "Ivory Classic", preview: ["#FAF9F5", "#800020", "#2c2317"], desc: "Cream & Deep Burgundy" },
                     { id: "midnight-gold", label: "Midnight Gold", preview: ["#040B16", "#D4AF37", "#E2E8F0"], desc: "Starry Navy & Gold" },
-                    { id: "royal-glamour", label: "Royal Glamour", preview: ["#0A1128", "#B76E79", "#FFFFFF"], desc: "Royal Navy & Rose Gold" }
+                    { id: "royal-glamour", label: "Royal Glamour", preview: ["#0A1128", "#B76E79", "#FFFFFF"], desc: "Royal Navy & Rose Gold" },
+                    { id: "neon-nightclub", label: "Neon Nightclub", preview: ["#000000", "#FF10F0", "#00FFFF"], desc: "Pitch Black & Neon Pink" }
                   ].map((pal) => {
                     const isSelected = formData.paletteId === pal.id;
                     return (
@@ -1142,8 +1148,8 @@ export default function EditInvitationPage() {
                           setFormData(prev => ({ 
                             ...prev, 
                             paletteId: pal.id,
-                            btnBgColor: pal.id === "minimalist-romance" ? "#F7E7CE" : pal.id === "bohemian-terracotta" ? "#E2725B" : pal.id === "ivory-classic" ? "#800020" : pal.id === "royal-glamour" ? "#B76E79" : "#D4AF37",
-                            btnTextColor: pal.id === "minimalist-romance" ? "#333333" : pal.id === "bohemian-terracotta" ? "#FFFDD0" : "#FFFFFF"
+                            btnBgColor: pal.id === "minimalist-romance" ? "#F7E7CE" : pal.id === "bohemian-terracotta" ? "#E2725B" : pal.id === "ivory-classic" ? "#800020" : pal.id === "royal-glamour" ? "#B76E79" : pal.id === "neon-nightclub" ? "#FF10F0" : "#D4AF37",
+                            btnTextColor: pal.id === "minimalist-romance" ? "#333333" : pal.id === "bohemian-terracotta" ? "#FFFDD0" : pal.id === "neon-nightclub" ? "#000000" : "#FFFFFF"
                           }));
                         }}
                         className={`flex flex-col items-center justify-between p-3 rounded-xl border-2 transition-all text-left w-full bg-white ${

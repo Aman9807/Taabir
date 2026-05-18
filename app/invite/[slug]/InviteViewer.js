@@ -294,6 +294,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#E2725B", 
         border: "rgba(226,114,91,0.25)"
       }
+    : activePaletteId === "neon-nightclub"
+    ? {
+        bg: "#000000", 
+        door: "#000000", 
+        seam: "#FF10F0", 
+        card: "rgba(255,255,255,0.04)", 
+        text: "#FFFFFF", 
+        sub: "#00FFFF", 
+        gold: "#FF10F0", 
+        border: "rgba(0,255,255,0.25)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -2570,12 +2581,672 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderNeonNightclub = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+    const isBirthday = eventType === "birthday";
+
+    return (
+      <div 
+        style={{
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s ease-out, transform 1.5s ease-out",
+          width: "100%",
+          margin: "0 auto",
+          backgroundColor: "#000000", // Pitch Black
+          color: "#FFFFFF",
+          fontFamily: "'Open Sans', sans-serif",
+          overflow: "hidden",
+        }}
+      >
+        {/* Dynamic Google Fonts and Styles injection */}
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+          
+          @keyframes neonPulse {
+            0%, 100% {
+              box-shadow: 0 0 10px #FF10F0, 0 0 20px rgba(255,16,240,0.4), inset 0 0 8px rgba(255,16,240,0.3);
+              border-color: #FF10F0;
+            }
+            50% {
+              box-shadow: 0 0 18px #00FFFF, 0 0 35px rgba(0,255,255,0.5), inset 0 0 15px rgba(0,255,255,0.4);
+              border-color: #00FFFF;
+            }
+          }
+          @keyframes quickFlicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+              text-shadow: 
+                0 0 4px #fff,
+                0 0 12px #FF10F0,
+                0 0 25px #FF10F0,
+                0 0 60px #FF10F0;
+              color: #fff;
+              opacity: 1;
+            }
+            20%, 24%, 55% {
+              text-shadow: none;
+              color: #1a1a1a;
+              opacity: 0.25;
+            }
+          }
+          @keyframes neonStarPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 15px #00FFFF; }
+          }
+          @keyframes borderRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(40px); }
+          }
+          
+          .neon-title {
+            font-family: 'Permanent Marker', cursive;
+            animation: quickFlicker 1.8s ease-in-out infinite alternate;
+          }
+          .neon-glow-card {
+            border: 2px solid #00FFFF;
+            box-shadow: 0 0 12px rgba(0,255,255,0.3), inset 0 0 8px rgba(0,255,255,0.1);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+          }
+          .neon-glow-card:hover {
+            border-color: #FF10F0;
+            box-shadow: 0 0 20px rgba(255,16,240,0.5), inset 0 0 12px rgba(255,16,240,0.2);
+            transform: translateY(-5px);
+          }
+          .neon-btn {
+            font-family: 'Permanent Marker', cursive;
+            background: transparent;
+            color: #FFFFFF;
+            border: 2px solid #FF10F0;
+            text-shadow: 0 0 6px #FF10F0;
+            box-shadow: 0 0 8px rgba(255,16,240,0.4);
+            transition: all 0.2s ease-in-out;
+          }
+          .neon-btn:hover {
+            background: #FF10F0;
+            color: #000000;
+            box-shadow: 0 0 20px #FF10F0, 0 0 40px #FF10F0;
+            text-shadow: none;
+          }
+          .cyber-input {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0,255,255,0.4);
+            color: #FFFFFF;
+            font-family: 'Open Sans', sans-serif;
+            transition: all 0.3s ease;
+          }
+          .cyber-input:focus {
+            border-color: #FF10F0;
+            box-shadow: 0 0 10px rgba(255,16,240,0.5);
+            outline: none;
+          }
+          
+          /* Neon bounce animations */
+          @keyframes neonBounceIn {
+            0% { opacity: 0; transform: translateY(-100px); }
+            60% { opacity: 1; transform: translateY(15px); }
+            80% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
+          }
+          .neon-bounce-active {
+            animation: neonBounceIn 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+          }
+          .neon-bounce-idle {
+            opacity: 0;
+            transform: translateY(-100px);
+          }
+        `}</style>
+
+        {/* Dynamic Cyber Grid Background Overlay */}
+        <div style={{ position: "relative", width: "100%", overflow: "hidden" }}>
+          
+          {/* Cybernetic grid perspective mesh */}
+          <div 
+            style={{
+              position: "absolute",
+              inset: 0,
+              opacity: 0.12,
+              backgroundImage: "linear-gradient(rgba(0, 255, 255, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.2) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+              pointerEvents: "none",
+              zIndex: 1,
+              animation: "gridMove 8s linear infinite"
+            }}
+          />
+
+          {/* Electric Neon Glowing Top Accent */}
+          <div 
+            style={{
+              height: 4,
+              background: "linear-gradient(90deg, #FF10F0, #00FFFF, #FF10F0)",
+              backgroundSize: "200% 200%",
+              animation: "borderRotate 6s ease infinite",
+              boxShadow: "0 0 20px #00FFFF, 0 0 40px #FF10F0"
+            }}
+          />
+
+          {/* ======================================================== */}
+          {/* ⚡ HERO HEADLINER BLOCK (Permanent Marker Callout)       */}
+          {/* ======================================================== */}
+          <div style={{ padding: "80px 24px 60px", textAlign: "center", position: "relative", zIndex: 10 }}>
+            <div 
+              style={{
+                display: "inline-block",
+                padding: "4px 16px",
+                borderRadius: 20,
+                border: "1px solid #00FFFF",
+                color: "#00FFFF",
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                marginBottom: 28,
+                backgroundColor: "rgba(0,0,0,0.8)",
+                boxShadow: "0 0 10px rgba(0,255,255,0.4)"
+              }}
+            >
+              ⚡ EXCLUSIVE VIP ACCESS ⚡
+            </div>
+
+            <h1 
+              className="neon-title"
+              style={{
+                fontSize: "4.5rem",
+                margin: "0 0 16px",
+                lineHeight: 1.05,
+                color: "#FFFFFF",
+                letterSpacing: "-0.02em"
+              }}
+            >
+              {lang === "ur" ? "سالگرہ دھماکہ" : isBirthday ? "BIRTHDAY BASH" : "THE PARTY"}
+            </h1>
+
+            <p 
+              style={{
+                fontFamily: "'Permanent Marker', cursive",
+                fontSize: 24,
+                color: "#00FFFF",
+                textShadow: "0 0 8px #00FFFF",
+                margin: "0 0 32px",
+                letterSpacing: "0.05em",
+                textTransform: "uppercase"
+              }}
+            >
+              {isBirthday ? `${invitation.brideName}'s ${invitation.groomName || "Milestone"} Bash` : `${invitation.brideName} & ${invitation.groomName}`}
+            </p>
+
+            {/* Glowing Neon Divider line */}
+            <div 
+              style={{
+                width: 140,
+                height: 3,
+                backgroundColor: "#FF10F0",
+                margin: "0 auto 36px",
+                boxShadow: "0 0 10px #FF10F0, 0 0 20px #FF10F0",
+                borderRadius: 2
+              }}
+            />
+
+            <p style={{ maxWidth: 480, margin: "0 auto 40px", fontSize: 15, opacity: 0.85, lineHeight: 1.6 }}>
+              {invitation.invitationNote || "Brace yourselves for the ultimate energetic nightclub party. High contrast beats, glowing cocktails, and endless vibes await."}
+            </p>
+          </div>
+
+          {/* ======================================================== */}
+          {/* 📅 EVENT METADATA DETAILS CARDS (Bounce-In-Down)         */}
+          {/* ======================================================== */}
+          <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 24px", position: "relative", zIndex: 10 }}>
+            
+            <BounceInDownScrollReveal>
+              <div 
+                className="neon-glow-card" 
+                style={{
+                  width: "100%",
+                  borderRadius: 24,
+                  padding: 32,
+                  marginBottom: 32,
+                  textAlign: "center"
+                }}
+              >
+                <div style={{ fontSize: 32, marginBottom: 12, animation: "neonStarPulse 3s infinite" }}>📅</div>
+                <h3 
+                  style={{
+                    fontFamily: "'Permanent Marker', cursive",
+                    fontSize: 26,
+                    color: "#FF10F0",
+                    textShadow: "0 0 6px #FF10F0",
+                    margin: "0 0 16px",
+                    letterSpacing: "0.05em"
+                  }}
+                >
+                  {text.dateVenue}
+                </h3>
+                <p style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px", color: "#FFFFFF" }}>{fmt}</p>
+                <p style={{ fontSize: 15, color: "#00FFFF", fontWeight: 600, margin: "0 0 16px" }}>🕒 {fmtTime}</p>
+                
+                <div 
+                  style={{
+                    padding: 16,
+                    borderRadius: 16,
+                    background: "rgba(0,0,0,0.5)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    marginBottom: 20
+                  }}
+                >
+                  <p style={{ fontSize: 16, fontWeight: 700, margin: "0 0 4px", color: "#FFFFFF" }}>📍 {invitation.venueName}</p>
+                  {invitation.venueAddress && (
+                    <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>{invitation.venueAddress}</p>
+                  )}
+                </div>
+
+                {invitation.mapsUrl && (
+                  <a 
+                    href={invitation.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="neon-btn"
+                    style={{
+                      display: "inline-block",
+                      padding: "12px 28px",
+                      borderRadius: 14,
+                      fontSize: 12,
+                      fontWeight: 800,
+                      letterSpacing: "0.15em",
+                      textDecoration: "none",
+                      textTransform: "uppercase"
+                    }}
+                  >
+                    🚀 MAP NAVIGATION
+                  </a>
+                )}
+              </div>
+            </BounceInDownScrollReveal>
+
+            {/* ======================================================== */}
+            {/* 🕒 CYBERNETIC COUNTDOWN WIDGET                           */}
+            {/* ======================================================== */}
+            <BounceInDownScrollReveal>
+              <div 
+                className="neon-glow-card" 
+                style={{
+                  width: "100%",
+                  borderRadius: 24,
+                  padding: 32,
+                  marginBottom: 32,
+                  textAlign: "center"
+                }}
+              >
+                <h3 
+                  style={{
+                    fontFamily: "'Permanent Marker', cursive",
+                    fontSize: 22,
+                    color: "#00FFFF",
+                    textShadow: "0 0 6px #00FFFF",
+                    margin: "0 0 24px",
+                    letterSpacing: "0.05em"
+                  }}
+                >
+                  ⏰ TIME RUNNING OUT
+                </h3>
+
+                <div style={{ display: "flex", justifyContent: "center", gap: 12 }}>
+                  {[
+                    { val: timeLeft.days, lbl: text.days, color: "#FF10F0" },
+                    { val: timeLeft.hours, lbl: text.hours, color: "#00FFFF" },
+                    { val: timeLeft.minutes, lbl: text.mins, color: "#FF10F0" },
+                    { val: timeLeft.seconds, lbl: text.secs, color: "#00FFFF" }
+                  ].map((unit, i) => (
+                    <div 
+                      key={i} 
+                      style={{
+                        flex: "1 1 0px",
+                        padding: 12,
+                        borderRadius: 16,
+                        background: "rgba(0,0,0,0.6)",
+                        border: `1px solid ${unit.color}`
+                      }}
+                    >
+                      <span 
+                        style={{
+                          fontSize: 26,
+                          fontWeight: 800,
+                          color: "#FFFFFF",
+                          display: "block",
+                          fontFamily: "monospace"
+                        }}
+                      >
+                        {String(unit.val).padStart(2, "0")}
+                      </span>
+                      <span style={{ fontSize: 10, letterSpacing: "0.05em", color: unit.color, textTransform: "uppercase", fontWeight: 700 }}>
+                        {unit.lbl}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </BounceInDownScrollReveal>
+
+            {/* ======================================================== */}
+            {/* 📋 PARTY SCHEDULE TIMELINE                              */}
+            {/* ======================================================== */}
+            {invitation.timeline && invitation.timeline.length > 0 && (
+              <BounceInDownScrollReveal>
+                <div 
+                  className="neon-glow-card" 
+                  style={{
+                    width: "100%",
+                    borderRadius: 24,
+                    padding: 32,
+                    marginBottom: 32
+                  }}
+                >
+                  <h3 
+                    style={{
+                      fontFamily: "'Permanent Marker', cursive",
+                      fontSize: 26,
+                      color: "#FF10F0",
+                      textShadow: "0 0 6px #FF10F0",
+                      margin: "0 0 28px",
+                      textAlign: "center",
+                      letterSpacing: "0.05em"
+                    }}
+                  >
+                    🎉 PARTY SCHEDULE
+                  </h3>
+
+                  <div style={{ position: "relative", paddingLeft: 24, borderLeft: "2px solid #00FFFF" }}>
+                    {invitation.timeline.map((event, idx) => (
+                      <div key={idx} style={{ marginBottom: 24, position: "relative" }}>
+                        <div 
+                          style={{
+                            position: "absolute",
+                            left: -33,
+                            top: 4,
+                            width: 16,
+                            height: 16,
+                            borderRadius: "50%",
+                            backgroundColor: "#FF10F0",
+                            boxShadow: "0 0 8px #FF10F0",
+                            border: "3px solid #000000"
+                          }}
+                        />
+                        <span style={{ fontSize: 12, fontWeight: 800, color: "#00FFFF", fontFamily: "monospace", display: "block" }}>
+                          ⚡ {event.time}
+                        </span>
+                        <h4 style={{ fontSize: 16, fontWeight: 700, color: "#FFFFFF", margin: "4px 0" }}>
+                          {event.title}
+                        </h4>
+                        {event.description && (
+                          <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>{event.description}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </BounceInDownScrollReveal>
+            )}
+
+            {/* ======================================================== */}
+            {/* 📸 VIP GALLERY SHOWCASE                                  */}
+            {/* ======================================================== */}
+            {hasPhotos && (
+              <BounceInDownScrollReveal>
+                <div 
+                  className="neon-glow-card" 
+                  style={{
+                    width: "100%",
+                    borderRadius: 24,
+                    padding: 32,
+                    marginBottom: 32,
+                    textAlign: "center"
+                  }}
+                >
+                  <h3 
+                    style={{
+                      fontFamily: "'Permanent Marker', cursive",
+                      fontSize: 26,
+                      color: "#00FFFF",
+                      textShadow: "0 0 6px #00FFFF",
+                      margin: "0 0 24px",
+                      letterSpacing: "0.05em"
+                    }}
+                  >
+                    📸 VIP SNEAK PEEK
+                  </h3>
+
+                  <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", aspectRatio: "4/3", border: "2px solid #FF10F0", boxShadow: "0 0 15px rgba(255,16,240,0.3)" }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img 
+                      src={galleryPhotos[activePhotoIdx]} 
+                      alt="Gallery Mockup"
+                      style={{ width: "100%", height: "100%", objectCover: "cover" }}
+                    />
+                    
+                    {galleryPhotos.length > 1 && (
+                      <>
+                        <button 
+                          onClick={() => setActivePhotoIdx(prev => (prev === 0 ? galleryPhotos.length - 1 : prev - 1))}
+                          style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.8)", border: "1px solid #FF10F0", color: "#FF10F0", cursor: "pointer", fontWeight: "bold" }}
+                        >
+                          ‹
+                        </button>
+                        <button 
+                          onClick={() => setActivePhotoIdx(prev => (prev === galleryPhotos.length - 1 ? 0 : prev + 1))}
+                          style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.8)", border: "1px solid #FF10F0", color: "#FF10F0", cursor: "pointer", fontWeight: "bold" }}
+                        >
+                          ›
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </BounceInDownScrollReveal>
+            )}
+
+            {/* ======================================================== */}
+            {/* ✍️ RSVP SUBMISSION FORM                                  */}
+            {/* ======================================================== */}
+            <BounceInDownScrollReveal>
+              <div 
+                className="neon-glow-card" 
+                style={{
+                  width: "100%",
+                  borderRadius: 24,
+                  padding: 32,
+                  marginBottom: 32
+                }}
+              >
+                <h3 
+                  style={{
+                    fontFamily: "'Permanent Marker', cursive",
+                    fontSize: 26,
+                    color: "#FF10F0",
+                    textShadow: "0 0 6px #FF10F0",
+                    margin: "0 0 12px",
+                    textAlign: "center",
+                    letterSpacing: "0.05em"
+                  }}
+                >
+                  ⚡ VIP REGISTRATION
+                </h3>
+                <p style={{ fontSize: 13, opacity: 0.8, textAlign: "center", marginBottom: 28 }}>
+                  Register below to secure your exclusive VIP nightclub pass.
+                </p>
+
+                {rsvpDone ? (
+                  <div style={{ textAlign: "center", padding: "16px 0" }}>
+                    <div style={{ fontSize: 44, marginBottom: 12 }}>⚡</div>
+                    <h4 style={{ fontSize: 20, fontWeight: 700, color: "#00FFFF", margin: "0 0 8px" }}>
+                      {text.successTitle}
+                    </h4>
+                    <p style={{ fontSize: 14, opacity: 0.8, margin: 0 }}>
+                      {text.successDesc}
+                    </p>
+                  </div>
+                ) : (
+                  <form 
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      if (!rsvp.name.trim()) return;
+                      setRsvpLoading(true);
+                      try {
+                        const rsvpsRef = collection(db, "invitations", invitation.id, "rsvps");
+                        await addDoc(rsvpsRef, {
+                          ...rsvp,
+                          submittedAt: new Date().toISOString()
+                        });
+                        setRsvpDone(true);
+                      } catch (err) {
+                        console.error("RSVP Failure:", err);
+                      } finally {
+                        setRsvpLoading(false);
+                      }
+                    }}
+                    style={{ display: "flex", flexDirection: "column", gap: 16 }}
+                  >
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 800, color: "#00FFFF", display: "block", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                        {text.fullName}
+                      </label>
+                      <input 
+                        type="text" 
+                        required
+                        className="cyber-input"
+                        placeholder="Type name here..."
+                        style={{ width: "100%", padding: 12, borderRadius: 12, fontSize: 14 }}
+                        value={rsvp.name}
+                        onChange={(e) => setRsvp(prev => ({ ...prev, name: e.target.value }))}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 800, color: "#FF10F0", display: "block", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                        VIP PASS CONFIRMATION
+                      </label>
+                      <div style={{ display: "flex", gap: 12 }}>
+                        <button 
+                          type="button"
+                          onClick={() => setRsvp(prev => ({ ...prev, attending: "yes" }))}
+                          style={{
+                            flex: 1,
+                            padding: 12,
+                            borderRadius: 12,
+                            background: rsvp.attending === "yes" ? "#FF10F0" : "rgba(0,0,0,0.5)",
+                            color: rsvp.attending === "yes" ? "#000000" : "#FFFFFF",
+                            border: "1px solid #FF10F0",
+                            fontWeight: "bold",
+                            fontSize: 13,
+                            cursor: "pointer",
+                            transition: "all 0.2s"
+                          }}
+                        >
+                          🔥 COUNT ME IN
+                        </button>
+                        <button 
+                          type="button"
+                          onClick={() => setRsvp(prev => ({ ...prev, attending: "no" }))}
+                          style={{
+                            flex: 1,
+                            padding: 12,
+                            borderRadius: 12,
+                            background: rsvp.attending === "no" ? "#00FFFF" : "rgba(0,0,0,0.5)",
+                            color: rsvp.attending === "no" ? "#000000" : "#FFFFFF",
+                            border: "1px solid #00FFFF",
+                            fontWeight: "bold",
+                            fontSize: 13,
+                            cursor: "pointer",
+                            transition: "all 0.2s"
+                          }}
+                        >
+                          ❌ CAN'T MAKE IT
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 800, color: "#00FFFF", display: "block", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                        {text.blessing}
+                      </label>
+                      <textarea 
+                        className="cyber-input"
+                        placeholder="Leave a glowing comment..."
+                        rows={3}
+                        style={{ width: "100%", padding: 12, borderRadius: 12, fontSize: 14, resize: "none" }}
+                        value={rsvp.blessing}
+                        onChange={(e) => setRsvp(prev => ({ ...prev, blessing: e.target.value }))}
+                      />
+                    </div>
+
+                    <button 
+                      type="submit"
+                      disabled={rsvpLoading}
+                      className="neon-btn"
+                      style={{
+                        padding: 16,
+                        borderRadius: 12,
+                        fontSize: 14,
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                        marginTop: 8
+                      }}
+                    >
+                      {rsvpLoading ? text.sending : "REGISTER NOW"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </BounceInDownScrollReveal>
+
+          </div>
+
+          {/* ======================================================== */}
+          {/* 👥 HOST CONTACT / FOOTER SIGNATURE                       */}
+          {/* ======================================================== */}
+          <div style={{ padding: "60px 24px 80px", textAlign: "center", borderTop: "1px dashed rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.3)", position: "relative", zIndex: 10 }}>
+            <BounceInDownScrollReveal>
+              <p style={{ fontFamily: "'Permanent Marker', cursive", fontSize: 24, color: "#FF10F0", textShadow: "0 0 6px #FF10F0", marginBottom: 12 }}>
+                BE THERE OR BE SQUARE!
+              </p>
+              <p style={{ fontSize: 16, fontWeight: 600, margin: "0 0 24px", color: "#FFFFFF" }}>
+                {invitation.brideName} {invitation.groomName ? `& ${invitation.groomName}` : ""}
+              </p>
+
+              {invitation.coupleEmail && (
+                <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>
+                  Questions? Drop a line:{" "}
+                  <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#00FFFF", textDecoration: "none", fontWeight: 700 }}>
+                    {invitation.coupleEmail}
+                  </a>
+                </p>
+              )}
+
+              <div style={{ paddingTop: 36, marginTop: 44, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.4 }}>
+                  Taabir Premium Invitations · Powered by Flynx
+                </p>
+              </div>
+            </BounceInDownScrollReveal>
+          </div>
+
+        </div>
+      </div>
+    );
+  };
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
     { id: "dark-moody-elegant", name: "Dark Moody & Elegant", icon: "🖤" },
     { id: "bohemian-terracotta", name: "Bohemian Terracotta", icon: "🌿" },
     { id: "royal-glamour", name: "Royal Glamour & Glassmorphism", icon: "💎" },
+    { id: "neon-nightclub", name: "Neon Nightclub", icon: "⚡" },
   ];
 
   const palettes = [
@@ -2586,6 +3257,7 @@ export default function InviteViewer({ invitation }) {
     { id: "ivory-classic", name: "Ivory Classic", preview: ["#FAF9F5", "#800020", "#2c2317"] },
     { id: "midnight-gold", name: "Midnight Gold", preview: ["#040B16", "#D4AF37", "#E2E8F0"] },
     { id: "royal-glamour", name: "Royal Glamour", preview: ["#0A1128", "#B76E79", "#FFFFFF"] },
+    { id: "neon-nightclub", name: "Neon Nightclub", preview: ["#000000", "#FF10F0", "#00FFFF"] },
   ];
 
   return (
@@ -2990,6 +3662,8 @@ export default function InviteViewer({ invitation }) {
         renderBohemianTerracotta()
       ) : activeLayoutId === "royal-glamour" ? (
         renderRoyalGlamour()
+      ) : activeLayoutId === "neon-nightclub" ? (
+        renderNeonNightclub()
       ) : (
         <div 
           style={{
@@ -3712,4 +4386,39 @@ function inputStyle(T) {
     border: `1px solid ${T.border}`, background: T.card, color: T.text,
     fontFamily: "sans-serif", fontSize: 13, outline: "none", boxSizing: "border-box",
   };
+}
+
+function BounceInDownScrollReveal({ children }) {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
+    );
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={isVisible ? "neon-bounce-active" : "neon-bounce-idle"}
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      {children}
+    </div>
+  );
 }
