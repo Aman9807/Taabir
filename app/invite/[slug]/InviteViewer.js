@@ -26,6 +26,7 @@ export default function InviteViewer({ invitation }) {
   const [activeLayoutId, setActiveLayoutId] = useState(tplId);
   const [activePaletteId, setActivePaletteId] = useState(tplId);
   const [showPaletteMenu, setShowPaletteMenu] = useState(false);
+  const [customizerTab, setCustomizerTab] = useState("layouts"); // layouts or colors
   const eventType = invitation.eventType || "wedding";
 
   // Countdown State
@@ -2121,7 +2122,7 @@ export default function InviteViewer({ invitation }) {
       )}
 
       {/* FLOATING DESIGN CUSTOMIZER WIDGET */}
-      {phase === "open" && (
+      (
         <div className="fixed bottom-4 left-4 z-[999] font-sans">
           {showPaletteMenu ? (
             <div 
@@ -2134,8 +2135,10 @@ export default function InviteViewer({ invitation }) {
                 boxShadow: "0 15px 40px rgba(0,0,0,0.2)",
                 display: "flex",
                 flexDirection: "column",
-                gap: 16,
+                gap: 14,
                 width: 275,
+                maxHeight: "70vh",
+                overflowY: "auto",
                 transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
               }}
             >
@@ -2158,88 +2161,134 @@ export default function InviteViewer({ invitation }) {
                 </button>
               </div>
 
-              {/* SECTION 1: LAYOUT & ANIMATION (BODY) */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#6b7280", letterSpacing: "0.05em", textTransform: "uppercase" }}>🏛️ Layout & Animations</span>
-                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                  {layouts.map((lay) => {
-                    const isLayActive = activeLayoutId === lay.id;
-                    return (
-                      <button
-                        key={lay.id}
-                        onClick={() => setActiveLayoutId(lay.id)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 10,
-                          padding: "8px 10px",
-                          borderRadius: 8,
-                          border: isLayActive ? "2px solid #D4AF37" : "1px solid rgba(0,0,0,0.05)",
-                          backgroundColor: isLayActive ? "rgba(212, 175, 55, 0.05)" : "transparent",
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                          textAlign: "left",
-                          width: "100%",
-                          outline: "none"
-                        }}
-                      >
-                        <span style={{ fontSize: 14 }}>{lay.icon}</span>
-                        <span style={{ fontSize: 11.5, fontWeight: isLayActive ? 700 : 500, color: isLayActive ? "#856404" : "#4b5563" }}>
-                          {lay.name}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+              {/* Tab Selector Bar */}
+              <div style={{ display: "flex", background: "rgba(0,0,0,0.05)", borderRadius: 10, padding: 3 }}>
+                <button 
+                  onClick={() => setCustomizerTab("layouts")}
+                  style={{
+                    flex: 1,
+                    border: "none",
+                    background: customizerTab === "layouts" ? "#FFFFFF" : "transparent",
+                    boxShadow: customizerTab === "layouts" ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
+                    borderRadius: 8,
+                    padding: "6px 0",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    color: customizerTab === "layouts" ? "#1f2937" : "#6b7280",
+                    transition: "all 0.2s",
+                    outline: "none"
+                  }}
+                >
+                  🏛️ Structure
+                </button>
+                <button 
+                  onClick={() => setCustomizerTab("colors")}
+                  style={{
+                    flex: 1,
+                    border: "none",
+                    background: customizerTab === "colors" ? "#FFFFFF" : "transparent",
+                    boxShadow: customizerTab === "colors" ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
+                    borderRadius: 8,
+                    padding: "6px 0",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    color: customizerTab === "colors" ? "#1f2937" : "#6b7280",
+                    transition: "all 0.2s",
+                    outline: "none"
+                  }}
+                >
+                  🎨 Colors
+                </button>
               </div>
 
-              {/* SECTION 2: COLOR PALETTE */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#6b7280", letterSpacing: "0.05em", textTransform: "uppercase" }}>🎨 Theme Colors</span>
-                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                  {palettes.map((pal) => {
-                    const isPalActive = activePaletteId === pal.id;
-                    return (
-                      <button
-                        key={pal.id}
-                        onClick={() => setActivePaletteId(pal.id)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          padding: "8px 10px",
-                          borderRadius: 8,
-                          border: isPalActive ? "2px solid #D4AF37" : "1px solid rgba(0,0,0,0.05)",
-                          backgroundColor: isPalActive ? "rgba(212, 175, 55, 0.05)" : "transparent",
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                          textAlign: "left",
-                          width: "100%",
-                          outline: "none"
-                        }}
-                      >
-                        <span style={{ fontSize: 11.5, fontWeight: isPalActive ? 700 : 500, color: isPalActive ? "#856404" : "#4b5563" }}>
-                          {pal.name}
-                        </span>
-                        <div style={{ display: "flex", gap: 3 }}>
-                          {pal.preview.map((c, i) => (
-                            <span 
-                              key={i} 
-                              style={{ 
-                                width: 10, 
-                                height: 10, 
-                                borderRadius: "50%", 
-                                backgroundColor: c, 
-                                border: "1px solid rgba(0,0,0,0.1)" 
-                              }} 
-                            />
-                          ))}
-                        </div>
-                      </button>
-                    );
-                  })}
+              {/* Tab 1 Content: Layout & Animations */}
+              {customizerTab === "layouts" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: "#6b7280", letterSpacing: "0.05em", textTransform: "uppercase" }}>🏛️ Choose Body Structure</span>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                    {layouts.map((lay) => {
+                      const isLayActive = activeLayoutId === lay.id;
+                      return (
+                        <button
+                          key={lay.id}
+                          onClick={() => setActiveLayoutId(lay.id)}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            padding: "8px 10px",
+                            borderRadius: 8,
+                            border: isLayActive ? "2px solid #D4AF37" : "1px solid rgba(0,0,0,0.05)",
+                            backgroundColor: isLayActive ? "rgba(212, 175, 55, 0.05)" : "transparent",
+                            cursor: "pointer",
+                            transition: "all 0.2s",
+                            textAlign: "left",
+                            width: "100%",
+                            outline: "none"
+                          }}
+                        >
+                          <span style={{ fontSize: 14 }}>{lay.icon}</span>
+                          <span style={{ fontSize: 11.5, fontWeight: isLayActive ? 700 : 500, color: isLayActive ? "#856404" : "#4b5563" }}>
+                            {lay.name}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Tab 2 Content: Colors */}
+              {customizerTab === "colors" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: "#6b7280", letterSpacing: "0.05em", textTransform: "uppercase" }}>🎨 Choose Theme Palette</span>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                    {palettes.map((pal) => {
+                      const isPalActive = activePaletteId === pal.id;
+                      return (
+                        <button
+                          key={pal.id}
+                          onClick={() => setActivePaletteId(pal.id)}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "8px 10px",
+                            borderRadius: 8,
+                            border: isPalActive ? "2px solid #D4AF37" : "1px solid rgba(0,0,0,0.05)",
+                            backgroundColor: isPalActive ? "rgba(212, 175, 55, 0.05)" : "transparent",
+                            cursor: "pointer",
+                            transition: "all 0.2s",
+                            textAlign: "left",
+                            width: "100%",
+                            outline: "none"
+                          }}
+                        >
+                          <span style={{ fontSize: 11.5, fontWeight: isPalActive ? 700 : 500, color: isPalActive ? "#856404" : "#4b5563" }}>
+                            {pal.name}
+                          </span>
+                          <div style={{ display: "flex", gap: 3 }}>
+                            {pal.preview.map((c, i) => (
+                              <span 
+                                key={i} 
+                                style={{ 
+                                  width: 10, 
+                                  height: 10, 
+                                  borderRadius: "50%", 
+                                  backgroundColor: c, 
+                                  border: "1px solid rgba(0,0,0,0.1)" 
+                                }} 
+                              />
+                            ))}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
             </div>
           ) : (
@@ -2268,7 +2317,7 @@ export default function InviteViewer({ invitation }) {
             </button>
           )}
         </div>
-      )}
+      )
 
       {/* DYNAMIC OPENING GATEWAYS */}
       {phase !== "open" && (
