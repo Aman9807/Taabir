@@ -53,10 +53,15 @@ export default function DashboardPage() {
           const threeDaysAfterEvent = new Date(weddingDate.getTime() + 3 * 24 * 60 * 60 * 1000);
 
           if (currentDate > threeDaysAfterEvent) {
-            // Auto-delete expired invitation in the background to keep Firestore storage clean
+            // Auto-delete expired invitation and its guest RSVPs to keep Firestore storage perfectly clean
             try {
+              const rsvpsRef = collection(db, "invitations", d.id, "rsvps");
+              const rsvpsSnap = await getDocs(rsvpsRef);
+              for (const rDoc of rsvpsSnap.docs) {
+                await deleteDoc(rDoc.ref);
+              }
               await deleteDoc(d.ref);
-              console.log(`[Auto-Deleted Expired Dashboard] id: ${d.id}`);
+              console.log(`[Auto-Deleted Expired Dashboard] id: ${d.id} and its RSVPs`);
             } catch (delErr) {
               console.error("Dashboard failed to auto-delete expired invitation:", delErr);
             }
@@ -117,6 +122,12 @@ export default function DashboardPage() {
   const handleDeleteInvitation = async (id) => {
     if (!window.confirm("Are you absolutely sure you want to delete this digital invitation? This action is permanent and cannot be undone.")) return;
     try {
+      // First clean up guest RSVPs inside subcollection to prevent orphan records
+      const rsvpsRef = collection(db, "invitations", id, "rsvps");
+      const rsvpsSnap = await getDocs(rsvpsRef);
+      for (const rDoc of rsvpsSnap.docs) {
+        await deleteDoc(rDoc.ref);
+      }
       await deleteDoc(doc(db, "invitations", id));
       setInvitations((prev) => prev.filter((item) => item.id !== id));
       if (selectedInvite?.id === id) {

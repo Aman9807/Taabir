@@ -27,8 +27,14 @@ async function getInvitation(slug) {
 
       if (currentDate > threeDaysAfterEvent) {
         try {
+          // Clean up the guest RSVPs first to prevent orphan documents in Firestore
+          const rsvpsRef = collection(db, "invitations", d.id, "rsvps");
+          const rsvpsSnap = await getDocs(rsvpsRef);
+          for (const rDoc of rsvpsSnap.docs) {
+            await deleteDoc(rDoc.ref);
+          }
           await deleteDoc(d.ref);
-          console.log(`[Auto-Deleted] Expired invitation slug "${slug}" (event was on ${weddingDate.toLocaleDateString()})`);
+          console.log(`[Auto-Deleted] Expired invitation slug "${slug}" and all associated RSVPs (event was on ${weddingDate.toLocaleDateString()})`);
         } catch (delError) {
           console.error("Failed to auto-delete expired invitation:", delError);
         }
