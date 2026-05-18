@@ -15,6 +15,7 @@ export default function EditInvitationPage() {
 
   // Form State
   const [formData, setFormData] = useState({
+    eventType: "wedding", // Loaded from document
     brideName: "",
     brideParentsName: "",
     groomName: "",
@@ -65,7 +66,6 @@ export default function EditInvitationPage() {
 
         const data = docSnap.data();
 
-        // Security check: Ensure this invitation belongs to the logged-in user
         if (data.userId !== user.uid) {
           setError("You do not have permission to edit this invitation.");
           setFetchingData(false);
@@ -76,11 +76,12 @@ export default function EditInvitationPage() {
         let localDate = "";
         if (data.weddingDate) {
           const dateObj = new Date(data.weddingDate);
-          const tzOffset = dateObj.getTimezoneOffset() * 60000; // offset in milliseconds
+          const tzOffset = dateObj.getTimezoneOffset() * 60000;
           localDate = new Date(dateObj.getTime() - tzOffset).toISOString().slice(0, 16);
         }
 
         setFormData({
+          eventType: data.eventType || "wedding",
           brideName: data.brideName || "",
           brideParentsName: data.brideParentsName || "",
           groomName: data.groomName || "",
@@ -100,7 +101,6 @@ export default function EditInvitationPage() {
         setOriginalSlug(data.slug || "");
         setPhotos(data.photos || (data.photoUrl ? [data.photoUrl] : []));
 
-        // Format timeline schedule dates to datetime-local values
         if (data.details?.schedule) {
           const formattedSchedule = data.details.schedule.map((ev) => {
             let eventLocalDate = "";
@@ -143,7 +143,47 @@ export default function EditInvitationPage() {
     }));
   };
 
-  // Convert and compress uploaded image directly to Base64 JPEG client-side
+  // Seeding default timelines and texts on type change in Edit
+  const handleEventTypeChange = (newType) => {
+    setFormData((prev) => ({
+      ...prev,
+      eventType: newType,
+      headerArabic: newType === "wedding" ? "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ" : "✨ A Special Celebration ✨",
+      headerGrace: newType === "wedding" 
+        ? "Under the Grace of Almighty Allah" 
+        : newType === "birthday"
+        ? "You are cordially invited to celebrate with us!"
+        : newType === "anniversary"
+        ? "Celebrating years of love, dedication, and memories"
+        : "Join us for a wonderful gathering of family and friends",
+    }));
+
+    if (newType === "wedding") {
+      setSchedule([
+        { name: "Mehndi / Henna", time: "", venue: "Orchard Grand Ballroom", description: "Ceremony & dinner is served." },
+        { name: "Baraat / Vows", time: "", venue: "Royal Palms Gardens", description: "Exchange of rings & wedding feast." }
+      ]);
+    } else if (newType === "birthday") {
+      setSchedule([
+        { name: "Guest Arrival", time: "", venue: "Celebration Suite", description: "Welcome drinks & greetings." },
+        { name: "Cake Cutting", time: "", venue: "Celebration Suite", description: "Cake cutting & birthday song." },
+        { name: "Dinner Banquet", time: "", venue: "Dining Area", description: "Delicious dinner served." }
+      ]);
+    } else if (newType === "anniversary") {
+      setSchedule([
+        { name: "Welcome Reception", time: "", venue: "Royal Banquet Hall", description: "Cocktails & appetizers." },
+        { name: "Toast & Memories", time: "", venue: "Royal Banquet Hall", description: "Sharing milestones & speeches." },
+        { name: "Gala Dinner", time: "", venue: "Dining Area", description: "Exquisite culinary feast served." }
+      ]);
+    } else {
+      setSchedule([
+        { name: "Welcome Assembly", time: "", venue: "Main Ballroom", description: "Greetings & socializing." },
+        { name: "Dinner & Celebration", time: "", venue: "Main Ballroom", description: "Dinner feast served." }
+      ]);
+    }
+  };
+
+  // Compress uploaded images
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -239,6 +279,7 @@ export default function EditInvitationPage() {
     setIsSubmitting(true);
 
     const { 
+      eventType,
       brideName, 
       brideParentsName, 
       groomName, 
@@ -251,8 +292,14 @@ export default function EditInvitationPage() {
       templateId 
     } = formData;
 
-    if (!brideName || !groomName || !weddingDate || !venueName || !venueAddress || !slug) {
-      setError("Please fill out all mandatory core fields.");
+    const isCoupleEvent = eventType === "wedding" || eventType === "anniversary";
+
+    if (!brideName || (isCoupleEvent && !groomName) || !weddingDate || !venueName || !venueAddress || !slug) {
+      setError(
+        isCoupleEvent 
+          ? "Please fill out all mandatory core fields (both couple names are required)." 
+          : "Please fill out all mandatory core fields (Name, Date, Venue Name, Address and Link Slug are required)."
+      );
       setIsSubmitting(false);
       return;
     }
@@ -271,7 +318,6 @@ export default function EditInvitationPage() {
     }
 
     try {
-      // 1. Perform uniqueness check ONLY if the slug is changing
       if (slug.trim() !== originalSlug) {
         const invitationsRef = collection(db, "invitations");
         const slugQuery = query(invitationsRef, where("slug", "==", slug.trim()));
@@ -292,11 +338,12 @@ export default function EditInvitationPage() {
 
       // 2. Prepare payload
       const invitationPayload = {
+        eventType: eventType || "wedding",
         slug: slug.trim(),
         brideName: brideName.trim(),
         brideParentsName: brideParentsName.trim(),
-        groomName: groomName.trim(),
-        groomParentsName: groomParentsName.trim(),
+        groomName: groomName ? groomName.trim() : "",
+        groomParentsName: groomParentsName ? groomParentsName.trim() : "",
         weddingDate: new Date(weddingDate).toISOString(),
         venue: {
           name: venueName.trim(),
@@ -368,7 +415,7 @@ export default function EditInvitationPage() {
               Edit Invitation Details
             </h1>
             <p className="mt-2 text-sm text-slate-600">
-              Modify your wedding coordinates below. Your live invitation URL will update instantly.
+              Modify your event parameters below. All adjustments apply to your web links instantly.
             </p>
           </div>
           <Link 
@@ -407,25 +454,65 @@ export default function EditInvitationPage() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             
+            {/* Section 0: Select Invitation Type */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 font-sans">
+                Change Invitation Category
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {[
+                  { id: "wedding", label: "✉️ Wedding", desc: "Nikah/Vows" },
+                  { id: "birthday", label: "🎂 Birthday", desc: "Party/Blowout" },
+                  { id: "anniversary", label: "💑 Anniversary", desc: "Love Milestone" },
+                  { id: "family_function", label: "🏡 Family", desc: "Dinner/Assembly" },
+                  { id: "general_party", label: "✨ General Party", desc: "Celebrations" }
+                ].map((type) => (
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => handleEventTypeChange(type.id)}
+                    className={`p-4 rounded-xl border-2 text-center transition-all ${
+                      (formData.eventType || "wedding") === type.id
+                        ? "border-amber-500 bg-amber-50/20 text-slate-900"
+                        : "border-slate-100 hover:border-slate-200 text-slate-500 bg-slate-50/20"
+                    }`}
+                  >
+                    <span className="block text-2xl mb-1">{type.label.split(" ")[0]}</span>
+                    <span className="block text-xs font-bold whitespace-nowrap">{type.label.split(" ").slice(1).join(" ")}</span>
+                    <span className="block text-[9px] text-slate-400 font-medium mt-0.5">{type.desc}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Section 1: Core Details */}
             <div className="space-y-6">
               <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 font-sans">
-                1. Core Wedding Details
+                1. Core Celebration Coordinates
               </h3>
               
               <div className="space-y-6">
-                {/* Bride Info */}
+                
+                {/* Primary Person / Host 1 */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
                   <div>
                     <label htmlFor="brideName" className="block text-sm font-semibold text-slate-700">
-                      Bride&apos;s First Name *
+                      {formData.eventType === "wedding"
+                        ? "Bride's First Name *"
+                        : formData.eventType === "birthday"
+                        ? "Birthday Person's Name *"
+                        : formData.eventType === "anniversary"
+                        ? "Wife's First Name *"
+                        : formData.eventType === "family_function"
+                        ? "Main Host / Family Name *"
+                        : "Host Name *"}
                     </label>
                     <input
                       type="text"
                       name="brideName"
                       id="brideName"
                       required
-                      placeholder="e.g. Sarah"
+                      placeholder="e.g. Faisal"
                       value={formData.brideName}
                       onChange={handleChange}
                       className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
@@ -434,13 +521,19 @@ export default function EditInvitationPage() {
 
                   <div>
                     <label htmlFor="brideParentsName" className="block text-sm font-semibold text-slate-700">
-                      Bride&apos;s Parents/Guardians Name
+                      {formData.eventType === "wedding"
+                        ? "Bride's Parents/Guardians Name"
+                        : formData.eventType === "birthday"
+                        ? "Age / Turning (e.g. Turning 5, Turning 25) (Optional)"
+                        : formData.eventType === "anniversary"
+                        ? "Wife's Parents (Optional)"
+                        : "Special Note / Lineage (Optional)"}
                     </label>
                     <input
                       type="text"
                       name="brideParentsName"
                       id="brideParentsName"
-                      placeholder="e.g. Mr. & Mrs. Shakeel Ahmed"
+                      placeholder={formData.eventType === "birthday" ? "e.g. Turning 25" : "e.g. Mr. & Mrs. Ahmed"}
                       value={formData.brideParentsName}
                       onChange={handleChange}
                       className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
@@ -448,45 +541,60 @@ export default function EditInvitationPage() {
                   </div>
                 </div>
 
-                {/* Groom Info */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
-                  <div>
-                    <label htmlFor="groomName" className="block text-sm font-semibold text-slate-700">
-                      Groom&apos;s First Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="groomName"
-                      id="groomName"
-                      required
-                      placeholder="e.g. Michael"
-                      value={formData.groomName}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
-                    />
-                  </div>
+                {/* Secondary Person / Partner / Host 2 (Optional for non-couples) */}
+                {((formData.eventType || "wedding") === "wedding" ||
+                  (formData.eventType || "wedding") === "anniversary" ||
+                  (formData.eventType || "wedding") === "family_function" ||
+                  (formData.eventType || "wedding") === "general_party") && (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                    <div>
+                      <label htmlFor="groomName" className="block text-sm font-semibold text-slate-700">
+                        {formData.eventType === "wedding"
+                          ? "Groom's First Name *"
+                          : formData.eventType === "anniversary"
+                          ? "Husband's First Name *"
+                          : "Co-Host Name (Optional)"}
+                      </label>
+                      <input
+                        type="text"
+                        name="groomName"
+                        id="groomName"
+                        required={formData.eventType === "wedding" || formData.eventType === "anniversary"}
+                        placeholder="e.g. Michael"
+                        value={formData.groomName}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
+                      />
+                    </div>
 
-                  <div>
-                    <label htmlFor="groomParentsName" className="block text-sm font-semibold text-slate-700">
-                      Groom&apos;s Parents/Guardians Name
-                    </label>
-                    <input
-                      type="text"
-                      name="groomParentsName"
-                      id="groomParentsName"
-                      placeholder="e.g. Mr. & Mrs. Imtiaz Khan"
-                      value={formData.groomParentsName}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
-                    />
+                    <div>
+                      <label htmlFor="groomParentsName" className="block text-sm font-semibold text-slate-700">
+                        {formData.eventType === "wedding"
+                          ? "Groom's Parents/Guardians Name"
+                          : formData.eventType === "anniversary"
+                          ? "Husband's Parents (Optional)"
+                          : "Co-Host Subtitle / Note (Optional)"}
+                      </label>
+                      <input
+                        type="text"
+                        name="groomParentsName"
+                        id="groomParentsName"
+                        placeholder="e.g. Mr. & Mrs. Imtiaz Khan"
+                        value={formData.groomParentsName}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
-              {/* Main Wedding Date */}
+              {/* Event Target Countdown Date */}
               <div>
                 <label htmlFor="weddingDate" className="block text-sm font-semibold text-slate-700">
-                  Main Wedding Date & Time * (For Live Countdown)
+                  {formData.eventType === "wedding"
+                    ? "Wedding Date & Time * (For Live Countdown)"
+                    : "Event Date & Time * (For Live Countdown)"}
                 </label>
                 <input
                   type="datetime-local"
@@ -499,12 +607,11 @@ export default function EditInvitationPage() {
                 />
               </div>
 
-              {/* Assets Link */}
+              {/* Photos & Music */}
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {/* Photo Gallery Selector */}
                 <div className="sm:col-span-2 space-y-3 bg-slate-50/50 p-5 rounded-2xl border border-slate-100">
                   <label className="block text-sm font-bold text-slate-800 font-sans">
-                    Wedding Photo Gallery (Add 2 or more pictures) *
+                    Celebration Gallery Photos (Add 2 or more pictures) *
                   </label>
                   
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-3">
@@ -576,7 +683,7 @@ export default function EditInvitationPage() {
 
                 <div>
                   <label htmlFor="musicUrl" className="block text-sm font-semibold text-slate-700">
-                    Background Audio MP3 Link / URL
+                    Ambient Background Music Track Link (MP3 URL)
                   </label>
                   <input
                     type="url"
@@ -591,23 +698,23 @@ export default function EditInvitationPage() {
 
                 <div className="sm:col-span-2">
                   <label htmlFor="coupleEmail" className="block text-sm font-semibold text-slate-700">
-                    Couple&apos;s Contact Email
+                    Host Contact Email
                   </label>
                   <input
                     type="email"
                     name="coupleEmail"
                     id="coupleEmail"
-                    placeholder="e.g. couple@example.com"
+                    placeholder="e.g. host@example.com"
                     value={formData.coupleEmail}
                     onChange={handleChange}
                     className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
                   />
                 </div>
 
-                {/* Top Headers Calligraphy */}
+                {/* Customizable Arabic Calligraphy / Grace Blessing Subtext */}
                 <div>
                   <label htmlFor="headerArabic" className="block text-sm font-semibold text-slate-700">
-                    Arabic Header Text (Customizable)
+                    Calligraphy Header Text (Customizable)
                   </label>
                   <input
                     type="text"
@@ -622,7 +729,7 @@ export default function EditInvitationPage() {
 
                 <div>
                   <label htmlFor="headerGrace" className="block text-sm font-semibold text-slate-700">
-                    Sub-Header Blessing Text (Customizable)
+                    Blessing Sub-Header Text (Customizable)
                   </label>
                   <input
                     type="text"
@@ -630,7 +737,7 @@ export default function EditInvitationPage() {
                     id="headerGrace"
                     value={formData.headerGrace}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
+                    className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
                   />
                 </div>
               </div>
@@ -639,7 +746,7 @@ export default function EditInvitationPage() {
             {/* Section 2: Reception Venue */}
             <div className="space-y-4 border-t border-slate-100 pt-6">
               <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 font-sans">
-                2. Main Reception / Venue
+                2. Celebration Venue Details
               </h3>
               
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -676,7 +783,7 @@ export default function EditInvitationPage() {
 
               <div>
                 <label htmlFor="venueMapUrl" className="block text-sm font-semibold text-slate-700">
-                  Google Maps Direct Link (Optional)
+                  Google Maps Pin Link (Optional)
                 </label>
                 <div className="mt-1 flex items-center gap-2">
                   <span className="text-lg">📍</span>
@@ -696,14 +803,14 @@ export default function EditInvitationPage() {
             <div className="space-y-4 border-t border-slate-100 pt-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                 <h3 className="text-lg font-bold text-slate-800 font-sans">
-                  3. Wedding Timeline (Functions & Schedules)
+                  3. Celebration Schedule Timeline
                 </h3>
                 <button
                   type="button"
                   onClick={addEvent}
                   className="px-3 py-1.5 border border-amber-500/40 text-amber-600 rounded-lg text-xs font-bold hover:bg-amber-50 transition-colors uppercase font-sans"
                 >
-                  ➕ Add Function
+                  ➕ Add Event
                 </button>
               </div>
 
@@ -725,7 +832,7 @@ export default function EditInvitationPage() {
 
                     <div className="sm:col-span-1">
                       <label className="block text-xs font-semibold text-slate-600 mb-1 font-sans">
-                        Function Name *
+                        Event Name *
                       </label>
                       <input
                         type="text"
@@ -786,16 +893,18 @@ export default function EditInvitationPage() {
             <div className="space-y-6 pt-6 border-t border-slate-100">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2 font-sans">
-                  4. Choose Visual Template
+                  4. Choose Card Theme
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Emerald Noir */}
                   <div className={`border-2 rounded-xl overflow-hidden transition-all ${
                     formData.templateId === "emerald-noir" ? "border-amber-500" : "border-slate-200 hover:border-slate-300"
                   }`}>
-                    <div className="h-28 bg-[#001C12] flex flex-col items-center justify-center gap-1.5 relative">
+                    <div className="h-28 bg-[#001C12] flex flex-col items-center justify-center gap-1.5 relative font-sans">
                       <div className="absolute inset-2 border border-[#C5A880]/20 rounded-lg pointer-events-none"></div>
-                      <span className="text-[#C5A880] font-serif text-lg">A &amp; B</span>
+                      <span className="text-[#C5A880] font-serif text-lg">
+                        {formData.brideName ? formData.brideName[0] : "A"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
+                      </span>
                       <span className="text-[#C5A880]/60 text-[8px] uppercase tracking-widest font-sans">Emerald Noir</span>
                     </div>
                     <label className="flex items-center justify-between px-4 py-3 cursor-pointer bg-white">
@@ -820,7 +929,9 @@ export default function EditInvitationPage() {
                   }`}>
                     <div className="h-28 bg-[#F5F3EB] flex flex-col items-center justify-center gap-1.5 relative border-b border-slate-100">
                       <div className="absolute inset-2 border border-[#C5A880]/25 rounded-lg pointer-events-none"></div>
-                      <span className="text-slate-700 font-serif text-lg">A &amp; B</span>
+                      <span className="text-slate-700 font-serif text-lg">
+                        {formData.brideName ? formData.brideName[0] : "A"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
+                      </span>
                       <span className="text-[#C5A880] text-[8px] uppercase tracking-widest font-sans">Ivory Classic</span>
                     </div>
                     <label className="flex items-center justify-between px-4 py-3 cursor-pointer bg-white">
@@ -841,9 +952,9 @@ export default function EditInvitationPage() {
                 </div>
               </div>
 
-              {/* Slug / Subdomain custom URL */}
+              {/* Slug URL */}
               <div>
-                <label htmlFor="slug" className="block text-sm font-semibold text-slate-700">
+                <label htmlFor="slug" className="block text-sm font-semibold text-slate-700 font-sans">
                   Custom Card Web URL Slug *
                 </label>
                 <div className="mt-1 flex rounded-xl shadow-sm border border-slate-200 overflow-hidden bg-slate-50/50">

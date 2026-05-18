@@ -8,7 +8,7 @@ import { collection, addDoc } from "firebase/firestore";
    SPLIT-DOOR OPENING ANIMATION (Zareqia-style)
    Two panels slide LEFT and RIGHT away from a
    central gold seam, revealing the card beneath.
-───────────────────────────────────────────── */
+   ───────────────────────────────────────────── */
 
 export default function InviteViewer({ invitation }) {
   const [phase, setPhase] = useState("closed"); // closed → opening → open
@@ -17,6 +17,7 @@ export default function InviteViewer({ invitation }) {
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
   const isIvory = invitation.theme?.templateId === "ivory-classic";
+  const eventType = invitation.eventType || "wedding"; // Fallback to wedding
 
   // Countdown
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -55,7 +56,7 @@ export default function InviteViewer({ invitation }) {
     return () => clearInterval(id);
   }, [invitation.weddingDate]);
 
-  /* ── Auto-rotate wedding gallery photos with elegant Ken Burns zoom cross-fade ── */
+  /* ── Auto-rotate photo gallery with Ken Burns transitions ── */
   useEffect(() => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
     if (galleryPhotos.length <= 1 || phase !== "open") return;
@@ -70,9 +71,7 @@ export default function InviteViewer({ invitation }) {
   /* ── Open handler ── */
   const handleOpen = () => {
     setPhase("opening");
-    // After the doors swing open (800ms), show content
     setTimeout(() => setPhase("open"), 900);
-    // Play music on user gesture
     if (audioRef.current) {
       audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
     }
@@ -113,35 +112,21 @@ export default function InviteViewer({ invitation }) {
   return (
     <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Playfair Display', serif", position: "relative", overflowX: "hidden" }}>
 
-      {/* ══════════════════════════════════════
-          SPLIT-DOOR GATEWAY
-          Left door slides LEFT, right door slides RIGHT
-      ══════════════════════════════════════ */}
+      {/* SPLIT-DOOR GATEWAY */}
       {phase !== "open" && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 100,
-          pointerEvents: phase === "opening" ? "none" : "auto",
-        }}>
+        <div style={{ position: "fixed", inset: 0, zIndex: 100, pointerEvents: phase === "opening" ? "none" : "auto" }}>
           {/* LEFT DOOR */}
           <div style={{
-            position: "absolute", top: 0, left: 0,
-            width: "50%", height: "100%",
-            background: T.door,
+            position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: T.door,
             transform: phase === "opening" ? "translateX(-100%)" : "translateX(0)",
             transition: "transform 0.85s cubic-bezier(0.76, 0, 0.24, 1)",
             borderRight: `1px solid ${T.seam}`,
-            // Subtle texture lines
-            backgroundImage: `
-              linear-gradient(to right, transparent 99%, ${T.seam}08 100%),
-              radial-gradient(ellipse at 30% 50%, ${T.seam}08 0%, transparent 70%)
-            `,
+            backgroundImage: `linear-gradient(to right, transparent 99%, ${T.seam}08 100%), radial-gradient(ellipse at 30% 50%, ${T.seam}08 0%, transparent 70%)`
           }}>
-            {/* Top decorative flourish */}
             <svg style={{ position: "absolute", top: 20, right: 20, opacity: 0.25 }} width="60" height="80" viewBox="0 0 60 80" fill="none">
               <path d="M30 0 L30 80 M0 40 L60 40 M10 10 L50 70 M50 10 L10 70" stroke={T.seam} strokeWidth="0.5"/>
               <circle cx="30" cy="40" r="15" stroke={T.seam} strokeWidth="0.5"/>
             </svg>
-            {/* Bottom decorative flourish */}
             <svg style={{ position: "absolute", bottom: 20, left: 20, opacity: 0.25 }} width="60" height="80" viewBox="0 0 60 80" fill="none">
               <path d="M30 0 L30 80 M0 40 L60 40" stroke={T.seam} strokeWidth="0.5"/>
               <circle cx="30" cy="40" r="10" stroke={T.seam} strokeWidth="0.5"/>
@@ -150,16 +135,11 @@ export default function InviteViewer({ invitation }) {
 
           {/* RIGHT DOOR */}
           <div style={{
-            position: "absolute", top: 0, right: 0,
-            width: "50%", height: "100%",
-            background: T.door,
+            position: "absolute", top: 0, right: 0, width: "50%", height: "100%", background: T.door,
             transform: phase === "opening" ? "translateX(100%)" : "translateX(0)",
             transition: "transform 0.85s cubic-bezier(0.76, 0, 0.24, 1)",
             borderLeft: `1px solid ${T.seam}`,
-            backgroundImage: `
-              linear-gradient(to left, transparent 99%, ${T.seam}08 100%),
-              radial-gradient(ellipse at 70% 50%, ${T.seam}08 0%, transparent 70%)
-            `,
+            backgroundImage: `linear-gradient(to left, transparent 99%, ${T.seam}08 100%), radial-gradient(ellipse at 70% 50%, ${T.seam}08 0%, transparent 70%)`
           }}>
             <svg style={{ position: "absolute", top: 20, left: 20, opacity: 0.25 }} width="60" height="80" viewBox="0 0 60 80" fill="none">
               <path d="M30 0 L30 80 M0 40 L60 40 M10 10 L50 70 M50 10 L10 70" stroke={T.seam} strokeWidth="0.5"/>
@@ -171,49 +151,33 @@ export default function InviteViewer({ invitation }) {
             </svg>
           </div>
 
-          {/* CENTER GOLD SEAM LINE */}
           <div style={{
-            position: "absolute", top: 0, left: "50%",
-            width: 1, height: "100%",
+            position: "absolute", top: 0, left: "50%", width: 1, height: "100%",
             background: `linear-gradient(to bottom, transparent, ${T.seam}, transparent)`,
-            transform: "translateX(-50%)",
-            opacity: 0.6,
+            transform: "translateX(-50%)", opacity: 0.6,
           }} />
 
-          {/* WAX SEAL — centered on the seam */}
+          {/* WAX SEAL */}
           <div style={{
             position: "absolute", top: "50%", left: "50%",
-            transform: phase === "opening"
-              ? "translate(-50%, -50%) scale(0) rotate(45deg)"
-              : "translate(-50%, -50%) scale(1) rotate(0deg)",
-            transition: "transform 0.5s cubic-bezier(0.76, 0, 0.24, 1)",
-            zIndex: 10,
-            cursor: "pointer",
+            transform: phase === "opening" ? "translate(-50%, -50%) scale(0) rotate(45deg)" : "translate(-50%, -50%) scale(1) rotate(0deg)",
+            transition: "transform 0.5s cubic-bezier(0.76, 0, 0.24, 1)", zIndex: 10, cursor: "pointer",
           }}
             onClick={handleOpen}
           >
-            {/* Outer glow ring */}
+            <div style={{ position: "absolute", inset: -12, borderRadius: "50%", border: `1px solid ${T.seam}`, opacity: 0.3, animation: "pulse 2.5s ease-in-out infinite" }} />
             <div style={{
-              position: "absolute", inset: -12,
-              borderRadius: "50%",
-              border: `1px solid ${T.seam}`,
-              opacity: 0.3,
-              animation: "pulse 2.5s ease-in-out infinite",
-            }} />
-            {/* Seal button */}
-            <div style={{
-              width: 96, height: 96,
-              borderRadius: "50%",
+              width: 96, height: 96, borderRadius: "50%",
               background: `radial-gradient(circle at 35% 35%, ${isIvory ? "#2a1a08" : "#012519"}, ${isIvory ? "#1a0e04" : "#001810"})`,
-              border: `2px solid ${T.seam}`,
-              boxShadow: `0 0 30px ${T.seam}30, 0 4px 20px rgba(0,0,0,0.4)`,
-              display: "flex", flexDirection: "column",
-              alignItems: "center", justifyContent: "center",
-              gap: 2,
+              border: `2px solid ${T.seam}`, boxShadow: `0 0 30px ${T.seam}30, 0 4px 20px rgba(0,0,0,0.4)`,
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2,
             }}>
-              {/* Monogram */}
               <span style={{ color: T.gold, fontFamily: "Playfair Display, serif", fontSize: 20, fontWeight: 500, lineHeight: 1 }}>
-                {invitation.brideName[0]}&{invitation.groomName[0]}
+                {invitation.groomName ? (
+                  `${invitation.brideName[0]}&${invitation.groomName[0]}`
+                ) : (
+                  invitation.brideName[0]
+                )}
               </span>
               <span style={{ color: `${T.gold}90`, fontFamily: "sans-serif", fontSize: 7, letterSpacing: "0.2em", textTransform: "uppercase" }}>
                 Tap to Open
@@ -223,19 +187,15 @@ export default function InviteViewer({ invitation }) {
         </div>
       )}
 
-      {/* ══════════════════════════════════════
-          INNER CARD (visible after doors open)
-      ══════════════════════════════════════ */}
+      {/* INNER CARD */}
       <div style={{
         opacity: phase === "open" ? 1 : 0,
         transform: phase === "open" ? "translateY(0)" : "translateY(32px)",
         transition: "opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s",
-        maxWidth: 680,
-        margin: "0 auto",
-        padding: "48px 24px 80px",
+        maxWidth: 680, margin: "0 auto", padding: "48px 24px 80px",
       }}>
 
-        {/* ── Bismillah ── */}
+        {/* Calligraphy Header */}
         <ScrollReveal>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <p style={{ color: T.gold, fontSize: 26, fontFamily: "Noto Naskh Arabic, serif", marginBottom: 6, lineHeight: 1.6 }}>
@@ -247,50 +207,94 @@ export default function InviteViewer({ invitation }) {
           </div>
         </ScrollReveal>
 
-        {/* ── Gold divider ── */}
         <ScrollReveal>
           <GoldDivider color={T.gold} />
         </ScrollReveal>
 
-        {/* ── Couple Names ── */}
+        {/* Dynamic Wording and Celebrants Names */}
         <ScrollReveal>
           <div style={{ textAlign: "center", padding: "36px 0" }}>
             <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: 12 }}>
-              The Wedding of
+              {eventType === "wedding"
+                ? "The Wedding of"
+                : eventType === "birthday"
+                ? "Celebrating the Birthday of"
+                : eventType === "anniversary"
+                ? "Celebrating the Anniversary of"
+                : eventType === "family_function"
+                ? "Welcome to the Family Gathering of"
+                : "Welcome to the Celebration of"}
             </p>
+            
             <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
               {invitation.brideName}
             </h1>
             {invitation.brideParentsName && (
               <p style={{ color: T.sub, fontSize: 12, marginTop: 4, fontStyle: "italic" }}>
-                Daughter of {invitation.brideParentsName}
+                {eventType === "wedding" ? `Daughter of ${invitation.brideParentsName}` : invitation.brideParentsName}
               </p>
             )}
-            <p style={{ color: T.gold, fontSize: 22, margin: "12px 0", fontStyle: "italic" }}>&amp;</p>
-            <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
-              {invitation.groomName}
-            </h1>
-            {invitation.groomParentsName && (
-              <p style={{ color: T.sub, fontSize: 12, marginTop: 4, fontStyle: "italic" }}>
-                Son of {invitation.groomParentsName}
-              </p>
+
+            {invitation.groomName && (
+              <>
+                <p style={{ color: T.gold, fontSize: 22, margin: "12px 0", fontStyle: "italic" }}>&amp;</p>
+                <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
+                  {invitation.groomName}
+                </h1>
+                {invitation.groomParentsName && (
+                  <p style={{ color: T.sub, fontSize: 12, marginTop: 4, fontStyle: "italic" }}>
+                    {eventType === "wedding" ? `Son of ${invitation.groomParentsName}` : invitation.groomParentsName}
+                  </p>
+                )}
+              </>
             )}
           </div>
         </ScrollReveal>
 
-        {/* ── Quranic quote ── */}
+        {/* Calligraphy / Verse Quote Section */}
         <ScrollReveal>
           <div style={{ textAlign: "center", padding: "20px 32px", margin: "0 auto 36px", maxWidth: 420, borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}` }}>
-            <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
-              &ldquo;And We created you in pairs&rdquo;
-            </p>
-            <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
-              — Quran 78:8
-            </p>
+            {eventType === "wedding" ? (
+              <>
+                <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
+                  &ldquo;And We created you in pairs&rdquo;
+                </p>
+                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                  — Quran 78:8
+                </p>
+              </>
+            ) : eventType === "birthday" ? (
+              <>
+                <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
+                  &ldquo;Wishing you a year filled with sweet moments, grand milestones, and beautiful memories!&rdquo;
+                </p>
+                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                  — Happy Birthday
+                </p>
+              </>
+            ) : eventType === "anniversary" ? (
+              <>
+                <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
+                  &ldquo;Real love stories never have endings. Wishing you another chapter of happiness together!&rdquo;
+                </p>
+                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                  — Happy Anniversary
+                </p>
+              </>
+            ) : (
+              <>
+                <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
+                  &ldquo;The love of a family is life&apos;s greatest blessing. Join us as we share in this beautiful moment together!&rdquo;
+                </p>
+                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                  — Welcome Guests
+                </p>
+              </>
+            )}
           </div>
         </ScrollReveal>
 
-        {/* ── Couple Photo Gallery ── */}
+        {/* Photo Gallery with Ken Burns slideshow */}
         {(() => {
           const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
           if (galleryPhotos.length === 0) return null;
@@ -299,19 +303,13 @@ export default function InviteViewer({ invitation }) {
               <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
                 <div style={{ border: `1px solid ${T.border}`, borderRadius: 16, overflow: "hidden", background: T.card, padding: 6, position: "relative" }}>
                   <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
-                    {/* Render all pictures stacked absolutely with dynamic Ken Burns cross-fade animation */}
                     {galleryPhotos.map((pic, index) => (
                       <img
                         key={index}
                         src={pic}
-                        alt="Couple"
+                        alt="Event Gallery"
                         style={{
-                          position: "absolute",
-                          inset: 0,
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          display: "block",
+                          position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block",
                           opacity: index === activePhotoIdx ? 1 : 0,
                           transform: index === activePhotoIdx ? "scale(1)" : "scale(1.08)",
                           transition: "opacity 1.6s cubic-bezier(0.25, 1, 0.5, 1), transform 1.6s cubic-bezier(0.25, 1, 0.5, 1)",
@@ -323,7 +321,6 @@ export default function InviteViewer({ invitation }) {
                     
                     {galleryPhotos.length > 1 && (
                       <>
-                        {/* Left Arrow Button */}
                         <button
                           type="button"
                           onClick={() => setActivePhotoIdx((prev) => (prev === 0 ? galleryPhotos.length - 1 : prev - 1))}
@@ -337,7 +334,6 @@ export default function InviteViewer({ invitation }) {
                           ‹
                         </button>
 
-                        {/* Right Arrow Button */}
                         <button
                           type="button"
                           onClick={() => setActivePhotoIdx((prev) => (prev === galleryPhotos.length - 1 ? 0 : prev + 1))}
@@ -351,11 +347,7 @@ export default function InviteViewer({ invitation }) {
                           ›
                         </button>
 
-                        {/* Dots indicator */}
-                        <div style={{
-                          position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)",
-                          display: "flex", gap: 6, zIndex: 10
-                        }}>
+                        <div style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6, zIndex: 10 }}>
                           {galleryPhotos.map((_, i) => (
                             <div
                               key={i}
@@ -377,7 +369,7 @@ export default function InviteViewer({ invitation }) {
           );
         })()}
 
-        {/* ── Countdown ── */}
+        {/* Countdown */}
         <ScrollReveal>
           <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
             <p style={{ textAlign: "center", color: T.sub, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 16 }}>
@@ -398,7 +390,7 @@ export default function InviteViewer({ invitation }) {
           </div>
         </ScrollReveal>
 
-        {/* ── Venue & Date ── */}
+        {/* Date & Venue Info */}
         <ScrollReveal>
           <div style={{ border: `1px solid ${T.border}`, borderRadius: 16, padding: "28px 32px", margin: "0 auto 40px", maxWidth: 440, background: T.card, textAlign: "center" }}>
             <p style={{ color: T.gold, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10 }}>Date &amp; Venue</p>
@@ -417,7 +409,7 @@ export default function InviteViewer({ invitation }) {
           </div>
         </ScrollReveal>
 
-        {/* ── Schedule ── */}
+        {/* Schedule timeline */}
         {invitation.details?.schedule?.length > 0 && (
           <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
             <ScrollReveal>
@@ -452,7 +444,7 @@ export default function InviteViewer({ invitation }) {
           </div>
         )}
 
-        {/* ── RSVP ── */}
+        {/* RSVP Form */}
         <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
           <ScrollReveal>
             <GoldDivider color={T.gold} />
@@ -500,12 +492,12 @@ export default function InviteViewer({ invitation }) {
           )}
         </div>
 
-        {/* ── Contact Email ── */}
+        {/* Contact info footer */}
         {invitation.coupleEmail && (
           <ScrollReveal>
             <div style={{ textAlign: "center", margin: "0 auto 40px", maxWidth: 440, borderTop: `1px solid ${T.border}`, paddingTop: 24 }}>
               <p style={{ color: T.gold, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 6 }}>
-                Contact the Couple
+                {eventType === "wedding" ? "Contact the Couple" : "Contact the Hosts"}
               </p>
               <a href={`mailto:${invitation.coupleEmail}`} style={{ color: T.text, fontSize: 14, textDecoration: "none", borderBottom: `1px solid ${T.gold}50`, paddingBottom: 2, fontFamily: "sans-serif" }}>
                 {invitation.coupleEmail}
@@ -514,7 +506,6 @@ export default function InviteViewer({ invitation }) {
           </ScrollReveal>
         )}
 
-        {/* ── Footer ── */}
         <div style={{ textAlign: "center", paddingTop: 24, borderTop: `1px solid ${T.border}` }}>
           <p style={{ color: `${T.sub}80`, fontFamily: "sans-serif", fontSize: 9, letterSpacing: "0.25em", textTransform: "uppercase" }}>
             Taabir Digital Invitations · Powered by Flynx
@@ -522,7 +513,6 @@ export default function InviteViewer({ invitation }) {
         </div>
       </div>
 
-      {/* ── Floating Music Button ── */}
       {invitation.musicUrl && phase === "open" && (
         <button onClick={toggleMusic} style={{
           position: "fixed", bottom: 24, right: 24, zIndex: 50,
@@ -536,7 +526,6 @@ export default function InviteViewer({ invitation }) {
         </button>
       )}
 
-      {/* ── Keyframe animation for seal pulse ── */}
       <style>{`
         @keyframes pulse {
           0%, 100% { transform: scale(1); opacity: 0.3; }
@@ -547,7 +536,7 @@ export default function InviteViewer({ invitation }) {
   );
 }
 
-/* ── Scroll Reveal Component ── */
+/* Scroll Reveal Component */
 function ScrollReveal({ children }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
@@ -557,13 +546,10 @@ function ScrollReveal({ children }) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target); // Trigger only once
+          observer.unobserve(entry.target);
         }
       },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -40px 0px", // Animates slightly before entering the center of viewport
-      }
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
     );
     if (ref.current) {
       observer.observe(ref.current);
@@ -585,7 +571,7 @@ function ScrollReveal({ children }) {
   );
 }
 
-/* ── Shared style helpers ── */
+/* Shared style helpers */
 function GoldDivider({ color }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "8px 0" }}>

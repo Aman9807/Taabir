@@ -12,26 +12,27 @@ export default function CreateInvitationPage() {
 
   // Form State
   const [formData, setFormData] = useState({
-    brideName: "",
-    brideParentsName: "",
-    groomName: "",
-    groomParentsName: "",
-    coupleEmail: "", // Contact email shown on the invitation card
-    headerArabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", // Customizable Arabic text (default Bismillah)
-    headerGrace: "Under the Grace of Almighty Allah",    // Customizable Grace subtext
-    weddingDate: "", // Main function date (for countdown)
+    eventType: "wedding", // Default to wedding
+    brideName: "",        // Used as Primary Name 1
+    brideParentsName: "", // Used as Sub-label 1
+    groomName: "",        // Used as Primary Name 2
+    groomParentsName: "", // Used as Sub-label 2
+    coupleEmail: "",      // Contact email
+    headerArabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", // Customizable Top Calligraphy
+    headerGrace: "Under the Grace of Almighty Allah",     // Customizable Blessing Line
+    weddingDate: "",      // Countdown date
     venueName: "",
     venueAddress: "",
-    venueMapUrl: "", // Direct Google Maps link (optional)
+    venueMapUrl: "",      // Google Maps Pin
     slug: "",
-    photoUrl: "", // Couple Photo URL
-    musicUrl: "", // Background audio MP3 URL
-    templateId: "emerald-noir", // Selected Template
+    photoUrl: "",
+    musicUrl: "",
+    templateId: "emerald-noir",
   });
 
   // Dynamic Timeline State
   const [schedule, setSchedule] = useState([
-    { name: "Mehndi", time: "", venue: "Orchard Grand Ballroom", description: "Ceremony & dinner is served." },
+    { name: "Mehndi / Henna", time: "", venue: "Orchard Grand Ballroom", description: "Ceremony & dinner is served." },
     { name: "Baraat / Vows", time: "", venue: "Royal Palms Gardens", description: "Exchange of rings & wedding feast." }
   ]);
 
@@ -39,7 +40,7 @@ export default function CreateInvitationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [photos, setPhotos] = useState([]);                  // Array of direct URL links and Base64 uploads
+  const [photos, setPhotos] = useState([]);                  // Base64 photos array
 
   // Redirect protection
   useEffect(() => {
@@ -57,7 +58,47 @@ export default function CreateInvitationPage() {
     }));
   };
 
-  // Convert and compress uploaded image directly to Base64 JPEG client-side
+  // Set default schedules and text coordinates when event category changes
+  const handleEventTypeChange = (newType) => {
+    setFormData((prev) => ({
+      ...prev,
+      eventType: newType,
+      headerArabic: newType === "wedding" ? "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ" : "✨ A Special Celebration ✨",
+      headerGrace: newType === "wedding" 
+        ? "Under the Grace of Almighty Allah" 
+        : newType === "birthday"
+        ? "You are cordially invited to celebrate with us!"
+        : newType === "anniversary"
+        ? "Celebrating years of love, dedication, and memories"
+        : "Join us for a wonderful gathering of family and friends",
+    }));
+
+    if (newType === "wedding") {
+      setSchedule([
+        { name: "Mehndi / Henna", time: "", venue: "Orchard Grand Ballroom", description: "Ceremony & dinner is served." },
+        { name: "Baraat / Vows", time: "", venue: "Royal Palms Gardens", description: "Exchange of rings & wedding feast." }
+      ]);
+    } else if (newType === "birthday") {
+      setSchedule([
+        { name: "Guest Arrival", time: "", venue: "Celebration Suite", description: "Welcome drinks & greetings." },
+        { name: "Cake Cutting & Games", time: "", venue: "Celebration Suite", description: "Cake cutting & fun activities." },
+        { name: "Grand Dinner", time: "", venue: "Dining Ballroom", description: "Buffet dinner served." }
+      ]);
+    } else if (newType === "anniversary") {
+      setSchedule([
+        { name: "Welcome Reception", time: "", venue: "Royal Banquet Hall", description: "Cocktails & appetizers." },
+        { name: "Toast & Memories", time: "", venue: "Royal Banquet Hall", description: "Sharing milestones & speeches." },
+        { name: "Gala Dinner", time: "", venue: "Dining Area", description: "Exquisite multi-course feast served." }
+      ]);
+    } else {
+      setSchedule([
+        { name: "Welcome & Assembly", time: "", venue: "Main Ballroom", description: "Gathering & greetings." },
+        { name: "Celebrations & Dinner", time: "", venue: "Main Ballroom", description: "Grand dinner served." }
+      ]);
+    }
+  };
+
+  // Canvas image scaling & compression client-side
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -66,14 +107,12 @@ export default function CreateInvitationPage() {
     reader.onload = (event) => {
       const img = new Image();
       img.onload = () => {
-        // Create an off-screen Canvas
         const canvas = document.createElement("canvas");
         const MAX_WIDTH = 800;
         const MAX_HEIGHT = 800;
         let width = img.width;
         let height = img.height;
 
-        // Calculate compressed dimensions, maintaining aspect ratio
         if (width > height) {
           if (width > MAX_WIDTH) {
             height *= MAX_WIDTH / width;
@@ -92,14 +131,13 @@ export default function CreateInvitationPage() {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Convert canvas image to highly optimized Base64 JPEG at 0.75 quality
         const compressedBase64 = canvas.toDataURL("image/jpeg", 0.75);
         setPhotos((prev) => [...prev, compressedBase64]);
       };
       img.src = event.target.result;
     };
     reader.readAsDataURL(file);
-    e.target.value = ""; // Reset so same file can be selected again
+    e.target.value = "";
   };
 
   const addPhotoUrl = (url) => {
@@ -115,13 +153,12 @@ export default function CreateInvitationPage() {
     setPhotos((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Helper: Live-sanitizes slug inputs
   const handleSlugChange = (e) => {
     const value = e.target.value;
     const sanitizedSlug = value
       .toLowerCase()
-      .replace(/[^a-z0-9-]/g, "") // Remove everything except a-z, 0-9, and -
-      .replace(/-+/g, "-");       // Collapse double hyphens
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-+/g, "-");
     
     setFormData((prev) => ({
       ...prev,
@@ -129,7 +166,6 @@ export default function CreateInvitationPage() {
     }));
   };
 
-  // Handle dynamic schedule timeline updates
   const handleEventChange = (index, e) => {
     const { name, value } = e.target;
     setSchedule((prev) => {
@@ -158,6 +194,7 @@ export default function CreateInvitationPage() {
     setIsSubmitting(true);
 
     const { 
+      eventType,
       brideName, 
       brideParentsName, 
       groomName, 
@@ -166,14 +203,19 @@ export default function CreateInvitationPage() {
       venueName, 
       venueAddress, 
       slug, 
-      photoUrl, 
       musicUrl,
       templateId 
     } = formData;
 
-    // Client-side validations
-    if (!brideName || !groomName || !weddingDate || !venueName || !venueAddress || !slug) {
-      setError("Please fill out all mandatory core fields.");
+    const isCoupleEvent = eventType === "wedding" || eventType === "anniversary";
+
+    // Client-side validation: Name 2 optional for birthday and single-celebrant functions
+    if (!brideName || (isCoupleEvent && !groomName) || !weddingDate || !venueName || !venueAddress || !slug) {
+      setError(
+        isCoupleEvent 
+          ? "Please fill out all mandatory core fields (both couple names are required)." 
+          : "Please fill out all mandatory core fields (Name, Date, Venue Name, Address and Link Slug are required)."
+      );
       setIsSubmitting(false);
       return;
     }
@@ -184,7 +226,6 @@ export default function CreateInvitationPage() {
       return;
     }
 
-    // Schedule validation
     const hasEmptyEvent = schedule.some(event => !event.name || !event.time);
     if (hasEmptyEvent) {
       setError("Please provide a name and time/date for all timeline sub-events.");
@@ -193,7 +234,7 @@ export default function CreateInvitationPage() {
     }
 
     try {
-      // 1. Perform Global Slug Uniqueness Query in Firestore
+      // 1. Perform Global Slug Uniqueness Query
       const invitationsRef = collection(db, "invitations");
       const slugQuery = query(invitationsRef, where("slug", "==", slug.trim()));
       const querySnapshot = await getDocs(slugQuery);
@@ -204,22 +245,21 @@ export default function CreateInvitationPage() {
         return;
       }
 
-      // Use the host's direct Maps link if provided, else auto-generate a search URL
       const mapSearchQuery = `${venueName.trim()} ${venueAddress.trim()}`;
       const autoMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapSearchQuery)}`;
       const googleMapsUrl = formData.venueMapUrl.trim() || autoMapsUrl;
 
-      // Default couple photo if none specified
       const fallbackPhoto = "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000";
 
       // 2. Prepare payload
       const invitationPayload = {
         userId: user.uid,
+        eventType: eventType || "wedding",
         slug: slug.trim(),
         brideName: brideName.trim(),
         brideParentsName: brideParentsName.trim(),
-        groomName: groomName.trim(),
-        groomParentsName: groomParentsName.trim(),
+        groomName: groomName ? groomName.trim() : "",
+        groomParentsName: groomParentsName ? groomParentsName.trim() : "",
         weddingDate: new Date(weddingDate).toISOString(),
         venue: {
           name: venueName.trim(),
@@ -259,14 +299,13 @@ export default function CreateInvitationPage() {
 
       setSuccess(true);
       
-      // Redirect back to dashboard panel after success
       setTimeout(() => {
         router.push("/dashboard");
       }, 2000);
 
     } catch (err) {
       console.error("Firestore database write error:", err);
-      setError(`Failed to create invitation: ${err.message || "Please check your internet connection."}`);
+      setError(`Failed to create invitation: ${err.message || "Please check your connection."}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -289,18 +328,17 @@ export default function CreateInvitationPage() {
         {/* Navigation / Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight font-serif">
               Create New Invitation
             </h1>
             <p className="mt-2 text-sm text-slate-600">
-              Set up your wedding details below to generate an interactive, responsive digital invitation page.
+              Select your event type and set up details below to generate a highly customized digital invitation page.
             </p>
           </div>
         </div>
 
         {/* Form Card */}
         <div className="bg-white shadow-xl rounded-2xl border border-slate-100 p-8 sm:p-10 relative overflow-hidden">
-          {/* Decorative luxury gold top border */}
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-200 via-amber-500 to-amber-200"></div>
 
           {/* Success Notification Alert */}
@@ -327,26 +365,66 @@ export default function CreateInvitationPage() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             
+            {/* Section 0: Select Invitation Type */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 font-sans">
+                Select Invitation Category
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {[
+                  { id: "wedding", label: "✉️ Wedding", desc: "Nikah/Vows" },
+                  { id: "birthday", label: "🎂 Birthday", desc: "Party/Blowout" },
+                  { id: "anniversary", label: "💑 Anniversary", desc: "Love Milestone" },
+                  { id: "family_function", label: "🏡 Family", desc: "Dinner/Assembly" },
+                  { id: "general_party", label: "✨ General Party", desc: "Celebrations" }
+                ].map((type) => (
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => handleEventTypeChange(type.id)}
+                    className={`p-4 rounded-xl border-2 text-center transition-all ${
+                      (formData.eventType || "wedding") === type.id
+                        ? "border-amber-500 bg-amber-50/20 text-slate-900"
+                        : "border-slate-100 hover:border-slate-200 text-slate-500 bg-slate-50/20"
+                    }`}
+                  >
+                    <span className="block text-2xl mb-1">{type.label.split(" ")[0]}</span>
+                    <span className="block text-xs font-bold whitespace-nowrap">{type.label.split(" ").slice(1).join(" ")}</span>
+                    <span className="block text-[9px] text-slate-400 font-medium mt-0.5">{type.desc}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Section 1: Core Details */}
             <div className="space-y-6">
               <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 font-sans">
-                1. Core Wedding Details
+                1. Core Celebration Coordinates
               </h3>
               
-              {/* Couple names & Parent names group */}
+              {/* Event-sensitive inputs */}
               <div className="space-y-6">
-                {/* Bride Info */}
+                
+                {/* Primary Person / Host 1 */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
                   <div>
                     <label htmlFor="brideName" className="block text-sm font-semibold text-slate-700">
-                      Bride&apos;s First Name *
+                      {formData.eventType === "wedding"
+                        ? "Bride's First Name *"
+                        : formData.eventType === "birthday"
+                        ? "Birthday Person's Name *"
+                        : formData.eventType === "anniversary"
+                        ? "Wife's First Name *"
+                        : formData.eventType === "family_function"
+                        ? "Main Host / Family Name *"
+                        : "Host Name *"}
                     </label>
                     <input
                       type="text"
                       name="brideName"
                       id="brideName"
                       required
-                      placeholder="e.g. Sarah"
+                      placeholder="e.g. Faisal"
                       value={formData.brideName}
                       onChange={handleChange}
                       className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
@@ -355,13 +433,19 @@ export default function CreateInvitationPage() {
 
                   <div>
                     <label htmlFor="brideParentsName" className="block text-sm font-semibold text-slate-700">
-                      Bride&apos;s Parents/Guardians Name
+                      {formData.eventType === "wedding"
+                        ? "Bride's Parents/Guardians Name"
+                        : formData.eventType === "birthday"
+                        ? "Age / Turning (e.g. Turning 5, Turning 25) (Optional)"
+                        : formData.eventType === "anniversary"
+                        ? "Wife's Parents (Optional)"
+                        : "Special Note / Lineage (Optional)"}
                     </label>
                     <input
                       type="text"
                       name="brideParentsName"
                       id="brideParentsName"
-                      placeholder="e.g. Mr. & Mrs. Shakeel Ahmed"
+                      placeholder={formData.eventType === "birthday" ? "e.g. Turning 25" : "e.g. Mr. & Mrs. Ahmed"}
                       value={formData.brideParentsName}
                       onChange={handleChange}
                       className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
@@ -369,45 +453,60 @@ export default function CreateInvitationPage() {
                   </div>
                 </div>
 
-                {/* Groom Info */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
-                  <div>
-                    <label htmlFor="groomName" className="block text-sm font-semibold text-slate-700">
-                      Groom&apos;s First Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="groomName"
-                      id="groomName"
-                      required
-                      placeholder="e.g. Michael"
-                      value={formData.groomName}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
-                    />
-                  </div>
+                {/* Secondary Person / Partner / Host 2 (Optional for non-couples) */}
+                {((formData.eventType || "wedding") === "wedding" ||
+                  (formData.eventType || "wedding") === "anniversary" ||
+                  (formData.eventType || "wedding") === "family_function" ||
+                  (formData.eventType || "wedding") === "general_party") && (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                    <div>
+                      <label htmlFor="groomName" className="block text-sm font-semibold text-slate-700">
+                        {formData.eventType === "wedding"
+                          ? "Groom's First Name *"
+                          : formData.eventType === "anniversary"
+                          ? "Husband's First Name *"
+                          : "Co-Host Name (Optional)"}
+                      </label>
+                      <input
+                        type="text"
+                        name="groomName"
+                        id="groomName"
+                        required={formData.eventType === "wedding" || formData.eventType === "anniversary"}
+                        placeholder="e.g. Michael"
+                        value={formData.groomName}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
+                      />
+                    </div>
 
-                  <div>
-                    <label htmlFor="groomParentsName" className="block text-sm font-semibold text-slate-700">
-                      Groom&apos;s Parents/Guardians Name
-                    </label>
-                    <input
-                      type="text"
-                      name="groomParentsName"
-                      id="groomParentsName"
-                      placeholder="e.g. Mr. & Mrs. Imtiaz Khan"
-                      value={formData.groomParentsName}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
-                    />
+                    <div>
+                      <label htmlFor="groomParentsName" className="block text-sm font-semibold text-slate-700">
+                        {formData.eventType === "wedding"
+                          ? "Groom's Parents/Guardians Name"
+                          : formData.eventType === "anniversary"
+                          ? "Husband's Parents (Optional)"
+                          : "Co-Host Subtitle / Note (Optional)"}
+                      </label>
+                      <input
+                        type="text"
+                        name="groomParentsName"
+                        id="groomParentsName"
+                        placeholder="e.g. Mr. & Mrs. Imtiaz Khan"
+                        value={formData.groomParentsName}
+                        onChange={handleChange}
+                        className="mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
-              {/* Main Wedding Date */}
+              {/* Countdown Target Date */}
               <div>
                 <label htmlFor="weddingDate" className="block text-sm font-semibold text-slate-700">
-                  Main Wedding Date & Time * (For Live Countdown)
+                  {formData.eventType === "wedding"
+                    ? "Wedding Date & Time * (For Live Countdown)"
+                    : "Event Date & Time * (For Live Countdown)"}
                 </label>
                 <input
                   type="datetime-local"
@@ -420,18 +519,16 @@ export default function CreateInvitationPage() {
                 />
               </div>
 
-              {/* Assets link */}
+              {/* Media assets & custom headers */}
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {/* Couple Photo Gallery Selector */}
                 <div className="sm:col-span-2 space-y-3 bg-slate-50/50 p-5 rounded-2xl border border-slate-100">
                   <label className="block text-sm font-bold text-slate-800 font-sans">
-                    Wedding Photo Gallery (Add 2 or more pictures) *
+                    Celebration Gallery Photos (Add 2 or more pictures) *
                   </label>
                   <p className="text-xs text-slate-400 font-sans">
-                    Upload images from your device or paste direct image URLs below. Add 2 or more images to enable a beautiful slider carousel on the card!
+                    Upload images from your device or paste image URLs. Add 2 or more images to enable our automated cross-fade carousel slideshow!
                   </p>
                   
-                  {/* Grid of added photos */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-3">
                     {photos.map((pic, index) => (
                       <div key={index} className="relative group aspect-[4/3] rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
@@ -451,12 +548,10 @@ export default function CreateInvitationPage() {
                       </div>
                     ))}
                     
-                    {/* Add Photo Action Button box */}
                     <div className="border-2 border-dashed border-slate-200 hover:border-amber-400/60 rounded-xl p-4 bg-white flex flex-col items-center justify-center min-h-[120px] relative text-center transition-all">
                       <span className="text-xl block mb-1">📸</span>
                       <span className="block text-xs font-bold text-slate-700">Add Picture</span>
                       
-                      {/* File upload input */}
                       <input
                         type="file"
                         accept="image/*"
@@ -468,7 +563,6 @@ export default function CreateInvitationPage() {
                         📁 Choose File
                       </span>
                       
-                      {/* Or paste link input */}
                       <div className="mt-2 w-full px-1 z-20 flex gap-1">
                         <input
                           type="url"
@@ -505,13 +599,13 @@ export default function CreateInvitationPage() {
 
                 <div>
                   <label htmlFor="musicUrl" className="block text-sm font-semibold text-slate-700">
-                    Background Audio MP3 Link / URL
+                    Ambient Background Music Track Link (MP3 URL)
                   </label>
                   <input
                     type="url"
                     name="musicUrl"
                     id="musicUrl"
-                    placeholder="https://www.soundhelix.com/..."
+                    placeholder="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
                     value={formData.musicUrl}
                     onChange={handleChange}
                     className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
@@ -520,66 +614,55 @@ export default function CreateInvitationPage() {
 
                 <div className="sm:col-span-2">
                   <label htmlFor="coupleEmail" className="block text-sm font-semibold text-slate-700">
-                    Couple&apos;s Contact Email
+                    Host Contact Email
                   </label>
                   <input
                     type="email"
                     name="coupleEmail"
                     id="coupleEmail"
-                    placeholder="e.g. couple@example.com"
+                    placeholder="e.g. host@example.com"
                     value={formData.coupleEmail}
                     onChange={handleChange}
                     className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
                   />
-                  <p className="mt-1 text-xs text-slate-400 font-sans">
-                    Display an email address on the invitation so guests can contact you.
-                  </p>
                 </div>
 
-                {/* Customizable Top Headers (Bismillah / Blessing Lines) */}
+                {/* Top Headers Arabic / Grace text */}
                 <div>
-                  <label htmlFor="headerArabic" className="block text-sm font-semibold text-slate-700">
-                    Arabic Header Text (Customizable)
+                  <label htmlFor="headerArabic" className="block text-sm font-semibold text-slate-700 font-sans">
+                    Calligraphy Header Text (Customizable)
                   </label>
                   <input
                     type="text"
                     name="headerArabic"
                     id="headerArabic"
-                    placeholder="بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
                     value={formData.headerArabic}
                     onChange={handleChange}
                     className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans text-right"
                     dir="rtl"
                   />
-                  <p className="mt-1 text-[10px] text-slate-400 font-sans">
-                    Displays at the very top of your card. Keep blank to use default Bismillah.
-                  </p>
                 </div>
 
                 <div>
                   <label htmlFor="headerGrace" className="block text-sm font-semibold text-slate-700">
-                    Sub-Header Blessing Text (Customizable)
+                    Blessing Sub-Header Text (Customizable)
                   </label>
                   <input
                     type="text"
                     name="headerGrace"
                     id="headerGrace"
-                    placeholder="Under the Grace of Almighty Allah"
                     value={formData.headerGrace}
                     onChange={handleChange}
                     className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
                   />
-                  <p className="mt-1 text-[10px] text-slate-400 font-sans">
-                    Displays directly under the top Arabic header text.
-                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Section 2: Main Venue Details */}
+            {/* Section 2: Venue */}
             <div className="space-y-4">
               <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 font-sans">
-                2. Main Reception / Venue
+                2. Celebration Venue Details
               </h3>
               
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -592,7 +675,7 @@ export default function CreateInvitationPage() {
                     name="venueName"
                     id="venueName"
                     required
-                    placeholder="e.g. The Emerald Gardens"
+                    placeholder="e.g. Royal Palms Ballroom"
                     value={formData.venueName}
                     onChange={handleChange}
                     className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
@@ -608,7 +691,7 @@ export default function CreateInvitationPage() {
                     name="venueAddress"
                     id="venueAddress"
                     required
-                    placeholder="e.g. 786 Gold Boulevard, Houston, TX"
+                    placeholder="e.g. 100 Royal Way, Houston, TX"
                     value={formData.venueAddress}
                     onChange={handleChange}
                     className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
@@ -616,11 +699,9 @@ export default function CreateInvitationPage() {
                 </div>
               </div>
 
-              {/* Direct Google Maps Link (optional, overrides auto-generated search URL) */}
               <div>
                 <label htmlFor="venueMapUrl" className="block text-sm font-semibold text-slate-700">
-                  Google Maps Direct Link{" "}
-                  <span className="text-slate-400 font-normal">(Optional — paste your exact pin link)</span>
+                  Google Maps Pin Link (Optional)
                 </label>
                 <div className="mt-1 flex items-center gap-2">
                   <span className="text-lg">📍</span>
@@ -628,30 +709,27 @@ export default function CreateInvitationPage() {
                     type="url"
                     name="venueMapUrl"
                     id="venueMapUrl"
-                    placeholder="https://maps.app.goo.gl/... or https://www.google.com/maps/place/..."
+                    placeholder="https://maps.app.goo.gl/..."
                     value={formData.venueMapUrl}
                     onChange={handleChange}
                     className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
                   />
                 </div>
-                <p className="mt-1.5 text-xs text-slate-400 font-sans">
-                  If left empty, a Maps search link will be auto-generated from the venue name &amp; address above.
-                </p>
               </div>
             </div>
 
-            {/* Section 3: Dynamic Schedule Timeline */}
+            {/* Section 3: Dynamic Timeline */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                 <h3 className="text-lg font-bold text-slate-800 font-sans">
-                  3. Wedding Timeline (Functions & Schedules)
+                  3. Celebration Schedule Timeline
                 </h3>
                 <button
                   type="button"
                   onClick={addEvent}
                   className="px-3 py-1.5 border border-amber-500/40 text-amber-600 rounded-lg text-xs font-bold hover:bg-amber-50 transition-colors uppercase font-sans"
                 >
-                  ➕ Add Function
+                  ➕ Add Event
                 </button>
               </div>
 
@@ -661,35 +739,32 @@ export default function CreateInvitationPage() {
                     key={idx}
                     className="p-5 rounded-2xl bg-slate-50/60 border border-slate-200 relative grid grid-cols-1 sm:grid-cols-4 gap-4 items-end"
                   >
-                    {/* Remove event button */}
                     {schedule.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeEvent(idx)}
                         className="absolute top-2 right-2 h-6 w-6 text-rose-500 hover:bg-rose-50 rounded-full flex items-center justify-center text-xs font-bold transition-all"
-                        title="Remove Function"
+                        title="Remove Event"
                       >
                         ✕
                       </button>
                     )}
 
-                    {/* Function Name */}
                     <div className="sm:col-span-1">
                       <label className="block text-xs font-semibold text-slate-600 mb-1 font-sans">
-                        Function Name *
+                        Event / Function Name *
                       </label>
                       <input
                         type="text"
                         name="name"
                         required
-                        placeholder="e.g. Mehndi, Nikkah, Walima"
+                        placeholder="e.g. Cake Cutting, Welcome"
                         value={event.name}
                         onChange={(e) => handleEventChange(idx, e)}
                         className="block w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-900 text-xs focus:outline-none focus:border-amber-500 transition-all font-sans"
                       />
                     </div>
 
-                    {/* Function Date/Time */}
                     <div className="sm:col-span-1">
                       <label className="block text-xs font-semibold text-slate-600 mb-1 font-sans">
                         Date & Time *
@@ -704,7 +779,6 @@ export default function CreateInvitationPage() {
                       />
                     </div>
 
-                    {/* Function Specific Venue */}
                     <div className="sm:col-span-1">
                       <label className="block text-xs font-semibold text-slate-600 mb-1 font-sans">
                         Ceremony Venue *
@@ -713,14 +787,13 @@ export default function CreateInvitationPage() {
                         type="text"
                         name="venue"
                         required
-                        placeholder="e.g. Orchard Ballroom"
+                        placeholder="e.g. Garden Patio"
                         value={event.venue || ""}
                         onChange={(e) => handleEventChange(idx, e)}
                         className="block w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-900 text-xs focus:outline-none focus:border-amber-500 transition-all font-sans"
                       />
                     </div>
 
-                    {/* Description */}
                     <div className="sm:col-span-1">
                       <label className="block text-xs font-semibold text-slate-600 mb-1 font-sans">
                         Description / Note
@@ -728,7 +801,7 @@ export default function CreateInvitationPage() {
                       <input
                         type="text"
                         name="description"
-                        placeholder="e.g. dinner starts at 7:30"
+                        placeholder="e.g. music & games served"
                         value={event.description}
                         onChange={(e) => handleEventChange(idx, e)}
                         className="block w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-900 text-xs focus:outline-none focus:border-amber-500 transition-all font-sans"
@@ -742,35 +815,23 @@ export default function CreateInvitationPage() {
             {/* Section 4: Design Template & Slug URL */}
             <div className="space-y-6 pt-4 border-t border-slate-100">
               
-              {/* Template Selection Panel */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2 font-sans">
-                  4. Choose Visual Template
+                  4. Choose Card Theme
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-                  {/* Option 1: Emerald Noir */}
+                  {/* Emerald Noir */}
                   <div className={`border-2 rounded-xl overflow-hidden transition-all ${
-                    formData.templateId === "emerald-noir"
-                      ? "border-amber-500"
-                      : "border-slate-200 hover:border-slate-300"
+                    formData.templateId === "emerald-noir" ? "border-amber-500" : "border-slate-200 hover:border-slate-300"
                   }`}>
-                    {/* Template preview thumbnail */}
                     <div className="h-28 bg-[#001C12] flex flex-col items-center justify-center gap-1.5 relative">
                       <div className="absolute inset-2 border border-[#C5A880]/20 rounded-lg pointer-events-none"></div>
-                      <span className="text-[#C5A880] font-serif text-lg">A &amp; B</span>
+                      <span className="text-[#C5A880] font-serif text-lg">
+                        {formData.brideName ? formData.brideName[0] : "A"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
+                      </span>
                       <span className="text-[#C5A880]/60 text-[8px] uppercase tracking-widest font-sans">Emerald Noir</span>
-                      <a
-                        href="/templates/preview/emerald-noir"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={e => e.stopPropagation()}
-                        className="mt-1 px-3 py-1 border border-[#C5A880]/40 text-[#C5A880] text-[9px] uppercase tracking-widest rounded-full hover:bg-[#C5A880]/10 transition-all font-sans"
-                      >
-                        Open Demo ↗
-                      </a>
                     </div>
-                    {/* Selection row */}
                     <label className="flex items-center justify-between px-4 py-3 cursor-pointer bg-white">
                       <div>
                         <span className="block text-sm font-bold text-slate-800">Emerald Noir</span>
@@ -787,32 +848,21 @@ export default function CreateInvitationPage() {
                     </label>
                   </div>
 
-                  {/* Option 2: Ivory Classic */}
+                  {/* Ivory Classic */}
                   <div className={`border-2 rounded-xl overflow-hidden transition-all ${
-                    formData.templateId === "ivory-classic"
-                      ? "border-amber-500"
-                      : "border-slate-200 hover:border-slate-300"
+                    formData.templateId === "ivory-classic" ? "border-amber-500" : "border-slate-200 hover:border-slate-300"
                   }`}>
-                    {/* Template preview thumbnail */}
                     <div className="h-28 bg-[#F5F3EB] flex flex-col items-center justify-center gap-1.5 relative border-b border-slate-100">
                       <div className="absolute inset-2 border border-[#C5A880]/25 rounded-lg pointer-events-none"></div>
-                      <span className="text-slate-700 font-serif text-lg">A &amp; B</span>
+                      <span className="text-slate-700 font-serif text-lg">
+                        {formData.brideName ? formData.brideName[0] : "A"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
+                      </span>
                       <span className="text-[#C5A880] text-[8px] uppercase tracking-widest font-sans">Ivory Classic</span>
-                      <a
-                        href="/templates/preview/ivory-classic"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={e => e.stopPropagation()}
-                        className="mt-1 px-3 py-1 border border-[#C5A880]/50 text-amber-700 text-[9px] uppercase tracking-widest rounded-full hover:bg-amber-50 transition-all font-sans"
-                      >
-                        Open Demo ↗
-                      </a>
                     </div>
-                    {/* Selection row */}
                     <label className="flex items-center justify-between px-4 py-3 cursor-pointer bg-white">
                       <div>
                         <span className="block text-sm font-bold text-slate-800">Ivory Classic</span>
-                        <span className="block text-xs text-slate-500">Luxury cream &amp; rose gold</span>
+                        <span className="block text-xs text-slate-500">Luxury cream &amp; gold</span>
                       </div>
                       <input
                         type="radio"
@@ -828,29 +878,26 @@ export default function CreateInvitationPage() {
                 </div>
               </div>
 
-              {/* URL custom slug */}
+              {/* URL Custom slug */}
               <div>
                 <label htmlFor="slug" className="block text-sm font-semibold text-slate-700">
-                  Custom Invitation Link (Slug) *
+                  Custom Invitation Link Slug *
                 </label>
-                <div className="mt-1 flex rounded-xl shadow-sm">
-                  <span className="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 bg-slate-50 text-slate-500 text-sm select-none font-mono">
-                    taabir.com/invite/
+                <div className="mt-1 flex rounded-xl shadow-sm border border-slate-200 overflow-hidden bg-slate-50/50">
+                  <span className="inline-flex items-center px-4 bg-slate-100 border-r border-slate-200 text-slate-500 text-xs font-mono">
+                    invite/
                   </span>
                   <input
                     type="text"
                     name="slug"
                     id="slug"
                     required
-                    placeholder="sarah-and-michael"
+                    placeholder="e.g. faisal-25th-birthday"
                     value={formData.slug}
                     onChange={handleSlugChange}
-                    className="block w-full min-w-0 flex-1 px-4 py-3 border border-slate-200 rounded-r-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
+                    className="flex-1 block w-full px-4 py-3 bg-white text-slate-900 placeholder-slate-400 focus:outline-none text-sm font-sans"
                   />
                 </div>
-                <p className="mt-2 text-xs text-slate-400">
-                  Only lowercase letters, numbers, and single hyphens are allowed. Space will be cleared.
-                </p>
               </div>
             </div>
 
@@ -859,7 +906,7 @@ export default function CreateInvitationPage() {
               <button
                 type="submit"
                 disabled={isSubmitting || success}
-                className="w-full flex items-center justify-center px-6 py-3.5 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 uppercase tracking-widest font-sans"
+                className="w-full flex items-center justify-center px-6 py-3.5 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 uppercase tracking-widest font-sans"
               >
                 {isSubmitting ? (
                   <>
@@ -867,10 +914,10 @@ export default function CreateInvitationPage() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
-                    Validating and Saving...
+                    Generating Invitation...
                   </>
                 ) : success ? (
-                  "Saved Successfully!"
+                  "Created Successfully!"
                 ) : (
                   "Generate Digital Invitation"
                 )}

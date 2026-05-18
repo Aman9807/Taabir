@@ -53,7 +53,7 @@ export default function DashboardPage() {
           const threeDaysAfterEvent = new Date(weddingDate.getTime() + 3 * 24 * 60 * 60 * 1000);
 
           if (currentDate > threeDaysAfterEvent) {
-            // Auto-delete expired invitation in the background to keep Firestore storage clean!
+            // Auto-delete expired invitation in the background to keep Firestore storage clean
             try {
               await deleteDoc(d.ref);
               console.log(`[Auto-Deleted Expired Dashboard] id: ${d.id}`);
@@ -96,7 +96,7 @@ export default function DashboardPage() {
     setFetchingRsvps(true);
     setRsvps([]);
     try {
-      // Query RSVPs sub-collection under `/invitations/{id}/rsvps` (secured in rules!)
+      // Query RSVPs sub-collection under `/invitations/{id}/rsvps`
       const rsvpsRef = collection(db, "invitations", invite.id, "rsvps");
       const querySnapshot = await getDocs(rsvpsRef);
       const list = [];
@@ -115,7 +115,7 @@ export default function DashboardPage() {
 
   // Delete Invitation Handler
   const handleDeleteInvitation = async (id) => {
-    if (!window.confirm("Are you absolutely sure you want to delete this wedding invitation? This action is permanent and cannot be undone.")) return;
+    if (!window.confirm("Are you absolutely sure you want to delete this digital invitation? This action is permanent and cannot be undone.")) return;
     try {
       await deleteDoc(doc(db, "invitations", id));
       setInvitations((prev) => prev.filter((item) => item.id !== id));
@@ -192,9 +192,9 @@ export default function DashboardPage() {
           <div className="bg-white border border-slate-100 shadow-lg rounded-2xl p-12 text-center max-w-md mx-auto my-12 relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1 bg-amber-500"></div>
             <span className="text-5xl">✉️</span>
-            <h3 className="mt-6 text-lg font-serif font-bold text-slate-800">No Wedding Invitations Yet</h3>
+            <h3 className="mt-6 text-lg font-serif font-bold text-slate-800">No Digital Invitations Yet</h3>
             <p className="mt-2 text-xs text-slate-400 leading-relaxed px-4">
-              Get started by creating your first highly customizable, fully responsive, interactive digital wedding invitation card.
+              Get started by creating your first highly customizable, fully responsive, interactive digital invitation card.
             </p>
             <Link
               href="/dashboard/create"
@@ -215,18 +215,31 @@ export default function DashboardPage() {
                 <div className={`absolute top-0 left-0 right-0 h-1 bg-[#022E1F]`}></div>
 
                 <div>
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-amber-600 bg-amber-50 px-2 py-0.5 rounded font-mono">
-                    {invite.theme?.templateId === "emerald-noir" ? "Emerald Noir Theme" : "Ivory Classic Theme"}
-                  </span>
+                  <div className="flex flex-wrap gap-1.5 items-center">
+                    <span className="text-[9px] uppercase font-bold tracking-wider text-amber-600 bg-amber-50 px-2 py-0.5 rounded font-mono">
+                      {invite.theme?.templateId === "emerald-noir" ? "Emerald Noir" : "Ivory Classic"}
+                    </span>
+                    <span className="text-[9px] uppercase font-bold tracking-wider text-teal-600 bg-teal-50 px-2 py-0.5 rounded font-mono">
+                      {invite.eventType === "wedding"
+                        ? "✉️ Wedding"
+                        : invite.eventType === "birthday"
+                        ? "🎂 Birthday"
+                        : invite.eventType === "anniversary"
+                        ? "💑 Anniversary"
+                        : invite.eventType === "family_function"
+                        ? "🏡 Family"
+                        : "✨ Party"}
+                    </span>
+                  </div>
                   
-                  <h3 className="text-lg font-serif font-bold text-slate-900 mt-3">
-                    {invite.brideName} &amp; {invite.groomName}
+                  <h3 className="text-lg font-serif font-bold text-slate-900 mt-3 truncate">
+                    {invite.groomName ? `${invite.brideName} & ${invite.groomName}` : invite.brideName}
                   </h3>
                   
                   <div className="text-xs text-slate-400 space-y-1 mt-2 font-mono">
                     <p>🗓️ Date: {new Date(invite.weddingDate).toLocaleDateString("en-US", { dateStyle: "long" })}</p>
                     <p>📍 Venue: {invite.venue?.name}</p>
-                    <p className="text-amber-700 font-semibold select-all">
+                    <p className="text-amber-700 font-semibold select-all truncate mt-1">
                       🔗 URL: {host}/invite/{invite.slug}
                     </p>
                   </div>
@@ -283,7 +296,7 @@ export default function DashboardPage() {
               <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">
-                    Wishes &amp; Messages: {selectedInvite.brideName} &amp; {selectedInvite.groomName}
+                    Wishes &amp; Messages: {selectedInvite.groomName ? `${selectedInvite.brideName} & ${selectedInvite.groomName}` : selectedInvite.brideName}
                   </h3>
                   <p className="text-xs text-slate-400 mt-1 font-mono">
                     All guest blessings and greetings listed below
