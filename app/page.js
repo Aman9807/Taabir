@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useAuth } from "../context/AuthContext";
 
 export default function LandingPage() {
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-[#FAF9F5] text-slate-800 selection:bg-amber-100 font-sans relative overflow-hidden select-none">
@@ -24,15 +26,26 @@ export default function LandingPage() {
             <Link href="/about" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
               About Features
             </Link>
-            <Link href="/login" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
-              Sign In
-            </Link>
-            <Link
-              href="/register"
-              className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
-            >
-              Create Free Card
-            </Link>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md"
+                >
+                  Create Free Card
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </header>
@@ -57,12 +70,21 @@ export default function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-            <Link
-              href="/register"
-              className="w-full sm:w-auto px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all text-center"
-            >
-              Design Your Card Now
-            </Link>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="w-full sm:w-auto px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all text-center"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/register"
+                className="w-full sm:w-auto px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all text-center"
+              >
+                Design Your Card Now
+              </Link>
+            )}
             <Link
               href="/templates"
               className="w-full sm:w-auto px-8 py-4 border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold text-xs uppercase tracking-widest rounded-xl transition-all text-center"
@@ -214,9 +236,15 @@ export default function LandingPage() {
           <div className="flex items-center justify-center gap-6 text-xs text-slate-500 font-sans">
             <Link href="/about" className="hover:text-slate-800 transition-colors">About Features</Link>
             <span>•</span>
-            <Link href="/login" className="hover:text-slate-800 transition-colors">Sign In</Link>
-            <span>•</span>
-            <Link href="/register" className="hover:text-slate-800 transition-colors">Create Free Card</Link>
+            {user ? (
+              <Link href="/dashboard" className="hover:text-slate-800 transition-colors">Go to Dashboard</Link>
+            ) : (
+              <>
+                <Link href="/login" className="hover:text-slate-800 transition-colors">Sign In</Link>
+                <span>•</span>
+                <Link href="/register" className="hover:text-slate-800 transition-colors">Create Free Card</Link>
+              </>
+            )}
           </div>
 
           <p className="text-xs text-slate-400 font-sans">
