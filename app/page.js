@@ -21,6 +21,9 @@ export default function LandingPage() {
           </div>
 
           <nav className="flex items-center gap-6">
+            <Link href="/about" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
+              About Features
+            </Link>
             <Link href="/login" className="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors uppercase tracking-widest">
               Sign In
             </Link>
@@ -205,6 +208,15 @@ export default function LandingPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/icon.svg" alt="Taabir Logo" className="h-6 w-6 drop-shadow-sm" />
             <span className="font-serif text-sm font-bold text-slate-900 tracking-wider">TAABIR</span>
+          </div>
+
+          {/* Quick links */}
+          <div className="flex items-center justify-center gap-6 text-xs text-slate-500 font-sans">
+            <Link href="/about" className="hover:text-slate-800 transition-colors">About Features</Link>
+            <span>•</span>
+            <Link href="/login" className="hover:text-slate-800 transition-colors">Sign In</Link>
+            <span>•</span>
+            <Link href="/register" className="hover:text-slate-800 transition-colors">Create Free Card</Link>
           </div>
 
           <p className="text-xs text-slate-400 font-sans">
