@@ -37,6 +37,7 @@ export default function EditInvitationPage() {
     enableLanguageSwitcher: false,
     customNote: "",
     notePosition: "bottom",
+    backgroundImage: "", // Dedicated parallax background image for Minimalist Romance
   });
 
   // Dynamic Timeline State
@@ -111,6 +112,7 @@ export default function EditInvitationPage() {
           enableLanguageSwitcher: !!data.styling?.enableLanguageSwitcher,
           customNote: data.styling?.customNote || "",
           notePosition: data.styling?.notePosition || "bottom",
+          backgroundImage: data.backgroundImage || "",
         });
 
         setOriginalSlug(data.slug || "");
@@ -202,6 +204,47 @@ export default function EditInvitationPage() {
         { name: "Dinner & Celebration", time: "", venue: "Main Ballroom", description: "Dinner feast served." }
       ]);
     }
+  };
+
+  const handleBgUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 1200;
+        const MAX_HEIGHT = 1200;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.75);
+        setFormData((prev) => ({ ...prev, backgroundImage: compressedBase64 }));
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
   };
 
   // Compress uploaded images
@@ -371,6 +414,7 @@ export default function EditInvitationPage() {
           address: venueAddress.trim(),
           googleMapsUrl,
         },
+        backgroundImage: formData.backgroundImage ? formData.backgroundImage.trim() : "",
         photoUrl: photos[0] || fallbackPhoto,
         photos: photos.length > 0 ? photos : [fallbackPhoto],
         musicUrl: musicUrl.trim() || "",
@@ -710,6 +754,69 @@ export default function EditInvitationPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Minimalist Romance Parallax Background Optional Field */}
+                {formData.templateId === "minimalist-romance" && (
+                  <div className="sm:col-span-2 space-y-3 bg-amber-50/25 p-5 rounded-2xl border border-amber-200/50">
+                    <label className="block text-sm font-bold text-amber-900 font-sans">
+                      Minimalist Romance Dedicated Parallax Background (Optional)
+                    </label>
+                    <p className="text-xs text-amber-800/80 font-sans">
+                      Upload a dedicated background image for the full-viewport scrolling parallax headers. If left blank, it will automatically use your primary cover photo or our premium default Napa Valley landscape.
+                    </p>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mt-3">
+                      {formData.backgroundImage ? (
+                        <div className="relative aspect-[16/9] w-full sm:w-48 rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-slate-100 shrink-0">
+                          <img src={formData.backgroundImage} alt="Background Preview" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, backgroundImage: "" }))}
+                            className="absolute top-1.5 right-1.5 h-6 w-6 bg-rose-500 hover:bg-rose-600 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-md transition-all z-20"
+                            title="Remove Background Image"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="border border-dashed border-slate-200 rounded-xl p-4 bg-white flex flex-col items-center justify-center w-full sm:w-48 min-h-[108px] text-center shrink-0 relative">
+                          <span className="text-xl block mb-1">🖼️</span>
+                          <span className="block text-xs font-bold text-slate-700">No Custom BG</span>
+                          <span className="block text-[10px] text-slate-400 mt-0.5 font-sans">Using default Napa Valley</span>
+                        </div>
+                      )}
+                      
+                      <div className="flex-1 w-full space-y-2">
+                        <div className="relative w-full">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleBgUpload}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                            title="Upload custom background"
+                          />
+                          <button
+                            type="button"
+                            className="w-full sm:w-auto px-4 py-2.5 bg-amber-50 hover:bg-amber-100/80 text-amber-800 border border-amber-200/50 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 font-sans"
+                          >
+                            📁 Select Custom BG Image File
+                          </button>
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <input
+                            type="url"
+                            id="manualBgUrl"
+                            placeholder="Or paste background image URL..."
+                            value={formData.backgroundImage.startsWith("http") ? formData.backgroundImage : ""}
+                            onChange={(e) => setFormData(prev => ({ ...prev, backgroundImage: e.target.value.trim() }))}
+                            className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 font-sans"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label htmlFor="musicUrl" className="block text-sm font-semibold text-slate-700">

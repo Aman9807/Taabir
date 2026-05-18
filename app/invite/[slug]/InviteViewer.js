@@ -282,6 +282,7 @@ export default function InviteViewer({ invitation }) {
   const renderMinimalistRomance = () => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
     const hasPhotos = galleryPhotos.length > 0;
+    const customBg = invitation.backgroundImage || galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200";
 
     return (
       <div 
@@ -367,7 +368,7 @@ export default function InviteViewer({ invitation }) {
         <div 
           className="parallax-bg"
           style={{
-            backgroundImage: `url(${galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200"})`,
+            backgroundImage: `url(${customBg})`,
             minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
@@ -537,7 +538,7 @@ export default function InviteViewer({ invitation }) {
           <div 
             className="parallax-bg"
             style={{
-              backgroundImage: `url(${galleryPhotos[1] || galleryPhotos[0]})`,
+              backgroundImage: `url(${invitation.backgroundImage || galleryPhotos[1] || galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200"})`,
               minHeight: "100vh",
               display: "flex",
               alignItems: "center",
@@ -681,7 +682,7 @@ export default function InviteViewer({ invitation }) {
           <div 
             className="parallax-bg"
             style={{
-              backgroundImage: `url(${galleryPhotos[2] || galleryPhotos[0]})`,
+              backgroundImage: `url(${invitation.backgroundImage || galleryPhotos[2] || galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200"})`,
               minHeight: "100vh",
               display: "flex",
               alignItems: "center",
@@ -777,7 +778,7 @@ export default function InviteViewer({ invitation }) {
         <div 
           className="parallax-bg"
           style={{
-            backgroundImage: `url(${galleryPhotos[0]})`,
+            backgroundImage: `url(${customBg})`,
             minHeight: "100vh",
             display: "flex",
             alignItems: "center",
