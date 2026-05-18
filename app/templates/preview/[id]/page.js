@@ -314,6 +314,50 @@ const DEMO_DATA = {
       btnBgColor: "#FF10F0",
       btnTextColor: "#000000"
     }
+  },
+  "elegant-milestone": {
+    id: "__demo_elegant_milestone__",
+    brideName: "Shahida Khatoon",
+    brideParentsName: "50th Milestone Jubilee",
+    weddingDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Regency Crystal Ballroom",
+      address: "500 Grand Ritz Boulevard, London, UK",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200",
+      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200"
+    ],
+    eventType: "birthday",
+    musicUrl: "",
+    coupleEmail: "khantafazzul740@gmail.com",
+    theme: { templateId: "elegant-milestone" },
+    details: {
+      schedule: [
+        {
+          name: "Milestone Reception & Red Carpet",
+          time: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "A glamorous champagne reception and waltz orchestra greets your arrival.",
+          venue: "The Ritz Crystal Foyer"
+        },
+        {
+          name: "Milestone Jubilee Dinner Feast",
+          time: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000).toISOString(),
+          description: "An elegant sit-down banquet, premium catering, toast speeches, and waltz.",
+          venue: "Regency Grand Ballroom"
+        }
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#800020",
+      btnTextColor: "#FFFFFF"
+    }
   }
 };
 
@@ -326,7 +370,8 @@ export async function generateMetadata({ params }) {
     "dark-moody-elegant": "Dark Moody & Elegant",
     "bohemian-terracotta": "Bohemian Terracotta",
     "royal-glamour": "Royal Glamour & Glassmorphism",
-    "neon-nightclub": "Neon Nightclub"
+    "neon-nightclub": "Neon Nightclub",
+    "elegant-milestone": "Elegant Milestone"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,
