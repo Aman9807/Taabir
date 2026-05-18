@@ -23,6 +23,8 @@ export default function InviteViewer({ invitation }) {
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
   const tplId = invitation.theme?.templateId || "emerald-noir";
+  const [activePaletteId, setActivePaletteId] = useState(tplId);
+  const [showPaletteMenu, setShowPaletteMenu] = useState(false);
   const eventType = invitation.eventType || "wedding";
 
   // Countdown State
@@ -234,8 +236,8 @@ export default function InviteViewer({ invitation }) {
   );
 
   /* ──────────────── THEME TOKENS ──────────────── */
-  const isIvory = tplId === "ivory-classic" || tplId === "ivory-elegance";
-  const T = tplId === "minimalist-romance"
+  const isIvory = activePaletteId === "ivory-classic" || activePaletteId === "ivory-elegance";
+  const T = activePaletteId === "minimalist-romance"
     ? {
         bg: "#FFFFF0",
         door: "#FFFFF0",
@@ -246,7 +248,7 @@ export default function InviteViewer({ invitation }) {
         gold: "#F7E7CE",
         border: "rgba(247,231,206,0.3)"
       }
-    : tplId === "emerald-noir"
+    : activePaletteId === "emerald-noir"
     ? {
         bg: "#001C12", 
         door: "#012B1B", 
@@ -257,7 +259,7 @@ export default function InviteViewer({ invitation }) {
         gold: "#C5A880", 
         border: "rgba(197,168,128,0.2)"
       }
-    : tplId === "dark-moody-elegant"
+    : activePaletteId === "dark-moody-elegant"
     ? {
         bg: "#0F0F0F", 
         door: "#043927", 
@@ -268,7 +270,7 @@ export default function InviteViewer({ invitation }) {
         gold: "#D4AF37", 
         border: "rgba(212,175,55,0.25)"
       }
-    : tplId === "bohemian-terracotta"
+    : activePaletteId === "bohemian-terracotta"
     ? {
         bg: "#FFFDD0", 
         door: "#E2725B", 
@@ -314,8 +316,8 @@ export default function InviteViewer({ invitation }) {
           transition: "opacity 1.5s ease-out, transform 1.5s ease-out",
           width: "100%",
           margin: "0 auto",
-          backgroundColor: "#FFFFF0", // Ivory
-          color: "#333333", // Charcoal
+          backgroundColor: T.bg,
+          color: T.text,
           fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "'Lora', serif",
         }}
       >
@@ -326,15 +328,15 @@ export default function InviteViewer({ invitation }) {
           @keyframes rsvpPulse {
             0% {
               transform: scale(1);
-              box-shadow: 0 4px 15px rgba(247, 231, 206, 0.4);
+              box-shadow: 0 4px 15px ${T.gold}60;
             }
             50% {
               transform: scale(1.04);
-              box-shadow: 0 4px 25px rgba(247, 231, 206, 0.8), 0 0 0 8px rgba(247, 231, 206, 0.2);
+              box-shadow: 0 4px 25px ${T.gold}, 0 0 0 8px ${T.gold}30;
             }
             100% {
               transform: scale(1);
-              box-shadow: 0 4px 15px rgba(247, 231, 206, 0.4);
+              box-shadow: 0 4px 15px ${T.gold}60;
             }
           }
           .animate-pulse-rsvp {
@@ -348,26 +350,26 @@ export default function InviteViewer({ invitation }) {
             position: relative;
             width: 100%;
           }
-          /* Custom overrides for form inputs inside light Ivory theme */
+          /* Custom overrides for form inputs inside active theme */
           .ivory-input {
             width: 100%;
             padding: 12px 16px;
-            background-color: #FFFFFF;
-            border: 1px solid #E5E5E5;
+            background-color: ${T.card};
+            border: 1px solid ${T.border};
             border-radius: 8px;
-            color: #333333;
+            color: ${T.text};
             font-family: inherit;
             font-size: 14px;
             outline: none;
             transition: border-color 0.2s;
           }
           .ivory-input:focus {
-            border-color: #F7E7CE; /* Champagne */
+            border-color: ${T.gold};
           }
           .timeline-node {
             position: relative;
             padding-left: 28px;
-            border-left: 1px solid #F7E7CE;
+            border-left: 1px solid ${T.gold}50;
             padding-bottom: 24px;
           }
           .timeline-node:last-child {
@@ -381,8 +383,8 @@ export default function InviteViewer({ invitation }) {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: #F7E7CE;
-            border: 2px solid #FFFFF0;
+            background-color: ${T.gold};
+            border: 2px solid ${T.bg};
           }
         `}</style>
 
@@ -403,7 +405,7 @@ export default function InviteViewer({ invitation }) {
             style={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(to bottom, rgba(255,255,240,0.2) 0%, rgba(255,255,240,0.85) 75%, rgba(255,255,240,1) 100%)",
+              background: `linear-gradient(to bottom, ${T.bg}33 0%, ${T.bg}d8 75%, ${T.bg} 100%)`,
               zIndex: 1,
             }}
           />
@@ -421,21 +423,21 @@ export default function InviteViewer({ invitation }) {
           >
             {/* Arabic Monogram */}
             <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
-              <p style={{ color: "#333333", fontSize: 28, fontFamily: "'Noto Naskh Arabic', serif", marginBottom: 12, lineHeight: 1.6, opacity: 0.95 }}>
+              <p style={{ color: T.text, fontSize: 28, fontFamily: "'Noto Naskh Arabic', serif", marginBottom: 12, lineHeight: 1.6, opacity: 0.95 }}>
                 {invitation.headerArabic || "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"}
               </p>
             </ScrollReveal>
 
             {/* Blessing Sub-Header */}
             <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
-              <p style={{ color: "#333333", fontFamily: "'Playfair Display', serif", fontSize: 13, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 40, opacity: 0.7 }}>
+              <p style={{ color: T.text, fontFamily: "'Playfair Display', serif", fontSize: 13, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 40, opacity: 0.7 }}>
                 {invitation.headerGrace || "Under the Grace of Almighty Allah"}
               </p>
             </ScrollReveal>
 
             {/* Event Name Title */}
             <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
-              <p style={{ color: "#333333", fontFamily: "'Playfair Display', serif", fontSize: 12, letterSpacing: "0.3em", textTransform: "uppercase", marginBottom: 24, fontWeight: 500 }}>
+              <p style={{ color: T.text, fontFamily: "'Playfair Display', serif", fontSize: 12, letterSpacing: "0.3em", textTransform: "uppercase", marginBottom: 24, fontWeight: 500 }}>
                 {eventType === "wedding" ? text.wedding : 
                  eventType === "birthday" ? text.birthday : 
                  eventType === "anniversary" ? text.anniversary : 
@@ -446,23 +448,23 @@ export default function InviteViewer({ invitation }) {
             {/* Primary Couple Names (Playfair Display, Charcoal, Spacious) */}
             <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
               <div style={{ margin: "24px 0" }}>
-                <h1 style={{ color: "#333333", fontSize: 62, fontFamily: "'Playfair Display', serif", fontWeight: 300, lineHeight: 1.1, margin: 0 }}>
+                <h1 style={{ color: T.text, fontSize: 62, fontFamily: "'Playfair Display', serif", fontWeight: 300, lineHeight: 1.1, margin: 0 }}>
                   {invitation.brideName}
                 </h1>
                 {invitation.brideParentsName && (
-                  <p style={{ color: "#333333", fontSize: 13, fontStyle: "italic", marginTop: 8, opacity: 0.8, fontFamily: "'Lora', serif" }}>
+                  <p style={{ color: T.text, fontSize: 13, fontStyle: "italic", marginTop: 8, opacity: 0.8, fontFamily: "'Lora', serif" }}>
                     {eventType === "wedding" ? `${text.daughterOf} ${invitation.brideParentsName}` : invitation.brideParentsName}
                   </p>
                 )}
 
                 {invitation.groomName && (
                   <>
-                    <p style={{ color: "#333333", fontSize: 32, fontStyle: "italic", margin: "16px 0", opacity: 0.7, fontFamily: "'Playfair Display', serif" }}>&amp;</p>
-                    <h1 style={{ color: "#333333", fontSize: 62, fontFamily: "'Playfair Display', serif", fontWeight: 300, lineHeight: 1.1, margin: 0 }}>
+                    <p style={{ color: T.text, fontSize: 32, fontStyle: "italic", margin: "16px 0", opacity: 0.7, fontFamily: "'Playfair Display', serif" }}>&amp;</p>
+                    <h1 style={{ color: T.text, fontSize: 62, fontFamily: "'Playfair Display', serif", fontWeight: 300, lineHeight: 1.1, margin: 0 }}>
                       {invitation.groomName}
                     </h1>
                     {invitation.groomParentsName && (
-                      <p style={{ color: "#333333", fontSize: 13, fontStyle: "italic", marginTop: 8, opacity: 0.8, fontFamily: "'Lora', serif" }}>
+                      <p style={{ color: T.text, fontSize: 13, fontStyle: "italic", marginTop: 8, opacity: 0.8, fontFamily: "'Lora', serif" }}>
                         {eventType === "wedding" ? `${text.sonOf} ${invitation.groomParentsName}` : invitation.groomParentsName}
                       </p>
                     )}
@@ -473,16 +475,16 @@ export default function InviteViewer({ invitation }) {
 
             {/* Scroll Indicator */}
             <div style={{ marginTop: 60, animation: "bounce 2s infinite" }}>
-              <span style={{ fontSize: 18, color: "#333333", opacity: 0.4 }}>↓</span>
+              <span style={{ fontSize: 18, color: T.text, opacity: 0.4 }}>↓</span>
             </div>
           </div>
         </div>
 
         {/* SECTION 2: THE QUOTE / INTRO (Clean Spacious Ivory block) */}
-        <div style={{ backgroundColor: "#FFFFF0", padding: "100px 24px", textAlign: "center" }}>
+        <div style={{ backgroundColor: T.bg, padding: "100px 24px", textAlign: "center" }}>
           <div style={{ maxWidth: 600, margin: "0 auto" }}>
             <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
-              <div style={{ padding: "40px 0", borderTop: "1px solid rgba(247, 231, 206, 0.5)", borderBottom: "1px solid rgba(247, 231, 206, 0.5)" }}>
+              <div style={{ padding: "40px 0", borderTop: "1px solid " + T.border, borderBottom: "1px solid " + T.border }}>
                 {eventType === "wedding" ? (
                   <>
                     <p style={{ color: "#333333", fontSize: 18, fontStyle: "italic", lineHeight: 1.8, margin: 0, fontFamily: "'Lora', serif" }}>
@@ -650,10 +652,10 @@ export default function InviteViewer({ invitation }) {
         )}
 
         {/* SECTION 4: DATE, TIME & SCRATCH CARD (Ivory scrolling block) */}
-        <div style={{ backgroundColor: "#FFFFF0", padding: "100px 24px", textAlign: "center" }}>
+        <div style={{ backgroundColor: T.bg, padding: "100px 24px", textAlign: "center" }}>
           <div style={{ maxWidth: 520, margin: "0 auto" }}>
             <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
-              <p style={{ color: "#333333", fontFamily: "'Playfair Display', serif", fontSize: 12, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 24, fontWeight: 500, opacity: 0.8 }}>
+              <p style={{ color: T.text, fontFamily: "'Playfair Display', serif", fontSize: 12, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 24, fontWeight: 500, opacity: 0.8 }}>
                 {text.dateVenue}
               </p>
             </ScrollReveal>
@@ -663,20 +665,20 @@ export default function InviteViewer({ invitation }) {
                 
                 {/* Core Date & Venue Info */}
                 <div style={{ 
-                  border: "1px solid rgba(247, 231, 206, 0.5)", borderRadius: 8, padding: "40px 32px", 
-                  background: "#FFFFFF", textAlign: "center", boxShadow: "0 10px 30px rgba(0,0,0,0.02)" 
+                  border: "1px solid " + T.border, borderRadius: 8, padding: "40px 32px", 
+                  background: T.card, textAlign: "center", boxShadow: "0 10px 30px rgba(0,0,0,0.02)" 
                 }}>
-                  <p style={{ color: "#333333", fontSize: 22, fontFamily: "'Playfair Display', serif", fontWeight: 400, marginBottom: 8 }}>{fmt}</p>
-                  <p style={{ color: "#333333", fontSize: 15, fontFamily: "'Lora', serif", fontStyle: "italic", marginBottom: 28, opacity: 0.7 }}>at {fmtTime}</p>
+                  <p style={{ color: T.text, fontSize: 22, fontFamily: "'Playfair Display', serif", fontWeight: 400, marginBottom: 8 }}>{fmt}</p>
+                  <p style={{ color: T.text, fontSize: 15, fontFamily: "'Lora', serif", fontStyle: "italic", marginBottom: 28, opacity: 0.7 }}>at {fmtTime}</p>
                   
-                  <div style={{ borderTop: "1px solid rgba(247, 231, 206, 0.4)", paddingTop: 24 }}>
-                    <p style={{ color: "#333333", fontSize: 17, fontFamily: "'Playfair Display', serif", fontWeight: 500, marginBottom: 6 }}>{invitation.venue?.name}</p>
-                    <p style={{ color: "#333333", fontSize: 14, fontFamily: "'Lora', serif", opacity: 0.8 }}>{invitation.venue?.address}</p>
+                  <div style={{ borderTop: "1px solid " + T.border, paddingTop: 24 }}>
+                    <p style={{ color: T.text, fontSize: 17, fontFamily: "'Playfair Display', serif", fontWeight: 500, marginBottom: 6 }}>{invitation.venue?.name}</p>
+                    <p style={{ color: T.text, fontSize: 14, fontFamily: "'Lora', serif", opacity: 0.8 }}>{invitation.venue?.address}</p>
                   </div>
 
                   {invitation.venue?.googleMapsUrl && (
                     <a href={invitation.venue.googleMapsUrl} target="_blank" rel="noopener noreferrer"
-                      style={{ display: "inline-block", marginTop: 24, color: "#333333", fontFamily: "'Playfair Display', serif", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", textDecoration: "none", borderBottom: "1px solid #333333", paddingBottom: 2, fontWeight: 600 }}>
+                      style={{ display: "inline-block", marginTop: 24, color: T.text, fontFamily: "'Playfair Display', serif", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", textDecoration: "none", borderBottom: "1px solid " + T.text, paddingBottom: 2, fontWeight: 600 }}>
                       {text.openMaps}
                     </a>
                   )}
@@ -699,73 +701,57 @@ export default function InviteViewer({ invitation }) {
           </div>
         </div>
 
-        {/* SECTION 5: TIMELINE SCHEDULE (Parallax with elegant bullet list) */}
-        {invitation.details?.schedule?.length > 0 && (
-          <div 
-            className="parallax-bg"
-            style={{
-              backgroundImage: `url(${invitation.backgroundImage || galleryPhotos[2] || galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200"})`,
-              minHeight: "100vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "100px 24px",
-            }}
-          >
-            <div 
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "rgba(255, 255, 240, 0.8)",
-                zIndex: 1,
-              }}
-            />
-
-            <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 480, margin: "0 auto" }}>
+        {/* SECTION 5: CELEBRATION SCHEDULE TIMELINE (IvoryScrolling block) */}
+        {invitation.details?.schedule && invitation.details.schedule.length > 0 && (
+          <div style={{ backgroundColor: T.bg, padding: "100px 24px", textAlign: "center" }}>
+            <div style={{ maxWidth: 520, margin: "0 auto" }}>
               <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
-                <p style={{ textAlign: "center", color: "#333333", fontFamily: "'Playfair Display', serif", fontSize: 12, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 40, fontWeight: 500, opacity: 0.8 }}>
+                <p style={{ textAlign: "center", color: T.text, fontFamily: "'Playfair Display', serif", fontSize: 12, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 40, fontWeight: 500, opacity: 0.8 }}>
                   {text.timelineTitle}
                 </p>
               </ScrollReveal>
 
-              <div style={{ background: "#FFFFFF", border: "1px solid rgba(247, 231, 206, 0.5)", borderRadius: 8, padding: "40px 32px", boxShadow: "0 10px 30px rgba(0,0,0,0.02)" }}>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {invitation.details.schedule.map((ev, i) => {
-                    const d = new Date(ev.time);
-                    const timeStr = d.toLocaleTimeString(lang === "ur" ? "ur-PK" : lang === "hi" ? "hi-IN" : "en-US", { hour: "2-digit", minute: "2-digit" });
+              <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
+                <div style={{ textAlign: "left" }}>
+                  {invitation.details.schedule.map((item, idx) => {
+                    const sDate = new Date(item.time);
+                    const sFmtTime = sDate.toLocaleTimeString(
+                      lang === "ur" ? "ur-PK" : lang === "hi" ? "hi-IN" : "en-US",
+                      { hour: "2-digit", minute: "2-digit" }
+                    );
                     return (
-                      <div key={i} className="timeline-node">
-                        <div className="timeline-bullet" />
-                        <ScrollReveal duration="1.5s" ease="ease-out" distance="20px">
-                          <span style={{ color: "#333333", opacity: 0.5, fontSize: 11, fontWeight: 600, letterSpacing: "0.05em", fontFamily: "'Playfair Display', serif" }}>
-                            {timeStr}
-                          </span>
-                          <h4 style={{ color: "#333333", fontSize: 17, fontFamily: "'Playfair Display', serif", fontWeight: 500, margin: "4px 0" }}>
-                            {ev.name}
-                          </h4>
-                          {ev.venue && (
-                            <p style={{ color: "#333333", fontSize: 12.5, fontWeight: 600, margin: "2px 0 6px", opacity: 0.7, fontFamily: "'Lora', serif" }}>
-                              📍 {ev.venue}
-                            </p>
-                          )}
-                          <p style={{ color: "#333333", fontSize: 13, fontFamily: "'Lora', serif", opacity: 0.7, margin: 0, fontStyle: "italic", lineHeight: 1.5 }}>
-                            {ev.description}
+                      <div key={idx} className="timeline-node">
+                        <span className="timeline-bullet" />
+                        <span style={{ color: T.text, opacity: 0.5, fontSize: 11, fontWeight: 600, letterSpacing: "0.05em", fontFamily: "'Playfair Display', serif" }}>
+                          {sFmtTime}
+                        </span>
+                        <h4 style={{ color: T.text, fontSize: 17, fontFamily: "'Playfair Display', serif", fontWeight: 500, margin: "4px 0" }}>
+                          {item.name}
+                        </h4>
+                        {item.venue && (
+                          <p style={{ color: T.text, fontSize: 12.5, fontWeight: 600, margin: "2px 0 6px", opacity: 0.7, fontFamily: "'Lora', serif" }}>
+                            📍 {item.venue}
                           </p>
-                        </ScrollReveal>
+                        )}
+                        {item.description && (
+                          <p style={{ color: T.text, fontSize: 13, fontFamily: "'Lora', serif", opacity: 0.7, margin: 0, fontStyle: "italic", lineHeight: 1.5 }}>
+                            {item.description}
+                          </p>
+                        )}
                       </div>
                     );
                   })}
                 </div>
-              </div>
+              </ScrollReveal>
             </div>
           </div>
         )}
 
         {/* SECTION 6: LIVE COUNTDOWN TIMER (Spacious Ivory block) */}
-        <div style={{ backgroundColor: "#FFFFF0", padding: "100px 24px", textAlign: "center" }}>
+        <div style={{ backgroundColor: T.bg, padding: "100px 24px", textAlign: "center" }}>
           <div style={{ maxWidth: 520, margin: "0 auto" }}>
             <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
-              <p style={{ color: "#333333", fontFamily: "'Playfair Display', serif", fontSize: 12, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 32, fontWeight: 500, opacity: 0.8 }}>
+              <p style={{ color: T.text, fontFamily: "'Playfair Display', serif", fontSize: 12, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 32, fontWeight: 500, opacity: 0.8 }}>
                 {text.countdown}
               </p>
             </ScrollReveal>
@@ -779,14 +765,14 @@ export default function InviteViewer({ invitation }) {
                   { val: timeLeft.seconds, label: text.secs }
                 ].map((item, idx) => (
                   <div key={idx} style={{ 
-                    width: 90, padding: "20px 0", background: "#FFFFFF", 
-                    border: "1px solid rgba(247, 231, 206, 0.4)", borderRadius: 6,
+                    width: 90, padding: "20px 0", background: T.card, 
+                    border: "1px solid " + T.border, borderRadius: 6,
                     boxShadow: "0 6px 15px rgba(0,0,0,0.01)" 
                   }}>
-                    <span style={{ display: "block", fontSize: 32, fontWeight: 300, color: "#333333", fontFamily: "'Playfair Display', serif" }}>
+                    <span style={{ display: "block", fontSize: 32, fontWeight: 300, color: T.text, fontFamily: "'Playfair Display', serif" }}>
                       {String(item.val).padStart(2, "0")}
                     </span>
-                    <span style={{ display: "block", fontSize: 9.5, textTransform: "uppercase", color: "#333333", opacity: 0.5, letterSpacing: "0.15em", marginTop: 4, fontFamily: "'Lora', serif" }}>
+                    <span style={{ display: "block", fontSize: 9.5, textTransform: "uppercase", color: T.text, opacity: 0.5, letterSpacing: "0.15em", marginTop: 4, fontFamily: "'Lora', serif" }}>
                       {item.label}
                     </span>
                   </div>
@@ -812,36 +798,36 @@ export default function InviteViewer({ invitation }) {
             style={{
               position: "absolute",
               inset: 0,
-              background: "rgba(255, 255, 240, 0.82)",
+              background: T.bg + "d5",
               zIndex: 1,
             }}
           />
 
           <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 480, margin: "0 auto" }}>
             <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
-              <div style={{ background: "#FFFFFF", border: "1px solid rgba(247, 231, 206, 0.5)", borderRadius: 8, padding: "44px 36px", boxShadow: "0 15px 35px rgba(0,0,0,0.03)" }}>
+              <div style={{ background: T.card, border: "1px solid " + T.border, borderRadius: 8, padding: "44px 36px", boxShadow: "0 15px 35px rgba(0,0,0,0.03)" }}>
                 {rsvpDone ? (
                   <div style={{ textAlign: "center", padding: "20px 0" }}>
                     <div style={{ fontSize: 44, marginBottom: 16 }}>✨</div>
-                    <h3 style={{ color: "#333333", fontSize: 24, fontFamily: "'Playfair Display', serif", fontWeight: 400, marginBottom: 12 }}>
+                    <h3 style={{ color: T.text, fontSize: 24, fontFamily: "'Playfair Display', serif", fontWeight: 400, marginBottom: 12 }}>
                       {text.successTitle}
                     </h3>
-                    <p style={{ color: "#333333", fontSize: 14, fontFamily: "'Lora', serif", opacity: 0.8, lineHeight: 1.6, margin: 0 }}>
+                    <p style={{ color: T.text, fontSize: 14, fontFamily: "'Lora', serif", opacity: 0.8, lineHeight: 1.6, margin: 0 }}>
                       {text.successDesc}
                     </p>
                   </div>
                 ) : (
                   <>
-                    <h3 style={{ textAlign: "center", color: "#333333", fontSize: 24, fontFamily: "'Playfair Display', serif", fontWeight: 400, margin: "0 0 8px" }}>
+                    <h3 style={{ textAlign: "center", color: T.text, fontSize: 24, fontFamily: "'Playfair Display', serif", fontWeight: 400, margin: "0 0 8px" }}>
                       {text.rsvpTitle}
                     </h3>
-                    <p style={{ textAlign: "center", color: "#333333", fontSize: 13.5, fontFamily: "'Lora', serif", opacity: 0.7, margin: "0 0 28px" }}>
+                    <p style={{ textAlign: "center", color: T.text, fontSize: 13.5, fontFamily: "'Lora', serif", opacity: 0.7, margin: "0 0 28px" }}>
                       {text.rsvpDesc}
                     </p>
 
                     <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                       <div>
-                        <label style={{ display: "block", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#333333", marginBottom: 6, opacity: 0.7, fontFamily: "'Playfair Display', serif" }}>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: T.text, marginBottom: 6, opacity: 0.7, fontFamily: "'Playfair Display', serif" }}>
                           {text.fullName}
                         </label>
                         <input
@@ -855,7 +841,7 @@ export default function InviteViewer({ invitation }) {
                       </div>
 
                       <div>
-                        <label style={{ display: "block", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#333333", marginBottom: 6, opacity: 0.7, fontFamily: "'Playfair Display', serif" }}>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: T.text, marginBottom: 6, opacity: 0.7, fontFamily: "'Playfair Display', serif" }}>
                           {text.blessing}
                         </label>
                         <textarea
@@ -876,8 +862,8 @@ export default function InviteViewer({ invitation }) {
                         style={{
                           width: "100%",
                           padding: "14px",
-                          backgroundColor: "#F7E7CE", // Champagne background
-                          color: "#333333", // Charcoal text
+                          backgroundColor: T.gold,
+                          color: activePaletteId === "dark-moody-elegant" || activePaletteId === "emerald-noir" || activePaletteId === "midnight-gold" ? "#0F0F0F" : T.text,
                           border: "none",
                           borderRadius: 8,
                           fontSize: 12.5,
@@ -902,7 +888,7 @@ export default function InviteViewer({ invitation }) {
         </div>
 
         {/* SECTION 8: BOTTOM ANNOUNCEMENT & CONTACT FOOTER (Ivory block) */}
-        <div style={{ backgroundColor: "#FFFFF0", padding: "80px 24px", textAlign: "center", borderTop: "1px solid rgba(247, 231, 206, 0.4)" }}>
+        <div style={{ backgroundColor: T.bg, padding: "80px 24px", textAlign: "center", borderTop: "1px solid " + T.border }}>
           <div style={{ maxWidth: 520, margin: "0 auto" }}>
             
             {/* Bottom Announcement Note if Bottom position chosen */}
@@ -910,20 +896,20 @@ export default function InviteViewer({ invitation }) {
               <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
                 <div style={{
                   padding: "32px",
-                  background: "#FFFFFF",
+                  background: T.card,
                   borderRadius: 4,
-                  border: "1px solid rgba(247, 231, 206, 0.4)",
-                  borderLeft: "4px solid #F7E7CE",
+                  border: "1px solid " + T.border,
+                  borderLeft: "4px solid " + T.gold,
                   textAlign: "center",
                   boxShadow: "0 10px 30px rgba(0,0,0,0.01)",
                   marginBottom: 60,
                   position: "relative"
                 }}>
-                  <div style={{ position: "absolute", top: 8, left: 16, color: "#F7E7CE", opacity: 0.6, fontSize: 36, fontFamily: "serif", lineHeight: 1 }}>“</div>
+                  <div style={{ position: "absolute", top: 8, left: 16, color: T.gold, opacity: 0.6, fontSize: 36, fontFamily: "serif", lineHeight: 1 }}>“</div>
                   <p style={{
                     margin: 0,
                     fontSize: 15,
-                    color: "#333333",
+                    color: T.text,
                     fontStyle: "italic",
                     lineHeight: 1.7,
                     whiteSpace: "pre-line",
@@ -931,7 +917,7 @@ export default function InviteViewer({ invitation }) {
                   }}>
                     {customStyle.customNote}
                   </p>
-                  <div style={{ position: "absolute", bottom: -8, right: 16, color: "#F7E7CE", opacity: 0.6, fontSize: 36, fontFamily: "serif", lineHeight: 1 }}>”</div>
+                  <div style={{ position: "absolute", bottom: -8, right: 16, color: T.gold, opacity: 0.6, fontSize: 36, fontFamily: "serif", lineHeight: 1 }}>”</div>
                 </div>
               </ScrollReveal>
             )}
@@ -940,18 +926,18 @@ export default function InviteViewer({ invitation }) {
             {invitation.coupleEmail && (
               <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
                 <div style={{ marginBottom: 60 }}>
-                  <p style={{ color: "#333333", opacity: 0.5, fontSize: 11, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10, fontFamily: "'Playfair Display', serif" }}>
+                  <p style={{ color: T.text, opacity: 0.5, fontSize: 11, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10, fontFamily: "'Playfair Display', serif" }}>
                     {eventType === "wedding" ? text.contactCouple : text.contactHosts}
                   </p>
-                  <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#333333", fontSize: 15.5, textDecoration: "none", borderBottom: "1px solid #333333", paddingBottom: 2, fontWeight: 500, fontFamily: "'Lora', serif" }}>
+                  <a href={`mailto:${invitation.coupleEmail}`} style={{ color: T.text, fontSize: 15.5, textDecoration: "none", borderBottom: "1px solid " + T.text, paddingBottom: 2, fontWeight: 500, fontFamily: "'Lora', serif" }}>
                     {invitation.coupleEmail}
                   </a>
                 </div>
               </ScrollReveal>
             )}
 
-            <div style={{ paddingTop: 24, borderTop: "1px solid rgba(247, 231, 206, 0.3)" }}>
-              <p style={{ color: "#333333", opacity: 0.4, fontFamily: "'Playfair Display', serif", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase" }}>
+            <div style={{ paddingTop: 24, borderTop: "1px solid " + T.border }}>
+              <p style={{ color: T.text, opacity: 0.4, fontFamily: "'Playfair Display', serif", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase" }}>
                 Taabir Digital Invitations · Powered by Flynx
               </p>
             </div>
@@ -2088,6 +2074,15 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const palettes = [
+    { id: "minimalist-romance", name: "Minimalist Romance", preview: ["#FFFFF0", "#F7E7CE", "#333333"] },
+    { id: "emerald-noir", name: "Emerald Noir", preview: ["#001C12", "#C5A880", "#FAF9F5"] },
+    { id: "dark-moody-elegant", name: "Dark Moody & Elegant", preview: ["#0F0F0F", "#043927", "#D4AF37"] },
+    { id: "bohemian-terracotta", name: "Bohemian Terracotta", preview: ["#FFFDD0", "#E2725B", "#9DC183"] },
+    { id: "ivory-classic", name: "Ivory Classic", preview: ["#FAF9F5", "#800020", "#2c2317"] },
+    { id: "midnight-gold", name: "Midnight Gold", preview: ["#040B16", "#D4AF37", "#E2E8F0"] },
+  ];
+
   return (
     <div style={{ 
       background: T.bg, 
@@ -2115,6 +2110,116 @@ export default function InviteViewer({ invitation }) {
         >
           {lang === "en" ? "اردو / हिंदी" : lang === "ur" ? "हिंदी / English" : "English / اردو"}
         </button>
+      )}
+
+      {/* FLOATING PALETTE SWITCHER WIDGET */}
+      {phase === "open" && (
+        <div className="fixed bottom-4 left-4 z-[999] font-sans">
+          {showPaletteMenu ? (
+            <div 
+              style={{
+                background: "rgba(255, 255, 255, 0.95)",
+                backdropFilter: "blur(16px)",
+                border: "1px solid rgba(0, 0, 0, 0.08)",
+                borderRadius: 16,
+                padding: "16px 20px",
+                boxShadow: "0 10px 35px rgba(0,0,0,0.18)",
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                width: 250,
+                transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(0,0,0,0.06)", paddingBottom: 8 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#1f2937", letterSpacing: "0.08em", textTransform: "uppercase" }}>Switch Invite Palette</span>
+                <button 
+                  onClick={() => setShowPaletteMenu(false)}
+                  style={{
+                    border: "none",
+                    background: "none",
+                    fontSize: 20,
+                    cursor: "pointer",
+                    color: "#9ca3af",
+                    padding: 0,
+                    lineHeight: 0.5,
+                    outline: "none"
+                  }}
+                >
+                  &times;
+                </button>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                {palettes.map((pal) => {
+                  const isActive = activePaletteId === pal.id;
+                  return (
+                    <button
+                      key={pal.id}
+                      onClick={() => setActivePaletteId(pal.id)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "8px 10px",
+                        borderRadius: 8,
+                        border: isActive ? "2px solid #D4AF37" : "1px solid rgba(0,0,0,0.05)",
+                        backgroundColor: isActive ? "rgba(212, 175, 55, 0.05)" : "transparent",
+                        cursor: "pointer",
+                        transition: "all 0.2s",
+                        textAlign: "left",
+                        width: "100%",
+                        outline: "none"
+                      }}
+                    >
+                      <span style={{ fontSize: 11.5, fontWeight: isActive ? 700 : 500, color: isActive ? "#856404" : "#4b5563" }}>
+                        {pal.name}
+                      </span>
+                      <div style={{ display: "flex", gap: 3 }}>
+                        {pal.preview.map((c, i) => (
+                          <span 
+                            key={i} 
+                            style={{ 
+                              width: 10, 
+                              height: 10, 
+                              borderRadius: "50%", 
+                              backgroundColor: c, 
+                              border: "1px solid rgba(0,0,0,0.1)" 
+                            }} 
+                          />
+                        ))}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowPaletteMenu(true)}
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.95)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(0,0,0,0.08)",
+                borderRadius: "50%",
+                width: 44,
+                height: 44,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                fontSize: 20,
+                outline: "none"
+              }}
+              title="Change Color Palette"
+              className="hover:scale-105 active:scale-95"
+            >
+              🎨
+            </button>
+          )}
+        </div>
       )}
 
       {/* DYNAMIC OPENING GATEWAYS */}
