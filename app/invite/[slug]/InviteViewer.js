@@ -55,6 +55,18 @@ export default function InviteViewer({ invitation }) {
     return () => clearInterval(id);
   }, [invitation.weddingDate]);
 
+  /* ── Auto-rotate wedding gallery photos with elegant Ken Burns zoom cross-fade ── */
+  useEffect(() => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    if (galleryPhotos.length <= 1 || phase !== "open") return;
+
+    const timer = setInterval(() => {
+      setActivePhotoIdx((prev) => (prev === galleryPhotos.length - 1 ? 0 : prev + 1));
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, [invitation.photos, invitation.photoUrl, phase]);
+
   /* ── Open handler ── */
   const handleOpen = () => {
     setPhase("opening");
@@ -287,8 +299,27 @@ export default function InviteViewer({ invitation }) {
               <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
                 <div style={{ border: `1px solid ${T.border}`, borderRadius: 16, overflow: "hidden", background: T.card, padding: 6, position: "relative" }}>
                   <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={galleryPhotos[activePhotoIdx]} alt="Couple" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "all 0.5s ease-in-out" }} />
+                    {/* Render all pictures stacked absolutely with dynamic Ken Burns cross-fade animation */}
+                    {galleryPhotos.map((pic, index) => (
+                      <img
+                        key={index}
+                        src={pic}
+                        alt="Couple"
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          display: "block",
+                          opacity: index === activePhotoIdx ? 1 : 0,
+                          transform: index === activePhotoIdx ? "scale(1)" : "scale(1.08)",
+                          transition: "opacity 1.6s cubic-bezier(0.25, 1, 0.5, 1), transform 1.6s cubic-bezier(0.25, 1, 0.5, 1)",
+                          zIndex: index === activePhotoIdx ? 2 : 1,
+                          pointerEvents: index === activePhotoIdx ? "auto" : "none",
+                        }}
+                      />
+                    ))}
                     
                     {galleryPhotos.length > 1 && (
                       <>
