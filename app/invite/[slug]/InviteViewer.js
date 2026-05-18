@@ -1224,7 +1224,7 @@ export default function InviteViewer({ invitation }) {
                 <div style={{ border: "1px solid rgba(212, 175, 55, 0.35)", borderRadius: 12, overflow: "hidden", background: "#0F0F0F", padding: 12, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}>
                   <div style={{ borderRadius: 6, overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
                     <img 
-                      src={galleryPhotos[activeSlide]} 
+                      src={galleryPhotos[activePhotoIdx]} 
                       alt="Gallery Celebration" 
                       style={{ width: "100%", height: "100%", objectFit: "cover" }} 
                     />
@@ -1233,7 +1233,7 @@ export default function InviteViewer({ invitation }) {
                       <>
                         <button
                           type="button"
-                          onClick={() => setActiveSlide(prev => (prev === 0 ? galleryPhotos.length - 1 : prev - 1))}
+                          onClick={() => setActivePhotoIdx(prev => (prev === 0 ? galleryPhotos.length - 1 : prev - 1))}
                           style={{
                             position: "absolute", top: "50%", left: 16, transform: "translateY(-50%)",
                             width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(212,175,55,0.4)",
@@ -1245,7 +1245,7 @@ export default function InviteViewer({ invitation }) {
                         </button>
                         <button
                           type="button"
-                          onClick={() => setActiveSlide(prev => (prev === galleryPhotos.length - 1 ? 0 : prev + 1))}
+                          onClick={() => setActivePhotoIdx(prev => (prev === galleryPhotos.length - 1 ? 0 : prev + 1))}
                           style={{
                             position: "absolute", top: "50%", right: 16, transform: "translateY(-50%)",
                             width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(212,175,55,0.4)",
@@ -1262,7 +1262,7 @@ export default function InviteViewer({ invitation }) {
                               key={i} 
                               style={{
                                 width: 6, height: 6, borderRadius: "50%",
-                                background: activeSlide === i ? "#D4AF37" : "rgba(255,255,255,0.4)",
+                                background: activePhotoIdx === i ? "#D4AF37" : "rgba(255,255,255,0.4)",
                                 transition: "all 0.2s"
                               }}
                             />
