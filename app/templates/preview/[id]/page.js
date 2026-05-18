@@ -125,11 +125,67 @@ const DEMO_DATA = {
       btnTextColor: "#333333"
     }
   },
+  "dark-moody-elegant": {
+    id: "__demo_dark_moody_elegant__",
+    brideName: "Victoria",
+    brideParentsName: "Lord & Lady Sterling",
+    groomName: "Andrew",
+    groomParentsName: "Mr. & Mrs. Reginald Montgomery",
+    weddingDate: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000).toISOString(), // 75 days from now
+    venue: {
+      name: "The Royal Palace Chateau",
+      address: "100 Golden Gates Avenue, Versailles, France",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1519225495810-7517c5a6538a?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1519225495810-7517c5a6538a?q=80&w=1200",
+      "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200",
+      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200"
+    ],
+    musicUrl: "",
+    coupleEmail: "victoria.andrew.wedding@chateau.fr",
+    theme: { templateId: "dark-moody-elegant" },
+    details: {
+      schedule: [
+        {
+          name: "Welcome Candlelight Soirée",
+          time: new Date(Date.now() + 74 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "An evening of vintage wines, harp music, and warm greetings.",
+          venue: "The Chateau Orangery Pavilion"
+        },
+        {
+          name: "Holy Vows Exchange & Nikkah",
+          time: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Witness our forever binding vows under the golden cathedral dome.",
+          venue: "The Royal Sanctuary Cathedral"
+        },
+        {
+          name: "Grand Royal Banquet & Reception",
+          time: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
+          description: "A theatrical multi-course royal feast, champagne bar, and waltz.",
+          venue: "The Hall of Golden Mirrors"
+        },
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "sliding-doors",
+      btnBgColor: "#D4AF37",
+      btnTextColor: "#0F0F0F"
+    }
+  },
 };
 
 export async function generateMetadata({ params }) {
   const id = params.id;
-  const labels = { "emerald-noir": "Emerald Noir", "ivory-classic": "Ivory Classic", "minimalist-romance": "Minimalist Romance" };
+  const labels = { 
+    "emerald-noir": "Emerald Noir", 
+    "ivory-classic": "Ivory Classic", 
+    "minimalist-romance": "Minimalist Romance",
+    "dark-moody-elegant": "Dark Moody & Elegant"
+  };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,
     description: "Live preview of this Taabir digital wedding invitation template.",

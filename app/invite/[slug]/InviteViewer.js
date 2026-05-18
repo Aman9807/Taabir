@@ -257,6 +257,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#C5A880", 
         border: "rgba(197,168,128,0.2)"
       }
+    : tplId === "dark-moody-elegant"
+    ? {
+        bg: "#0F0F0F", 
+        door: "#043927", 
+        seam: "#D4AF37", 
+        card: "#043927", 
+        text: "#FFFFFF", 
+        sub: "#D4AF37", 
+        gold: "#D4AF37", 
+        border: "rgba(212,175,55,0.25)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -939,6 +950,660 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderDarkMoody = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+    const customBg = invitation.backgroundImage || galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200";
+
+    return (
+      <div 
+        style={{
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s ease-out, transform 1.5s ease-out",
+          width: "100%",
+          margin: "0 auto",
+          backgroundColor: "#0F0F0F",
+          color: "#FFFFFF",
+          fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "'Montserrat', sans-serif",
+        }}
+      >
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Montserrat:wght@200;300;400;500;600;700&display=swap');
+          
+          @keyframes revealLeft {
+            from { clip-path: inset(0 100% 0 0); transform: translateX(-20px); }
+            to { clip-path: inset(0 0 0 0); transform: translateX(0); }
+          }
+          .reveal-from-left {
+            animation: revealLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          }
+
+          @keyframes kenBurnsZoom {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+          }
+          .ken-burns-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+          }
+          .ken-burns-bg {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            animation: kenBurnsZoom 8s ease-in-out infinite;
+          }
+
+          @keyframes slideInRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+          .timeline-card-staggered {
+            opacity: 0;
+            animation: slideInRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          }
+
+          .dark-moody-input {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: rgba(4, 57, 39, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 13.5px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+          }
+          .dark-moody-input:focus {
+            border-color: #D4AF37;
+            background-color: rgba(4, 57, 39, 0.3);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+          }
+          .dark-moody-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+          }
+
+          .parallax-dark-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(15,15,15,0.3) 0%, rgba(15,15,15,0.85) 75%, rgba(15,15,15,1) 100%);
+            z-index: 1;
+          }
+        `}</style>
+
+        {/* SECTION 1: HERO VIEWPORT */}
+        <div 
+          style={{
+            position: "relative",
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden"
+          }}
+        >
+          <div className="ken-burns-container">
+            <div className="ken-burns-bg" style={{ backgroundImage: `url(${customBg})` }} />
+          </div>
+          <div className="parallax-dark-overlay" />
+
+          {/* Hero Content */}
+          <div 
+            style={{
+              position: "relative",
+              zIndex: 2,
+              textAlign: "center",
+              padding: "0 24px",
+              maxWidth: 600,
+              margin: "0 auto"
+            }}
+          >
+            <ScrollReveal duration="1.2s" ease="ease-out" distance="20px">
+              <p style={{ color: "#D4AF37", fontSize: 24, fontFamily: "'Noto Naskh Arabic', serif", marginBottom: 12, lineHeight: 1.6 }}>
+                {invitation.headerArabic || "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"}
+              </p>
+              <p style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", marginBottom: 36 }}>
+                {invitation.headerGrace || "Under the Grace of Almighty Allah"}
+              </p>
+            </ScrollReveal>
+
+            {/* Names Masked Reveal */}
+            <div className="reveal-from-left" style={{ margin: "24px 0" }}>
+              <h1 style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: lang === "ur" ? 44 : 38, fontWeight: 700, letterSpacing: "0.05em", margin: 0, textTransform: "uppercase", textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>
+                {invitation.brideName}
+              </h1>
+              {invitation.groomName && (
+                <>
+                  <p style={{ color: "#FFFFFF", fontFamily: "'Cinzel', serif", fontSize: 18, margin: "8px 0", fontStyle: "italic", opacity: 0.95 }}>
+                    and
+                  </p>
+                  <h1 style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: lang === "ur" ? 44 : 38, fontWeight: 700, letterSpacing: "0.05em", margin: 0, textTransform: "uppercase", textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>
+                    {invitation.groomName}
+                  </h1>
+                </>
+              )}
+            </div>
+
+            <ScrollReveal duration="1.4s" ease="ease-out" distance="20px">
+              <p style={{ color: "#FFFFFF", fontFamily: "'Montserrat', sans-serif", fontSize: 13, fontWeight: 300, letterSpacing: "0.15em", textTransform: "uppercase", marginTop: 28, opacity: 0.9 }}>
+                {text.cordiallyInvite}
+              </p>
+              <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", margin: "24px auto" }} />
+              <p style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 16, letterSpacing: "0.15em", margin: 0 }}>
+                {fmt}
+              </p>
+              <p style={{ color: "#FFFFFF", fontFamily: "'Montserrat', sans-serif", fontSize: 13, fontWeight: 400, marginTop: 8, opacity: 0.85 }}>
+                {fmtTime}
+              </p>
+            </ScrollReveal>
+          </div>
+        </div>
+
+        {/* SECTION 2: DATE COUNTDOWN AND BRIDAL NOTE */}
+        <div style={{ backgroundColor: "#0F0F0F", padding: "100px 24px", borderTop: "1px solid rgba(212, 175, 55, 0.15)" }}>
+          <div style={{ maxWidth: 520, margin: "0 auto", textAlign: "center" }}>
+            
+            {/* Language switcher */}
+            {customStyle.enableLanguageSwitcher && (
+              <ScrollReveal>
+                <div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 40 }}>
+                  {["en", "ur", "hi"].map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => setLang(l)}
+                      style={{
+                        padding: "6px 14px",
+                        background: lang === l ? "#D4AF37" : "transparent",
+                        color: lang === l ? "#0F0F0F" : "#FFFFFF",
+                        border: "1px solid rgba(212,175,55,0.4)",
+                        borderRadius: 20,
+                        fontSize: 10.5,
+                        fontWeight: 600,
+                        textTransform: "uppercase",
+                        cursor: "pointer",
+                        transition: "all 0.3s"
+                      }}
+                    >
+                      {l === "en" ? "EN" : l === "ur" ? "اردو" : "HI"}
+                    </button>
+                  ))}
+                </div>
+              </ScrollReveal>
+            )}
+
+            {/* Countdown widget */}
+            <ScrollReveal>
+              <h2 style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 20, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 32 }}>
+                {text.countdownTitle}
+              </h2>
+              <div style={{ display: "flex", justifyContent: "center", gap: 14, marginBottom: 54 }}>
+                {[
+                  { val: timeLeft.days, label: text.days },
+                  { val: timeLeft.hours, label: text.hours },
+                  { val: timeLeft.minutes, label: text.minutes },
+                  { val: timeLeft.seconds, label: text.seconds }
+                ].map((item, idx) => (
+                  <div key={idx} style={{ minWidth: 68, padding: "14px 8px", background: "rgba(4, 57, 39, 0.2)", border: "1px solid rgba(212, 175, 55, 0.15)", borderRadius: 10 }}>
+                    <p style={{ color: "#D4AF37", fontSize: 24, fontFamily: "'Cinzel', serif", fontWeight: 700, margin: 0 }}>
+                      {item.val}
+                    </p>
+                    <p style={{ color: "#FFFFFF", fontSize: 9.5, textTransform: "uppercase", letterSpacing: "0.08em", opacity: 0.6, margin: "4px 0 0" }}>
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </ScrollReveal>
+
+            {/* Parents / Sub-titles */}
+            <ScrollReveal>
+              <div style={{ display: "flex", flexDirection: "column", gap: 32, padding: "40px 24px", border: "1px solid rgba(212,175,55,0.15)", borderRadius: 16, background: "rgba(4, 57, 39, 0.1)" }}>
+                <div>
+                  <h4 style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 13, letterSpacing: "0.15em", textTransform: "uppercase", margin: "0 0 4px" }}>
+                    {invitation.brideName}
+                  </h4>
+                  {invitation.brideParentsName && (
+                    <p style={{ color: "#FFFFFF", fontSize: 12.5, opacity: 0.75, margin: 0, fontStyle: "italic" }}>
+                      Daughter of {invitation.brideParentsName}
+                    </p>
+                  )}
+                </div>
+                {invitation.groomName && (
+                  <div>
+                    <h4 style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 13, letterSpacing: "0.15em", textTransform: "uppercase", margin: "0 0 4px" }}>
+                      {invitation.groomName}
+                    </h4>
+                    {invitation.groomParentsName && (
+                      <p style={{ color: "#FFFFFF", fontSize: 12.5, opacity: 0.75, margin: 0, fontStyle: "italic" }}>
+                        Son of {invitation.groomParentsName}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+
+        {/* SECTION 3: PARALLAX GALLERY VIEWPORT */}
+        {hasPhotos && (
+          <div 
+            style={{
+              position: "relative",
+              minHeight: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden"
+            }}
+          >
+            <div className="ken-burns-container">
+              <div className="ken-burns-bg" style={{ backgroundImage: `url(${invitation.backgroundImage || galleryPhotos[1] || galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200"})` }} />
+            </div>
+            <div className="parallax-dark-overlay" />
+
+            <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 520, margin: "0 auto", padding: "0 24px" }}>
+              <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
+                <div style={{ border: "1px solid rgba(212, 175, 55, 0.35)", borderRadius: 12, overflow: "hidden", background: "#0F0F0F", padding: 12, boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}>
+                  <div style={{ borderRadius: 6, overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
+                    <img 
+                      src={galleryPhotos[activeSlide]} 
+                      alt="Gallery Celebration" 
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                    />
+                    
+                    {galleryPhotos.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setActiveSlide(prev => (prev === 0 ? galleryPhotos.length - 1 : prev - 1))}
+                          style={{
+                            position: "absolute", top: "50%", left: 16, transform: "translateY(-50%)",
+                            width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(212,175,55,0.4)",
+                            background: "rgba(15,15,15,0.75)", color: "#D4AF37", fontSize: 16, fontWeight: 700,
+                            cursor: "pointer", transition: "all 0.2s", zIndex: 10
+                          }}
+                        >
+                          ‹
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setActiveSlide(prev => (prev === galleryPhotos.length - 1 ? 0 : prev + 1))}
+                          style={{
+                            position: "absolute", top: "50%", right: 16, transform: "translateY(-50%)",
+                            width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(212,175,55,0.4)",
+                            background: "rgba(15,15,15,0.75)", color: "#D4AF37", fontSize: 16, fontWeight: 700,
+                            cursor: "pointer", transition: "all 0.2s", zIndex: 10
+                          }}
+                        >
+                          ›
+                        </button>
+                        
+                        <div style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6, zIndex: 10 }}>
+                          {galleryPhotos.map((_, i) => (
+                            <span 
+                              key={i} 
+                              style={{
+                                width: 6, height: 6, borderRadius: "50%",
+                                background: activeSlide === i ? "#D4AF37" : "rgba(255,255,255,0.4)",
+                                transition: "all 0.2s"
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        )}
+
+        {/* SECTION 4: DATE, TIME & SCRATCH CARD */}
+        <div style={{ backgroundColor: "#0F0F0F", padding: "100px 24px", borderTop: "1px solid rgba(212, 175, 55, 0.15)" }}>
+          <div style={{ maxWidth: 520, margin: "0 auto", textAlign: "center" }}>
+            
+            {customStyle.customNote && customStyle.notePosition === "middle" && (
+              <ScrollReveal>
+                <div style={{
+                  padding: "32px",
+                  background: "rgba(4, 57, 39, 0.15)",
+                  borderRadius: 16,
+                  border: "1px solid rgba(212, 175, 55, 0.2)",
+                  borderLeft: "4px solid #D4AF37",
+                  textAlign: "center",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                  marginBottom: 64,
+                  position: "relative"
+                }}>
+                  <div style={{ position: "absolute", top: 8, left: 16, color: "#D4AF37", opacity: 0.3, fontSize: 36, fontFamily: "serif", lineHeight: 1 }}>“</div>
+                  <p style={{
+                    margin: 0,
+                    fontSize: 14.5,
+                    color: "#FFFFFF",
+                    fontStyle: "italic",
+                    lineHeight: 1.7,
+                    whiteSpace: "pre-line",
+                    fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "'Montserrat', sans-serif"
+                  }}>
+                    {customStyle.customNote}
+                  </p>
+                  <div style={{ position: "absolute", bottom: -8, right: 16, color: "#D4AF37", opacity: 0.3, fontSize: 36, fontFamily: "serif", lineHeight: 1 }}>”</div>
+                </div>
+              </ScrollReveal>
+            )}
+
+            <ScrollReveal>
+              <h2 style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 22, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12 }}>
+                {text.venueTitle}
+              </h2>
+              <p style={{ color: "#FFFFFF", fontFamily: "'Montserrat', sans-serif", fontSize: 13, opacity: 0.6, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 36 }}>
+                Celebrate with us
+              </p>
+            </ScrollReveal>
+
+            {/* Date Details Box */}
+            <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
+              <div style={{
+                position: "relative",
+                background: "rgba(4, 57, 39, 0.15)",
+                border: "1px solid rgba(212, 175, 55, 0.2)",
+                borderRadius: 16,
+                padding: "48px 24px",
+                overflow: "hidden",
+                minHeight: 280,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 15px 35px rgba(0,0,0,0.2)"
+              }}>
+                {/* Main revealed contents */}
+                <div style={{ zIndex: 1, position: "relative" }}>
+                  <span style={{ fontSize: 32, display: "block", marginBottom: 16 }}>🏛️</span>
+                  <h3 style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 18, letterSpacing: "0.08em", fontWeight: 600, margin: "0 0 12px" }}>
+                    {invitation.venue?.name}
+                  </h3>
+                  <p style={{ color: "#FFFFFF", fontSize: 14.5, lineHeight: 1.6, opacity: 0.85, margin: "0 0 28px", maxWidth: 360, fontFamily: "'Montserrat', sans-serif" }}>
+                    {invitation.venue?.address}
+                  </p>
+                  
+                  {invitation.venue?.googleMapsUrl && (
+                    <a
+                      href={invitation.venue.googleMapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
+                        padding: "10px 24px",
+                        backgroundColor: "#D4AF37",
+                        color: "#0F0F0F",
+                        textDecoration: "none",
+                        borderRadius: 30,
+                        fontSize: 11,
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.15em",
+                        boxShadow: "0 4px 15px rgba(212, 175, 55, 0.2)",
+                        transition: "all 0.2s"
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.transform = "translateY(-1px)"}
+                      onMouseLeave={e => e.currentTarget.style.transform = "none"}
+                    >
+                      📍 {text.viewMap}
+                    </a>
+                  )}
+                </div>
+
+                {/* Golden Scratcher Overlay card */}
+                {hasScratch && !scratchRevealed && (
+                  <ScratchCardCanvas 
+                    textColor="#3a2503"
+                    goldColor="#D4AF37"
+                    onRevealed={() => {
+                      setScratchRevealed(true);
+                      triggerConfettiShower();
+                    }}
+                    instructionsText={text.scratchText}
+                  />
+                )}
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+
+        {/* SECTION 5: TIMELINE SCHEDULE (Cinematic Staggered Slide-In-Right) */}
+        {invitation.details?.schedule?.length > 0 && (
+          <div 
+            style={{
+              position: "relative",
+              minHeight: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden"
+            }}
+          >
+            <div className="ken-burns-container">
+              <div className="ken-burns-bg" style={{ backgroundImage: `url(${invitation.backgroundImage || galleryPhotos[2] || galleryPhotos[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200"})` }} />
+            </div>
+            <div className="parallax-dark-overlay" />
+
+            <div style={{ position: "relative", zIndex: 2, width: "100%", maxWidth: 520, margin: "0 auto", padding: "0 24px" }}>
+              <ScrollReveal>
+                <h2 style={{ textAlign: "center", color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 22, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 44 }}>
+                  {text.timelineTitle}
+                </h2>
+              </ScrollReveal>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {invitation.details.schedule.map((ev, i) => {
+                  const d = new Date(ev.time);
+                  return (
+                    <div 
+                      key={i} 
+                      className="timeline-card-staggered"
+                      style={{ 
+                        animationDelay: `${i * 0.3}s`,
+                        border: "1px solid rgba(212, 175, 55, 0.2)", 
+                        borderRadius: 12, 
+                        padding: "24px 28px", 
+                        background: "rgba(15, 15, 15, 0.92)", 
+                        display: "flex", 
+                        alignItems: "flex-start", 
+                        gap: 16,
+                        boxShadow: "0 10px 25px rgba(0,0,0,0.3)"
+                      }}
+                    >
+                      <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#D4AF37", marginTop: 7, flexShrink: 0 }} />
+                      <div style={{ flex: 1 }}>
+                        <p style={{ color: "#D4AF37", fontFamily: "'Cinzel', serif", fontSize: 16, fontWeight: 600, margin: "0 0 6px", letterSpacing: "0.05em" }}>
+                          {ev.name}
+                        </p>
+                        <p style={{ color: "#FFFFFF", fontFamily: "'Montserrat', sans-serif", fontSize: 12, fontWeight: 300, opacity: 0.6, margin: "0 0 10px" }}>
+                          {d.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-US", { weekday: "short", month: "long", day: "numeric" })} · {d.toLocaleTimeString(lang === "ur" ? "ur-PK" : "en-US", { hour: "2-digit", minute: "2-digit" })}
+                        </p>
+                        {ev.venue && (
+                          <p style={{ color: "#FFFFFF", fontSize: 13, fontWeight: 400, margin: "0 0 6px", opacity: 0.85, fontFamily: "'Montserrat', sans-serif" }}>
+                            📍 Venue: {ev.venue}
+                          </p>
+                        )}
+                        {ev.description && (
+                          <p style={{ color: "#FFFFFF", fontSize: 13, margin: 0, fontStyle: "italic", opacity: 0.7, fontFamily: "'Montserrat', sans-serif" }}>
+                            {ev.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SECTION 6: INTERACTIVE RSVP REGISTRY */}
+        <div style={{ backgroundColor: "#0F0F0F", padding: "100px 24px", borderTop: "1px solid rgba(212, 175, 55, 0.15)" }}>
+          <div style={{ maxWidth: 480, margin: "0 auto" }}>
+            <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
+              <div style={{ background: "rgba(4, 57, 39, 0.1)", border: "1px solid rgba(212, 175, 55, 0.2)", borderRadius: 16, padding: "44px 36px", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}>
+                {rsvpDone ? (
+                  <div style={{ textAlign: "center", padding: "20px 0" }}>
+                    <div style={{ fontSize: 44, marginBottom: 16 }}>✨</div>
+                    <h3 style={{ color: "#D4AF37", fontSize: 24, fontFamily: "'Cinzel', serif", fontWeight: 500, marginBottom: 12, letterSpacing: "0.08em" }}>
+                      {text.successTitle}
+                    </h3>
+                    <p style={{ color: "#FFFFFF", fontSize: 14, fontFamily: "'Montserrat', sans-serif", opacity: 0.8, lineHeight: 1.6, margin: 0 }}>
+                      {text.successDesc}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <h3 style={{ textAlign: "center", color: "#D4AF37", fontSize: 24, fontFamily: "'Cinzel', serif", fontWeight: 500, margin: "0 0 8px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                      {text.rsvpTitle}
+                    </h3>
+                    <p style={{ textAlign: "center", color: "#FFFFFF", fontSize: 13, fontFamily: "'Montserrat', sans-serif", opacity: 0.6, margin: "0 0 28px" }}>
+                      {text.rsvpDesc}
+                    </p>
+
+                    <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                      <div>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.15em", color: "#D4AF37", marginBottom: 6, fontFamily: "'Cinzel', serif" }}>
+                          {text.fullName}
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={rsvp.name}
+                          onChange={e => setRsvp(prev => ({ ...prev, name: e.target.value }))}
+                          placeholder="e.g. Faisal Khan"
+                          className="dark-moody-input"
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ display: "block", fontSize: 11, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.15em", color: "#D4AF37", marginBottom: 6, fontFamily: "'Cinzel', serif" }}>
+                          {text.blessing}
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={rsvp.blessing}
+                          onChange={e => setRsvp(prev => ({ ...prev, blessing: e.target.value }))}
+                          placeholder="Send your warm wishes to the couple..."
+                          className="dark-moody-input"
+                          style={{ resize: "none" }}
+                        />
+                      </div>
+
+                      {/* GOLD RSVP BUTTON */}
+                      <button
+                        type="submit"
+                        disabled={rsvpLoading}
+                        style={{
+                          width: "100%",
+                          padding: "14px",
+                          backgroundColor: "#D4AF37", 
+                          color: "#0F0F0F", 
+                          border: "none",
+                          borderRadius: 8,
+                          fontSize: 12.5,
+                          fontWeight: 700,
+                          letterSpacing: "0.15em",
+                          textTransform: "uppercase",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          fontFamily: "'Cinzel', serif",
+                          marginTop: 8,
+                          outline: "none",
+                          boxShadow: "0 4px 15px rgba(212, 175, 55, 0.25)"
+                        }}
+                        onMouseEnter={e => {
+                          e.currentTarget.style.backgroundColor = "#FFF2B2";
+                          e.currentTarget.style.transform = "translateY(-1px)";
+                        }}
+                        onMouseLeave={e => {
+                          e.currentTarget.style.backgroundColor = "#D4AF37";
+                          e.currentTarget.style.transform = "none";
+                        }}
+                      >
+                        {rsvpLoading ? text.sending : text.sendRsvp}
+                      </button>
+                    </form>
+                  </>
+                )}
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+
+        {/* SECTION 7: BOTTOM ANNOUNCEMENT & CONTACT FOOTER */}
+        <div style={{ backgroundColor: "#0F0F0F", padding: "80px 24px", textAlign: "center", borderTop: "1px solid rgba(212, 175, 55, 0.15)" }}>
+          <div style={{ maxWidth: 520, margin: "0 auto" }}>
+            
+            {customStyle.customNote && customStyle.notePosition === "bottom" && (
+              <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
+                <div style={{
+                  padding: "32px",
+                  background: "rgba(4, 57, 39, 0.15)",
+                  borderRadius: 16,
+                  border: "1px solid rgba(212, 175, 55, 0.2)",
+                  borderLeft: "4px solid #D4AF37",
+                  textAlign: "center",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                  marginBottom: 60,
+                  position: "relative"
+                }}>
+                  <div style={{ position: "absolute", top: 8, left: 16, color: "#D4AF37", opacity: 0.3, fontSize: 36, fontFamily: "serif", lineHeight: 1 }}>“</div>
+                  <p style={{
+                    margin: 0,
+                    fontSize: 14.5,
+                    color: "#FFFFFF",
+                    fontStyle: "italic",
+                    lineHeight: 1.7,
+                    whiteSpace: "pre-line",
+                    fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "'Montserrat', sans-serif"
+                  }}>
+                    {customStyle.customNote}
+                  </p>
+                  <div style={{ position: "absolute", bottom: -8, right: 16, color: "#D4AF37", opacity: 0.3, fontSize: 36, fontFamily: "serif", lineHeight: 1 }}>”</div>
+                </div>
+              </ScrollReveal>
+            )}
+
+            {/* Couple Email contact block */}
+            {invitation.coupleEmail && (
+              <ScrollReveal duration="1.5s" ease="ease-out" distance="30px">
+                <div style={{ marginBottom: 60 }}>
+                  <p style={{ color: "#D4AF37", fontSize: 11, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10, fontFamily: "'Cinzel', serif" }}>
+                    {eventType === "wedding" ? text.contactCouple : text.contactHosts}
+                  </p>
+                  <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#FFFFFF", fontSize: 15, textDecoration: "none", borderBottom: "1px solid #D4AF37", paddingBottom: 2, fontWeight: 400, fontFamily: "'Montserrat', sans-serif" }}>
+                    {invitation.coupleEmail}
+                  </a>
+                </div>
+              </ScrollReveal>
+            )}
+
+            <div style={{ paddingTop: 24, borderTop: "1px solid rgba(212, 175, 55, 0.1)" }}>
+              <p style={{ color: "#FFFFFF", opacity: 0.4, fontFamily: "'Montserrat', sans-serif", fontSize: 9.5, letterSpacing: "0.25em", textTransform: "uppercase" }}>
+                Taabir Digital Invitations · Powered by Flynx
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={{ 
       background: T.bg, 
@@ -1137,6 +1802,8 @@ export default function InviteViewer({ invitation }) {
       {/* INNER VIEWPORT INVITATION CARD */}
       {tplId === "minimalist-romance" ? (
         renderMinimalistRomance()
+      ) : tplId === "dark-moody-elegant" ? (
+        renderDarkMoody()
       ) : (
         <div 
           style={{

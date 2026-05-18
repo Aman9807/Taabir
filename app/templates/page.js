@@ -81,6 +81,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-600",
     featureColor: "text-slate-700",
     btnSecondaryClass: "bg-slate-900/5 hover:bg-slate-900/10 text-slate-800 border-slate-200"
+  },
+  {
+    id: "dark-moody-elegant",
+    name: "Dark Moody & Elegant",
+    badge: "New Immersive Story",
+    vibe: "A luxurious, dark-themed digital invitation. Cinzel cinematic headers, Ken Burns animated hero loops, and staggered event lists.",
+    primaryColor: "bg-[#0F0F0F]",
+    textColor: "text-[#D4AF37]",
+    paletteColors: ["#0F0F0F", "#043927", "#D4AF37", "#FFFFFF"],
+    fonts: "Cinzel, Montserrat",
+    features: [
+      "Luxurious Cinematic Immersive Story Layout",
+      "Continuous Ken Burns Photo Zoom Effects",
+      "Staggered Event Timeline Cards (0.3s Delay)",
+      "Reveal-from-Left Title Letter Masking",
+      "Polished Gold & Deep Emerald Accents",
+      "Interactive Golden Date Scratcher Canvas"
+    ],
+    bgClass: "bg-[#0f0f0f] border-amber-500/25",
+    image: "https://images.unsplash.com/photo-1519225495810-7517c5a6538a?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+    titleColor: "text-white group-hover:text-amber-300",
+    vibeColor: "text-slate-300",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-white/10 hover:bg-white/20 text-[#FAF9F5] border-white/10"
   }
 ];
 

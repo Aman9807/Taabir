@@ -260,7 +260,19 @@ export default function DashboardPage() {
                 className="bg-white border border-slate-100 shadow-md rounded-2xl p-6 relative flex flex-col justify-between overflow-hidden transition-all hover:shadow-lg"
               >
                 {/* Visual template ribbon identifier */}
-                <div className={`absolute top-0 left-0 right-0 h-1 bg-[#022E1F]`}></div>
+                <div className={`absolute top-0 left-0 right-0 h-1 ${
+                  invite.theme?.templateId === "emerald-noir"
+                    ? "bg-[#043927]"
+                    : invite.theme?.templateId === "dark-moody-elegant"
+                    ? "bg-[#0F0F0F]"
+                    : invite.theme?.templateId === "minimalist-romance"
+                    ? "bg-[#F7E7CE]"
+                    : invite.theme?.templateId === "midnight-royal"
+                    ? "bg-[#0A192F]"
+                    : invite.theme?.templateId === "ivory-elegance"
+                    ? "bg-[#800020]"
+                    : "bg-[#705832]"
+                }`}></div>
 
                 <div>
                   <div className="flex flex-wrap gap-1.5 items-center">
@@ -269,6 +281,12 @@ export default function DashboardPage() {
                         ? "Emerald Noir"
                         : invite.theme?.templateId === "minimalist-romance"
                         ? "Minimalist Romance"
+                        : invite.theme?.templateId === "dark-moody-elegant"
+                        ? "Dark Moody & Elegant"
+                        : invite.theme?.templateId === "midnight-royal"
+                        ? "Midnight Royal"
+                        : invite.theme?.templateId === "ivory-elegance"
+                        ? "Ivory Elegance"
                         : "Ivory Classic"}
                     </span>
                     <span className="text-[9px] uppercase font-bold tracking-wider text-teal-600 bg-teal-50 px-2 py-0.5 rounded font-mono">

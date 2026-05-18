@@ -755,14 +755,14 @@ export default function EditInvitationPage() {
                   </div>
                 </div>
 
-                {/* Minimalist Romance Parallax Background Optional Field */}
-                {formData.templateId === "minimalist-romance" && (
+                {/* Premium Parallax Background Optional Field */}
+                {(formData.templateId === "minimalist-romance" || formData.templateId === "dark-moody-elegant") && (
                   <div className="sm:col-span-2 space-y-3 bg-amber-50/25 p-5 rounded-2xl border border-amber-200/50">
                     <label className="block text-sm font-bold text-amber-900 font-sans">
-                      Minimalist Romance Dedicated Parallax Background (Optional)
+                      Premium Theme Dedicated Background Image (Optional)
                     </label>
                     <p className="text-xs text-amber-800/80 font-sans">
-                      Upload a dedicated background image for the full-viewport scrolling parallax headers. If left blank, it will automatically use your primary cover photo or our premium default Napa Valley landscape.
+                      Upload a dedicated background image for full-viewport scrolling parallax or cinematic Ken Burns animations. If left blank, it will automatically use your primary cover photo or our default theme assets.
                     </p>
                     
                     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mt-3">
@@ -1038,7 +1038,8 @@ export default function EditInvitationPage() {
                     { id: "ivory-classic", label: "Ivory Classic", desc: "Elegant cream & royal gold", color: "#F5F3EB", textColor: "#705832", tag: "Classic" },
                     { id: "midnight-royal", label: "Midnight Royal", desc: "Luxury starry navy with double-door parting", color: "#0A192F", textColor: "#D4AF37", tag: "Premium Interactive" },
                     { id: "ivory-elegance", label: "Ivory Elegance", desc: "Warm white card with parting velvet curtains", color: "#FAF9F5", textColor: "#800020", tag: "Premium Interactive" },
-                    { id: "minimalist-romance", label: "Minimalist Romance", desc: "Clean layout, full-viewport parallax hero sections", color: "#FFFFF0", textColor: "#333333", tag: "Premium Scroll" }
+                    { id: "minimalist-romance", label: "Minimalist Romance", desc: "Clean layout, full-viewport parallax hero sections", color: "#FFFFF0", textColor: "#333333", tag: "Premium Scroll" },
+                    { id: "dark-moody-elegant", label: "Dark Moody & Elegant", desc: "Cinematic immersive story, slow Ken Burns, rich gold & onyx", color: "#0F0F0F", textColor: "#D4AF37", tag: "Premium Scroll" }
                   ].map((tpl) => (
                     <div key={tpl.id} className={`border-2 rounded-2xl overflow-hidden transition-all relative ${
                       formData.templateId === tpl.id ? "border-amber-500 shadow-md" : "border-slate-200 hover:border-slate-300"
@@ -1074,6 +1075,8 @@ export default function EditInvitationPage() {
                               setFormData(prev => ({ ...prev, doorAnimation: "velvet-curtains", btnBgColor: "#800020", btnTextColor: "#FFFFFF" }));
                             } else if (tpl.id === "minimalist-romance") {
                               setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#F7E7CE", btnTextColor: "#333333" }));
+                            } else if (tpl.id === "dark-moody-elegant") {
+                              setFormData(prev => ({ ...prev, doorAnimation: "sliding-doors", btnBgColor: "#D4AF37", btnTextColor: "#0F0F0F" }));
                             }
                             // Auto trigger animation preview
                             setPreviewingAnim(true);
