@@ -20,6 +20,15 @@ export default function DashboardPage() {
   const [rsvps, setRsvps] = useState([]);
   const [fetchingRsvps, setFetchingRsvps] = useState(false);
 
+  // Dynamic domain/host detection
+  const [host, setHost] = useState("localhost:3000");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHost(window.location.host);
+    }
+  }, []);
+
   // Redirect protection: Route unauthenticated users to Login
   useEffect(() => {
     if (!loading && !user) {
@@ -218,7 +227,7 @@ export default function DashboardPage() {
                     <p>🗓️ Date: {new Date(invite.weddingDate).toLocaleDateString("en-US", { dateStyle: "long" })}</p>
                     <p>📍 Venue: {invite.venue?.name}</p>
                     <p className="text-amber-700 font-semibold select-all">
-                      🔗 URL: localhost:3000/invite/{invite.slug}
+                      🔗 URL: {host}/invite/{invite.slug}
                     </p>
                   </div>
                 </div>
