@@ -16,7 +16,7 @@ export default function InviteViewer({ invitation }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
-  const isIvory = invitation.theme?.templateId === "ivory-classic";
+  const templateId = invitation.theme?.templateId || "emerald-noir";
   const eventType = invitation.eventType || "wedding"; // Fallback to wedding
 
   // Countdown
@@ -28,6 +28,63 @@ export default function InviteViewer({ invitation }) {
   const [rsvpLoading, setRsvpLoading] = useState(false);
 
   const targetDate = new Date(invitation.weddingDate);
+
+  /* ──────────────── THEME TOKENS ──────────────── */
+  const THEMES = {
+    "emerald-noir": {
+      bg: "#00140D", door: "#001C12", seam: "#C5A880", card: "#001810", text: "#FAF9F5", sub: "#94a3b8", gold: "#C5A880", border: "rgba(197,168,128,0.2)",
+      isLight: false, font: "'Playfair Display', serif"
+    },
+    "ivory-classic": {
+      bg: "#FAF9F5", door: "#F0EDE4", seam: "#C5A880", card: "#FFFFFF", text: "#1e293b", sub: "#64748b", gold: "#92703B", border: "rgba(197,168,128,0.25)",
+      isLight: true, font: "'Playfair Display', serif"
+    },
+    
+    // Minimalism (4 templates)
+    "minimal-silk": {
+      bg: "#F4F1EA", door: "#EAE7DF", seam: "#A39E93", card: "#FAF8F5", text: "#1A1A1A", sub: "#5C5850", gold: "#7C776B", border: "rgba(163,158,147,0.25)",
+      isLight: true, font: "'Outfit', sans-serif"
+    },
+    "minimal-charcoal": {
+      bg: "#1C1C1C", door: "#242424", seam: "#4A4A4A", card: "#222222", text: "#F3F3F3", sub: "#9A9A9A", gold: "#E5E5E5", border: "rgba(255,255,255,0.08)",
+      isLight: false, font: "'Outfit', sans-serif"
+    },
+    "minimal-blush": {
+      bg: "#FDF5F2", door: "#F6E9E4", seam: "#D0B5AC", card: "#FFFFFF", text: "#2E2522", sub: "#7D6B65", gold: "#B8968B", border: "rgba(208,181,172,0.3)",
+      isLight: true, font: "'Outfit', sans-serif"
+    },
+    "minimal-indigo": {
+      bg: "#0F172A", door: "#1E293B", seam: "#384252", card: "#1E293B", text: "#F8FAFC", sub: "#94A3B8", gold: "#38BDF8", border: "rgba(56,189,248,0.15)",
+      isLight: false, font: "'Outfit', sans-serif"
+    },
+    
+    // Birthday - Bold & Catchy (3 templates)
+    "birthday-retro": {
+      bg: "#FFE8D6", door: "#FFD7BA", seam: "#FF6B6B", card: "#FFFFFF", text: "#2B2B2B", sub: "#7B7B7B", gold: "#FF6B6B", border: "rgba(255,107,107,0.2)",
+      isLight: true, font: "'Outfit', sans-serif"
+    },
+    "birthday-disco": {
+      bg: "#120024", door: "#1D0036", seam: "#FF007F", card: "#1D0036", text: "#FDFDFD", sub: "#B5A4D0", gold: "#00FFFF", border: "rgba(0,255,255,0.2)",
+      isLight: false, font: "'Outfit', sans-serif"
+    },
+    "birthday-glam": {
+      bg: "#0F0F0F", door: "#181818", seam: "#D4AF37", card: "#151515", text: "#FFFFFF", sub: "#8F8F8F", gold: "#D4AF37", border: "rgba(212,175,55,0.25)",
+      isLight: false, font: "'Playfair Display', serif"
+    },
+    
+    // Grand Events (2 templates)
+    "grand-royal": {
+      bg: "#061A37", door: "#0B2545", seam: "#D4AF37", card: "#0B2545", text: "#FAF9F6", sub: "#8DA9C4", gold: "#D4AF37", border: "rgba(212,175,55,0.2)",
+      isLight: false, font: "'Playfair Display', serif"
+    },
+    "grand-sunset": {
+      bg: "#3C1518", door: "#591F24", seam: "#E6A15C", card: "#4A1A1E", text: "#FFF0F1", sub: "#D68C91", gold: "#E6A15C", border: "rgba(230,161,92,0.25)",
+      isLight: false, font: "'Playfair Display', serif"
+    }
+  };
+
+  const T = THEMES[templateId] || THEMES["emerald-noir"];
+  const isLight = T.isLight;
 
   /* ── Audio init ── */
   useEffect(() => {
@@ -104,13 +161,8 @@ export default function InviteViewer({ invitation }) {
   const fmt = targetDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
   const fmtTime = targetDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 
-  /* ──────────────── THEME TOKENS ──────────────── */
-  const T = isIvory
-    ? { bg: "#FAF9F5", door: "#F0EDE4", seam: "#C5A880", card: "#FFFFFF", text: "#1e293b", sub: "#64748b", gold: "#92703B", border: "rgba(197,168,128,0.25)" }
-    : { bg: "#00140D", door: "#001C12", seam: "#C5A880", card: "#001810", text: "#FAF9F5", sub: "#94a3b8", gold: "#C5A880", border: "rgba(197,168,128,0.2)" };
-
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Playfair Display', serif", position: "relative", overflowX: "hidden" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: T.font || "'Playfair Display', serif", position: "relative", overflowX: "hidden" }}>
 
       {/* SPLIT-DOOR GATEWAY */}
       {phase !== "open" && (
@@ -168,11 +220,11 @@ export default function InviteViewer({ invitation }) {
             <div style={{ position: "absolute", inset: -12, borderRadius: "50%", border: `1px solid ${T.seam}`, opacity: 0.3, animation: "pulse 2.5s ease-in-out infinite" }} />
             <div style={{
               width: 96, height: 96, borderRadius: "50%",
-              background: `radial-gradient(circle at 35% 35%, ${isIvory ? "#2a1a08" : "#012519"}, ${isIvory ? "#1a0e04" : "#001810"})`,
+              background: `radial-gradient(circle at 35% 35%, ${isLight ? "#f1eae0" : "#1a0e04"}, ${isLight ? "#e5dbcc" : "#0d0602"})`,
               border: `2px solid ${T.seam}`, boxShadow: `0 0 30px ${T.seam}30, 0 4px 20px rgba(0,0,0,0.4)`,
               display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2,
             }}>
-              <span style={{ color: T.gold, fontFamily: "Playfair Display, serif", fontSize: 20, fontWeight: 500, lineHeight: 1 }}>
+              <span style={{ color: T.gold, fontFamily: T.font || "'Playfair Display', serif", fontSize: 20, fontWeight: 500, lineHeight: 1 }}>
                 {invitation.groomName ? (
                   `${invitation.brideName[0]}&${invitation.groomName[0]}`
                 ) : (
@@ -226,7 +278,7 @@ export default function InviteViewer({ invitation }) {
                 : "Welcome to the Celebration of"}
             </p>
             
-            <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
+            <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0, fontFamily: T.font || "'Playfair Display', serif" }}>
               {invitation.brideName}
             </h1>
             {invitation.brideParentsName && (
@@ -238,7 +290,7 @@ export default function InviteViewer({ invitation }) {
             {invitation.groomName && (
               <>
                 <p style={{ color: T.gold, fontSize: 22, margin: "12px 0", fontStyle: "italic" }}>&amp;</p>
-                <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
+                <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0, fontFamily: T.font || "'Playfair Display', serif" }}>
                   {invitation.groomName}
                 </h1>
                 {invitation.groomParentsName && (
@@ -304,6 +356,7 @@ export default function InviteViewer({ invitation }) {
                 <div style={{ border: `1px solid ${T.border}`, borderRadius: 16, overflow: "hidden", background: T.card, padding: 6, position: "relative" }}>
                   <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
                     {galleryPhotos.map((pic, index) => (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         key={index}
                         src={pic}
@@ -479,8 +532,8 @@ export default function InviteViewer({ invitation }) {
                 </div>
                 <button type="submit" disabled={rsvpLoading} style={{
                   padding: "14px", borderRadius: 12, border: "none", cursor: "pointer",
-                  background: isIvory ? "#1e293b" : `linear-gradient(135deg, #C5A880, #A07840)`,
-                  color: isIvory ? "#fff" : "#00140D",
+                  background: isLight ? "#1e293b" : `linear-gradient(135deg, ${T.gold}, #9c783c)`,
+                  color: isLight ? "#fff" : "#0f0f0f",
                   fontFamily: "sans-serif", fontSize: 11, fontWeight: 700,
                   letterSpacing: "0.2em", textTransform: "uppercase", transition: "opacity 0.2s",
                   opacity: rsvpLoading ? 0.6 : 1,
@@ -517,7 +570,7 @@ export default function InviteViewer({ invitation }) {
         <button onClick={toggleMusic} style={{
           position: "fixed", bottom: 24, right: 24, zIndex: 50,
           width: 48, height: 48, borderRadius: "50%", border: `1px solid ${T.border}`,
-          background: isIvory ? "#fff" : "#022E1F",
+          background: isLight ? "#fff" : "#022E1F",
           boxShadow: "0 4px 20px rgba(0,0,0,0.2)", cursor: "pointer",
           display: "flex", alignItems: "center", justifyContent: "center",
           color: T.gold, fontSize: 18, transition: "transform 0.15s",
