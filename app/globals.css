@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .font-arabic {
+    font-family: "Noto Naskh Arabic", "Times New Roman", serif;
+  }
+}

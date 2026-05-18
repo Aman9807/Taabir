@@ -1,0 +1,64 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ==========================================
+    // GLOBAL HELPER FUNCTIONS
+    // ==========================================
+    
+    // Checks if the client request is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Checks if the logged-in user matches the provided userId
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // ==========================================
+    // USERS COLLECTION RULES
+    // ==========================================
+    match /users/{userId} {
+      // A user can read their own profile details
+      allow read: if isOwner(userId);
+      
+      // A user can update their own profile details
+      allow create, update: if isOwner(userId);
+      
+      // Admins or internal systems only can delete users (prevent self-destruction)
+      allow delete: if false;
+    }
+
+    // ==========================================
+    // INVITATIONS COLLECTION RULES
+    // ==========================================
+    match /invitations/{invitationId} {
+      
+      // 1. Anyone can READ an invitation (needed so guests can view the digital card)
+      allow read: if true;
+
+      // 2. Only authenticated users can CREATE an invitation
+      // We also enforce that the userId in the document matches their auth UID to prevent spoofing.
+      allow create: if isAuthenticated() 
+        && request.resource.data.userId == request.auth.uid;
+
+      // 3. A user can only UPDATE or DELETE an invitation if they created it
+      allow update, delete: if isAuthenticated() 
+        && resource.data.userId == request.auth.uid;
+
+      // ==========================================
+      // GUEST RSVPS SUB-COLLECTION RULES
+      // ==========================================
+      match /rsvps/{rsvpId} {
+        // Anyone (guests) can submit an RSVP
+        allow create: if true;
+
+        // Only the host (creator of the invitation) can read, edit, or delete guest RSVPs
+        allow read, update, delete: if isAuthenticated()
+          && get(/databases/$(database)/documents/invitations/$(invitationId)).data.userId == request.auth.uid;
+      }
+    }
+  }
+}

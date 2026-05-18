@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Vibrant Firebase/Antigravity gradient -->
+    <linearGradient id="fireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFCA28" />
+      <stop offset="40%" stop-color="#FF8F00" />
+      <stop offset="100%" stop-color="#D84315" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FFE082" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Base App Icon Shape -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#fireGrad)" filter="url(#shadow)" />
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="none" stroke="#ffffff" stroke-width="6" stroke-opacity="0.4" />
+
+  <!-- Modern Geometric 'T' constructed with paths -->
+  <path d="M 160 150 L 352 150 C 370 150 384 164 384 182 C 384 200 370 214 352 214 L 288 214 L 288 352 C 288 370 274 384 256 384 C 238 384 224 370 224 352 L 224 214 L 160 214 C 142 214 128 200 128 182 C 128 164 142 150 160 150 Z" fill="url(#goldGrad)" filter="url(#shadow)"/>
+
+  <!-- Magical Antigravity Sparkle -->
+  <path d="M 370 90 Q 370 125 335 125 Q 370 125 370 160 Q 370 125 405 125 Q 370 125 370 90 Z" fill="#FFFFFF" filter="url(#shadow)"/>
+</svg>
