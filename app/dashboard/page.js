@@ -233,30 +233,39 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="mt-6 border-t border-slate-100 pt-4 flex flex-col gap-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-3">
                     <button
                       onClick={() => handleViewRsvps(invite)}
-                      className="px-4 py-2 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-xs font-semibold hover:bg-amber-100 transition-all uppercase tracking-wider"
+                      className="flex-1 text-center py-2 px-2.5 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-[11px] font-semibold hover:bg-amber-100 transition-all uppercase tracking-wider"
                     >
-                      💬 View Wishes &amp; Messages
+                      💬 Messages
                     </button>
                     
                     <a
                       href={`/invite/${invite.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-50 transition-all uppercase tracking-wider"
+                      className="flex-1 text-center py-2 px-2.5 border border-slate-200 text-slate-700 rounded-xl text-[11px] font-semibold hover:bg-slate-50 transition-all uppercase tracking-wider"
                     >
                       👁️ Open Link
                     </a>
                   </div>
 
-                  <button
-                    onClick={() => handleDeleteInvitation(invite.id)}
-                    className="w-full text-center text-[10px] font-bold text-rose-500 hover:text-rose-600 transition-colors uppercase tracking-widest"
-                  >
-                    Delete Invitation
-                  </button>
+                  <div className="flex items-center justify-between gap-3 pt-1">
+                    <Link
+                      href={`/dashboard/edit/${invite.id}`}
+                      className="flex-1 text-center py-2 px-2.5 border border-slate-200 text-slate-700 rounded-xl text-[11px] font-semibold hover:bg-slate-50 transition-all uppercase tracking-wider"
+                    >
+                      ✏️ Edit Card
+                    </Link>
+                    
+                    <button
+                      onClick={() => handleDeleteInvitation(invite.id)}
+                      className="flex-1 text-center py-2 px-2.5 bg-rose-50 border border-rose-100 text-rose-600 hover:bg-rose-100 rounded-xl text-[11px] font-semibold transition-all uppercase tracking-wider"
+                    >
+                      🗑️ Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
