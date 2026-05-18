@@ -28,6 +28,11 @@ export default function CreateInvitationPage() {
     photoUrl: "",
     musicUrl: "",
     templateId: "emerald-noir",
+    btnBgColor: "#D4AF37", // Premium gold
+    btnTextColor: "#FFFFFF",
+    doorAnimation: "sliding-doors",
+    enableScratchCard: false,
+    enableLanguageSwitcher: false,
   });
 
   // Dynamic Timeline State
@@ -41,6 +46,7 @@ export default function CreateInvitationPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [photos, setPhotos] = useState([]);                  // Base64 photos array
+  const [previewingAnim, setPreviewingAnim] = useState(false);
 
   // Redirect protection
   useEffect(() => {
@@ -277,6 +283,13 @@ export default function CreateInvitationPage() {
           primaryColor: templateId === "emerald-noir" ? "#C5A880" : "#A78BFA", 
           secondaryColor: templateId === "emerald-noir" ? "#022E1F" : "#FAF9F5", 
           fontFamily: "Playfair Display",
+        },
+        styling: {
+          btnBgColor: formData.btnBgColor || "#D4AF37",
+          btnTextColor: formData.btnTextColor || "#FFFFFF",
+          doorAnimation: formData.doorAnimation || "sliding-doors",
+          enableScratchCard: !!formData.enableScratchCard,
+          enableLanguageSwitcher: !!formData.enableLanguageSwitcher,
         },
         details: {
           story: "",
@@ -816,65 +829,55 @@ export default function CreateInvitationPage() {
             <div className="space-y-6 pt-4 border-t border-slate-100">
               
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2 font-sans">
-                  4. Choose Card Theme
+                <label className="block text-sm font-semibold text-slate-700 mb-3 font-sans">
+                  4. Choose Card Design Theme *
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-                  {/* Emerald Noir */}
-                  <div className={`border-2 rounded-xl overflow-hidden transition-all ${
-                    formData.templateId === "emerald-noir" ? "border-amber-500" : "border-slate-200 hover:border-slate-300"
-                  }`}>
-                    <div className="h-28 bg-[#001C12] flex flex-col items-center justify-center gap-1.5 relative">
-                      <div className="absolute inset-2 border border-[#C5A880]/20 rounded-lg pointer-events-none"></div>
-                      <span className="text-[#C5A880] font-serif text-lg">
-                        {formData.brideName ? formData.brideName[0] : "A"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
-                      </span>
-                      <span className="text-[#C5A880]/60 text-[8px] uppercase tracking-widest font-sans">Emerald Noir</span>
-                    </div>
-                    <label className="flex items-center justify-between px-4 py-3 cursor-pointer bg-white">
-                      <div>
-                        <span className="block text-sm font-bold text-slate-800">Emerald Noir</span>
-                        <span className="block text-xs text-slate-500">Luxury gold &amp; deep green</span>
+                  {[
+                    { id: "emerald-noir", label: "Emerald Noir", desc: "Luxury gold & deep green", color: "#001C12", textColor: "#C5A880", tag: "Classic" },
+                    { id: "ivory-classic", label: "Ivory Classic", desc: "Elegant cream & royal gold", color: "#F5F3EB", textColor: "#705832", tag: "Classic" },
+                    { id: "midnight-royal", label: "Midnight Royal", desc: "Luxury starry navy with double-door parting", color: "#0A192F", textColor: "#D4AF37", tag: "Premium Interactive" },
+                    { id: "ivory-elegance", label: "Ivory Elegance", desc: "Warm white card with parting velvet curtains", color: "#FAF9F5", textColor: "#800020", tag: "Premium Interactive" }
+                  ].map((tpl) => (
+                    <div key={tpl.id} className={`border-2 rounded-2xl overflow-hidden transition-all relative ${
+                      formData.templateId === tpl.id ? "border-amber-500 shadow-md" : "border-slate-200 hover:border-slate-300"
+                    }`}>
+                      <div style={{ background: tpl.color }} className="h-24 flex flex-col items-center justify-center gap-1 relative overflow-hidden">
+                        <div className="absolute top-2 right-2 text-[8px] uppercase tracking-widest font-bold px-1.5 py-0.5 rounded bg-white/10 text-white font-mono">
+                          {tpl.tag}
+                        </div>
+                        <span style={{ color: tpl.textColor }} className="font-serif text-base font-bold">
+                          {formData.brideName ? formData.brideName[0] : "T"}
+                          {formData.groomName ? ` & ${formData.groomName[0]}` : ""}
+                        </span>
+                        <span style={{ color: `${tpl.textColor}cc` }} className="text-[8px] uppercase tracking-widest font-sans font-semibold">
+                          {tpl.label}
+                        </span>
                       </div>
-                      <input
-                        type="radio"
-                        name="templateId"
-                        value="emerald-noir"
-                        checked={formData.templateId === "emerald-noir"}
-                        onChange={handleChange}
-                        className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-slate-300 cursor-pointer"
-                      />
-                    </label>
-                  </div>
-
-                  {/* Ivory Classic */}
-                  <div className={`border-2 rounded-xl overflow-hidden transition-all ${
-                    formData.templateId === "ivory-classic" ? "border-amber-500" : "border-slate-200 hover:border-slate-300"
-                  }`}>
-                    <div className="h-28 bg-[#F5F3EB] flex flex-col items-center justify-center gap-1.5 relative border-b border-slate-100">
-                      <div className="absolute inset-2 border border-[#C5A880]/25 rounded-lg pointer-events-none"></div>
-                      <span className="text-slate-700 font-serif text-lg">
-                        {formData.brideName ? formData.brideName[0] : "A"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
-                      </span>
-                      <span className="text-[#C5A880] text-[8px] uppercase tracking-widest font-sans">Ivory Classic</span>
+                      <label className="flex items-center justify-between px-3 py-2.5 cursor-pointer bg-white">
+                        <div className="min-w-0 pr-2">
+                          <span className="block text-xs font-bold text-slate-800 truncate">{tpl.label}</span>
+                          <span className="block text-[10px] text-slate-500 truncate">{tpl.desc}</span>
+                        </div>
+                        <input
+                          type="radio"
+                          name="templateId"
+                          value={tpl.id}
+                          checked={formData.templateId === tpl.id}
+                          onChange={(e) => {
+                            handleChange(e);
+                            // Auto align default animations to matching templates
+                            if (tpl.id === "midnight-royal") {
+                              setFormData(prev => ({ ...prev, doorAnimation: "sliding-doors", btnBgColor: "#D4AF37", btnTextColor: "#FFFFFF" }));
+                            } else if (tpl.id === "ivory-elegance") {
+                              setFormData(prev => ({ ...prev, doorAnimation: "velvet-curtains", btnBgColor: "#800020", btnTextColor: "#FFFFFF" }));
+                            }
+                          }}
+                          className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-slate-300 cursor-pointer shrink-0"
+                        />
+                      </label>
                     </div>
-                    <label className="flex items-center justify-between px-4 py-3 cursor-pointer bg-white">
-                      <div>
-                        <span className="block text-sm font-bold text-slate-800">Ivory Classic</span>
-                        <span className="block text-xs text-slate-500">Luxury cream &amp; gold</span>
-                      </div>
-                      <input
-                        type="radio"
-                        name="templateId"
-                        value="ivory-classic"
-                        checked={formData.templateId === "ivory-classic"}
-                        onChange={handleChange}
-                        className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-slate-300 cursor-pointer"
-                      />
-                    </label>
-                  </div>
-
+                  ))}
                 </div>
               </div>
 
@@ -897,6 +900,229 @@ export default function CreateInvitationPage() {
                     onChange={handleSlugChange}
                     className="flex-1 block w-full px-4 py-3 bg-white text-slate-900 placeholder-slate-400 focus:outline-none text-sm font-sans"
                   />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 5: Premium Custom Styling & Effects */}
+            <div className="space-y-6 pt-6 border-t border-slate-100">
+              <div>
+                <h3 className="text-lg font-bold text-slate-800 font-sans flex items-center gap-2">
+                  <span>✨</span> 5. Premium Interactive Styling & Effects
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  Fine-tune interactive page-opening animations, button colors, and guest experience tools.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                {/* Customizer fields */}
+                <div className="space-y-5">
+                  {/* Button Background Color */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      Opening Button Theme Color
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="color"
+                        name="btnBgColor"
+                        value={formData.btnBgColor}
+                        onChange={handleChange}
+                        className="h-9 w-9 border border-slate-200 rounded-lg cursor-pointer bg-white"
+                      />
+                      <div className="flex gap-1.5">
+                        {[
+                          { name: "Gold", hex: "#D4AF37" },
+                          { name: "Maroon", hex: "#800020" },
+                          { name: "Navy", hex: "#0A192F" },
+                          { name: "Emerald", hex: "#022E1F" },
+                          { name: "Charcoal", hex: "#111111" }
+                        ].map((swatch) => (
+                          <button
+                            key={swatch.hex}
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, btnBgColor: swatch.hex }))}
+                            className="h-6 px-2 text-[9px] font-bold rounded border border-slate-200 hover:border-slate-400 transition-colors uppercase"
+                            style={{ backgroundColor: swatch.hex, color: swatch.hex === "#FAF9F5" ? "#000" : "#fff" }}
+                            title={swatch.name}
+                          >
+                            {swatch.name[0]}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Button Text Color */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      Opening Button Text Color
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="color"
+                        name="btnTextColor"
+                        value={formData.btnTextColor}
+                        onChange={handleChange}
+                        className="h-9 w-9 border border-slate-200 rounded-lg cursor-pointer bg-white"
+                      />
+                      <div className="flex gap-1.5">
+                        {[
+                          { name: "White", hex: "#FFFFFF" },
+                          { name: "Gold", hex: "#D4AF37" },
+                          { name: "Charcoal", hex: "#1E293B" }
+                        ].map((swatch) => (
+                          <button
+                            key={swatch.hex}
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, btnTextColor: swatch.hex }))}
+                            className="h-6 px-2 text-[9px] font-bold rounded border border-slate-200 hover:border-slate-400 bg-slate-50 text-slate-800 transition-colors uppercase"
+                          >
+                            {swatch.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Door Animation Choice */}
+                  <div>
+                    <label htmlFor="doorAnimation" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      Opening Card Transition Style
+                    </label>
+                    <select
+                      name="doorAnimation"
+                      id="doorAnimation"
+                      value={formData.doorAnimation}
+                      onChange={handleChange}
+                      className="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm font-sans"
+                    >
+                      <option value="sliding-doors">🌌 Starry sliding doors parting</option>
+                      <option value="velvet-curtains">🎭 Theatrical velvet curtains parting</option>
+                      <option value="book-flip">📖 Premium 3D page flip / Book open</option>
+                      <option value="fade-zoom">✨ Clean scale-up & fade transition</option>
+                    </select>
+                  </div>
+
+                  {/* Interactivity features */}
+                  <div className="space-y-3 pt-2">
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="enableScratchCard"
+                        checked={formData.enableScratchCard}
+                        onChange={(e) => setFormData(prev => ({ ...prev, enableScratchCard: e.target.checked }))}
+                        className="h-4 w-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300 mt-0.5"
+                      />
+                      <div>
+                        <span className="block text-xs font-bold text-slate-800">
+                          🎫 Enable Scratch-to-Reveal Date Card
+                        </span>
+                        <span className="block text-[10px] text-slate-500">
+                          Guests drag or wipe on a golden canvas layer to reveal event dates! Triggers instant colorful confetti.
+                        </span>
+                      </div>
+                    </label>
+
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="enableLanguageSwitcher"
+                        checked={formData.enableLanguageSwitcher}
+                        onChange={(e) => setFormData(prev => ({ ...prev, enableLanguageSwitcher: e.target.checked }))}
+                        className="h-4 w-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300 mt-0.5"
+                      />
+                      <div>
+                        <span className="block text-xs font-bold text-slate-800">
+                          🗣️ Enable English / Urdu Translation Switcher
+                        </span>
+                        <span className="block text-[10px] text-slate-500">
+                          Adds a gorgeous floating translation toggle to switch the invitation completely to Urdu Nastaliq typography dynamically.
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Simulated Phone Mockup Live Preview */}
+                <div className="flex flex-col items-center bg-slate-50 border border-slate-200 rounded-2xl p-4 relative">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-2">
+                    📱 Live Animation preview
+                  </span>
+
+                  <div className="w-56 h-80 rounded-2xl border-4 border-slate-800 bg-white relative overflow-hidden shadow-inner flex flex-col justify-center items-center">
+                    {/* Simulated Background corresponding to Template */}
+                    <div 
+                      className={`absolute inset-0 transition-colors duration-300 flex flex-col items-center justify-center p-3 text-center`}
+                      style={{ 
+                        background: formData.templateId === "emerald-noir" ? "#001C12" :
+                                    formData.templateId === "ivory-classic" ? "#F5F3EB" :
+                                    formData.templateId === "midnight-royal" ? "#0A192F" : "#FAF9F5"
+                      }}
+                    >
+                      <span 
+                        className="font-serif text-[10px] font-bold block tracking-wider uppercase mb-1"
+                        style={{ 
+                          color: formData.templateId === "emerald-noir" ? "#C5A880" :
+                                 formData.templateId === "ivory-classic" ? "#705832" :
+                                 formData.templateId === "midnight-royal" ? "#D4AF37" : "#800020"
+                        }}
+                      >
+                        {formData.brideName ? formData.brideName[0] : "T"}{formData.groomName ? ` & ${formData.groomName[0]}` : ""}
+                      </span>
+                      <span className="text-[8px] text-slate-500 block">Invitation Card revealed!</span>
+                    </div>
+
+                    {/* Animated Cover overlay */}
+                    <div 
+                      className={`absolute inset-0 bg-slate-900 transition-all duration-700 ease-in-out flex items-center justify-center z-10`}
+                      style={{
+                        background: formData.templateId === "emerald-noir" ? "#012B1B" :
+                                    formData.templateId === "ivory-classic" ? "#EAE6D9" :
+                                    formData.templateId === "midnight-royal" ? "#071224" : "#FAF9F5",
+                        opacity: previewingAnim && formData.doorAnimation === "fade-zoom" ? 0 : 1,
+                        transform: !previewingAnim ? "none" : 
+                                   formData.doorAnimation === "sliding-doors" ? "scaleX(0)" :
+                                   formData.doorAnimation === "velvet-curtains" ? "translateY(-100%)" : 
+                                   formData.doorAnimation === "book-flip" ? "perspective(600px) rotateY(-120deg)" : "scale(1.2)",
+                        transformOrigin: formData.doorAnimation === "book-flip" ? "left center" : "center",
+                        pointerEvents: previewingAnim ? "none" : "auto",
+                      }}
+                    >
+                      {/* Star patterns for midnight-royal / ivory-elegance simulated curtains */}
+                      {formData.templateId === "midnight-royal" && (
+                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-100/5 via-slate-900/40 to-slate-950/90 pointer-events-none"></div>
+                      )}
+                      {formData.doorAnimation === "velvet-curtains" && (
+                        <div className="absolute inset-x-0 top-0 bottom-0 bg-red-950/20 border-r border-l border-red-900/40 pointer-events-none"></div>
+                      )}
+
+                      {/* Main button preview */}
+                      <button
+                        type="button"
+                        style={{
+                          backgroundColor: formData.btnBgColor,
+                          color: formData.btnTextColor,
+                        }}
+                        className="px-4 py-2 rounded-lg text-[9px] font-bold uppercase tracking-widest shadow-md transform hover:scale-105 transition-all animate-bounce"
+                      >
+                        Tap to Open
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPreviewingAnim(true);
+                      setTimeout(() => setPreviewingAnim(false), 2500);
+                    }}
+                    disabled={previewingAnim}
+                    className="mt-3 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold font-mono transition-colors tracking-wide disabled:opacity-50"
+                  >
+                    {previewingAnim ? "⚡ Open Playing..." : "⚡ Test Animation"}
+                  </button>
                 </div>
               </div>
             </div>

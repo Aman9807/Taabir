@@ -4,32 +4,108 @@ import { useState, useEffect, useRef } from "react";
 import { db } from "../../../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 
-/* ─────────────────────────────────────────────
-   SPLIT-DOOR OPENING ANIMATION (Zareqia-style)
-   Two panels slide LEFT and RIGHT away from a
-   central gold seam, revealing the card beneath.
-   ───────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────────────────
+   PREMIUM INTERACTIVE INVITATION VIEWER (Antigravity Upgraded)
+   - 4 Dynamic Transition Openings (Velvet Curtains, Starry Split Doors, 3D Book Flip, Fade Zoom)
+   - Customized premium theme-colored Wax Seals & Tap buttons
+   - HTML5 Canvas Golden Date Scratcher card with cascading DOM confetti burst
+   - Dynamic English/Urdu translation deck using authentic Nastaliq Urdu typographies
+   ───────────────────────────────────────────────────────────────────────────── */
 
 export default function InviteViewer({ invitation }) {
   const [phase, setPhase] = useState("closed"); // closed → opening → open
+  const [lang, setLang] = useState("en"); // en or ur
+  const [scratchRevealed, setScratchRevealed] = useState(false);
+  const [confettiActive, setConfettiActive] = useState(false);
+  const [confettiFlakes, setConfettiFlakes] = useState([]);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
-  const isIvory = invitation.theme?.templateId === "ivory-classic";
-  const eventType = invitation.eventType || "wedding"; // Fallback to wedding
+  const tplId = invitation.theme?.templateId || "emerald-noir";
+  const eventType = invitation.eventType || "wedding";
 
-  // Countdown
+  // Countdown State
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  // RSVP
-  const [rsvp, setRsvp] = useState({ name: "", attending: "yes", guests: 1, blessing: "" });
+  // RSVP Form State
+  const [rsvp, setRsvp] = useState({ name: "", attending: "yes", blessing: "" });
   const [rsvpDone, setRsvpDone] = useState(false);
   const [rsvpLoading, setRsvpLoading] = useState(false);
 
   const targetDate = new Date(invitation.weddingDate);
 
-  /* ── Audio init ── */
+  // Read styling preferences
+  const customStyle = invitation.styling || {};
+  const btnBg = customStyle.btnBgColor || (tplId === "ivory-elegance" ? "#800020" : "#D4AF37");
+  const btnText = customStyle.btnTextColor || "#FFFFFF";
+  const animStyle = customStyle.doorAnimation || (tplId === "ivory-elegance" ? "velvet-curtains" : "sliding-doors");
+  const hasScratch = !!customStyle.enableScratchCard;
+  const hasLang = !!customStyle.enableLanguageSwitcher;
+
+  // Urdu translation dictionary
+  const dict = {
+    en: {
+      wedding: "The Wedding of",
+      birthday: "Celebrating the Birthday of",
+      anniversary: "Celebrating the Anniversary of",
+      family_function: "Welcome to the Family Gathering of",
+      general: "Welcome to the Celebration of",
+      daughterOf: "Daughter of",
+      sonOf: "Son of",
+      countdown: "Countdown to the Celebration",
+      days: "Days",
+      hours: "Hours",
+      mins: "Mins",
+      secs: "Secs",
+      dateVenue: "Date & Venue",
+      openMaps: "📍 Open in Maps",
+      timelineTitle: "Celebrations Schedule",
+      rsvpTitle: "Kindly RSVP",
+      rsvpDesc: "Let us know you are coming",
+      fullName: "Your Full Name",
+      blessing: "Wishes & Blessings",
+      sending: "Sending...",
+      sendRsvp: "Send RSVP & Blessings",
+      successTitle: "Blessings Received!",
+      successDesc: "Thank you — we look forward to celebrating with you.",
+      contactHosts: "Contact the Hosts",
+      contactCouple: "Contact the Couple",
+      scratchText: "Scratch here to reveal the date!"
+    },
+    ur: {
+      wedding: "کی شادی خانہ آبادی",
+      birthday: "کی سالگرہ کی تقریب",
+      anniversary: "کی سالگرہ کی تقریب",
+      family_function: "کا خاندانی اجتماع",
+      general: "کی پروقار تقریب",
+      daughterOf: "دختر",
+      sonOf: "فرزند",
+      countdown: "تقریب کا کاؤنٹ ڈاؤن",
+      days: "دن",
+      hours: "گھنٹے",
+      mins: "منٹ",
+      secs: "سیکنڈ",
+      dateVenue: "تاریخ اور مقام",
+      openMaps: "📍 گوگل میپس پر دیکھیں",
+      timelineTitle: "تقریبات کا شیڈول",
+      rsvpTitle: "شرکت کی اطلاع",
+      rsvpDesc: "ہمیں اپنی شرکت سے آگاہ کریں",
+      fullName: "آپ کا پورا نام",
+      blessing: "نیک تمنائیں اور دعائیں",
+      sending: "بھیجا جا رہا ہے...",
+      sendRsvp: "دعائیں اور جواب بھیجیں",
+      successTitle: "نیک دعائیں موصول ہو گئیں!",
+      successDesc: "آپ کی محبت اور شرکت کا شکریہ — ہم آپ کا انتظار کریں گے۔",
+      contactHosts: "میزبانوں سے رابطہ کریں",
+      contactCouple: "جوڑے سے رابطہ کریں",
+      scratchText: "تاریخ دیکھنے کے لیے یہاں سکریچ کریں!"
+    }
+  };
+
+  const text = dict[lang];
+
+  // Music Player setup
   useEffect(() => {
     if (invitation.musicUrl) {
       audioRef.current = new Audio(invitation.musicUrl);
@@ -38,7 +114,7 @@ export default function InviteViewer({ invitation }) {
     return () => { audioRef.current?.pause(); };
   }, [invitation.musicUrl]);
 
-  /* ── Live countdown ── */
+  // Live Countdown tick
   useEffect(() => {
     const tick = () => {
       const diff = +targetDate - +new Date();
@@ -56,7 +132,7 @@ export default function InviteViewer({ invitation }) {
     return () => clearInterval(id);
   }, [invitation.weddingDate]);
 
-  /* ── Auto-rotate photo gallery with Ken Burns transitions ── */
+  // Gallery slideshow Ken Burns
   useEffect(() => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
     if (galleryPhotos.length <= 1 || phase !== "open") return;
@@ -68,10 +144,9 @@ export default function InviteViewer({ invitation }) {
     return () => clearInterval(timer);
   }, [invitation.photos, invitation.photoUrl, phase]);
 
-  /* ── Open handler ── */
   const handleOpen = () => {
     setPhase("opening");
-    setTimeout(() => setPhase("open"), 900);
+    setTimeout(() => setPhase("open"), 1200);
     if (audioRef.current) {
       audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
     }
@@ -83,7 +158,6 @@ export default function InviteViewer({ invitation }) {
     else { audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {}); }
   };
 
-  /* ── RSVP submit ── */
   const submitRsvp = async (e) => {
     e.preventDefault();
     if (!rsvp.name.trim()) return;
@@ -97,108 +171,262 @@ export default function InviteViewer({ invitation }) {
         submittedAt: new Date().toISOString(),
       });
       setRsvpDone(true);
-    } catch (e) { console.error(e); }
+    } catch (err) { console.error(err); }
     finally { setRsvpLoading(false); }
   };
 
-  const fmt = targetDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-  const fmtTime = targetDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  // Triggers DOM-based custom premium Confetti particle shower
+  const triggerConfettiShower = () => {
+    if (confettiActive) return;
+    setConfettiActive(true);
+    const colors = ["#FFD700", "#FF4500", "#FF1493", "#00BFFF", "#32CD32", "#FF8C00", "#C5A880"];
+    const flakes = Array.from({ length: 80 }).map((_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      size: Math.random() * 8 + 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      delay: Math.random() * 2,
+      duration: Math.random() * 2.5 + 2,
+      spin: Math.random() * 360,
+    }));
+    setConfettiFlakes(flakes);
+    setTimeout(() => {
+      setConfettiActive(false);
+      setConfettiFlakes([]);
+    }, 5000);
+  };
+
+  const fmt = targetDate.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+  const fmtTime = targetDate.toLocaleTimeString(lang === "ur" ? "ur-PK" : "en-US", { hour: "2-digit", minute: "2-digit" });
 
   /* ──────────────── THEME TOKENS ──────────────── */
+  const isIvory = tplId === "ivory-classic" || tplId === "ivory-elegance";
   const T = isIvory
-    ? { bg: "#FAF9F5", door: "#F0EDE4", seam: "#C5A880", card: "#FFFFFF", text: "#1e293b", sub: "#64748b", gold: "#92703B", border: "rgba(197,168,128,0.25)" }
-    : { bg: "#00140D", door: "#001C12", seam: "#C5A880", card: "#001810", text: "#FAF9F5", sub: "#94a3b8", gold: "#C5A880", border: "rgba(197,168,128,0.2)" };
+    ? { 
+        bg: "#FAF9F5", 
+        door: "#FAF9F5", 
+        seam: "#800020", 
+        card: "#FFFFFF", 
+        text: "#2c2317", 
+        sub: "#6b5e4c", 
+        gold: "#800020", 
+        border: "rgba(128,0,32,0.15)" 
+      }
+    : { 
+        bg: "#040B16", 
+        door: "#06101E", 
+        seam: "#D4AF37", 
+        card: "#0A192F", 
+        text: "#E2E8F0", 
+        sub: "#8892B0", 
+        gold: "#D4AF37", 
+        border: "rgba(212,175,55,0.18)" 
+      };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Playfair Display', serif", position: "relative", overflowX: "hidden" }}>
+    <div style={{ 
+      background: T.bg, 
+      minHeight: "100vh", 
+      fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : "'Playfair Display', serif", 
+      position: "relative", 
+      overflowX: "hidden",
+      direction: lang === "ur" ? "rtl" : "ltr"
+    }}>
 
-      {/* SPLIT-DOOR GATEWAY */}
+      {/* FLOAT TRANSLATION TOGGLE BUTTON */}
+      {hasLang && (
+        <button
+          onClick={() => setLang(l => l === "en" ? "ur" : "en")}
+          className="fixed top-4 right-4 z-[999] px-3.5 py-1.5 rounded-full text-xs font-bold shadow-lg transition-transform hover:scale-105 select-none font-sans"
+          style={{
+            backgroundColor: btnBg,
+            color: btnText,
+            border: `1px solid ${T.border}`,
+          }}
+        >
+          {lang === "en" ? "Urdu / اردو" : "English"}
+        </button>
+      )}
+
+      {/* DYNAMIC OPENING GATEWAYS */}
       {phase !== "open" && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 100, pointerEvents: phase === "opening" ? "none" : "auto" }}>
-          {/* LEFT DOOR */}
-          <div style={{
-            position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: T.door,
-            transform: phase === "opening" ? "translateX(-100%)" : "translateX(0)",
-            transition: "transform 0.85s cubic-bezier(0.76, 0, 0.24, 1)",
-            borderRight: `1px solid ${T.seam}`,
-            backgroundImage: `linear-gradient(to right, transparent 99%, ${T.seam}08 100%), radial-gradient(ellipse at 30% 50%, ${T.seam}08 0%, transparent 70%)`
-          }}>
-            <svg style={{ position: "absolute", top: 20, right: 20, opacity: 0.25 }} width="60" height="80" viewBox="0 0 60 80" fill="none">
-              <path d="M30 0 L30 80 M0 40 L60 40 M10 10 L50 70 M50 10 L10 70" stroke={T.seam} strokeWidth="0.5"/>
-              <circle cx="30" cy="40" r="15" stroke={T.seam} strokeWidth="0.5"/>
-            </svg>
-            <svg style={{ position: "absolute", bottom: 20, left: 20, opacity: 0.25 }} width="60" height="80" viewBox="0 0 60 80" fill="none">
-              <path d="M30 0 L30 80 M0 40 L60 40" stroke={T.seam} strokeWidth="0.5"/>
-              <circle cx="30" cy="40" r="10" stroke={T.seam} strokeWidth="0.5"/>
-            </svg>
-          </div>
+        <div style={{ position: "fixed", inset: 0, zIndex: 100, pointerEvents: phase === "opening" ? "none" : "auto", overflow: "hidden" }}>
+          
+          {/* CURTAIN PARTS ANIMATION */}
+          {animStyle === "velvet-curtains" && (
+            <>
+              {/* Left Crimson Drape */}
+              <div 
+                className="curtain-panel"
+                style={{
+                  position: "absolute", top: 0, left: 0, width: "50%", height: "100%",
+                  background: `linear-gradient(to right, #600010 0%, #a00020 60%, #40000a 100%)`,
+                  boxShadow: "inset -15px 0 30px rgba(0,0,0,0.6)",
+                  transform: phase === "opening" ? "translateX(-100%) scaleX(0.9) skewY(4deg)" : "translateX(0)",
+                  transition: "transform 1.35s cubic-bezier(0.77, 0, 0.175, 1)",
+                  transformOrigin: "left center"
+                }}
+              >
+                {/* Velvet fabric gold details & cords */}
+                <div style={{ position: "absolute", top: 0, bottom: 0, right: 10, width: 4, background: `linear-gradient(to bottom, #d4af37, #856404, #d4af37)`, opacity: 0.7 }} />
+              </div>
 
-          {/* RIGHT DOOR */}
-          <div style={{
-            position: "absolute", top: 0, right: 0, width: "50%", height: "100%", background: T.door,
-            transform: phase === "opening" ? "translateX(100%)" : "translateX(0)",
-            transition: "transform 0.85s cubic-bezier(0.76, 0, 0.24, 1)",
-            borderLeft: `1px solid ${T.seam}`,
-            backgroundImage: `linear-gradient(to left, transparent 99%, ${T.seam}08 100%), radial-gradient(ellipse at 70% 50%, ${T.seam}08 0%, transparent 70%)`
-          }}>
-            <svg style={{ position: "absolute", top: 20, left: 20, opacity: 0.25 }} width="60" height="80" viewBox="0 0 60 80" fill="none">
-              <path d="M30 0 L30 80 M0 40 L60 40 M10 10 L50 70 M50 10 L10 70" stroke={T.seam} strokeWidth="0.5"/>
-              <circle cx="30" cy="40" r="15" stroke={T.seam} strokeWidth="0.5"/>
-            </svg>
-            <svg style={{ position: "absolute", bottom: 20, right: 20, opacity: 0.25 }} width="60" height="80" viewBox="0 0 60 80" fill="none">
-              <path d="M30 0 L30 80 M0 40 L60 40" stroke={T.seam} strokeWidth="0.5"/>
-              <circle cx="30" cy="40" r="10" stroke={T.seam} strokeWidth="0.5"/>
-            </svg>
-          </div>
+              {/* Right Crimson Drape */}
+              <div 
+                className="curtain-panel"
+                style={{
+                  position: "absolute", top: 0, right: 0, width: "50%", height: "100%",
+                  background: `linear-gradient(to left, #600010 0%, #a00020 60%, #40000a 100%)`,
+                  boxShadow: "inset 15px 0 30px rgba(0,0,0,0.6)",
+                  transform: phase === "opening" ? "translateX(100%) scaleX(0.9) skewY(-4deg)" : "translateX(0)",
+                  transition: "transform 1.35s cubic-bezier(0.77, 0, 0.175, 1)",
+                  transformOrigin: "right center"
+                }}
+              >
+                <div style={{ position: "absolute", top: 0, bottom: 0, left: 10, width: 4, background: `linear-gradient(to bottom, #d4af37, #856404, #d4af37)`, opacity: 0.7 }} />
+              </div>
+            </>
+          )}
 
-          <div style={{
-            position: "absolute", top: 0, left: "50%", width: 1, height: "100%",
-            background: `linear-gradient(to bottom, transparent, ${T.seam}, transparent)`,
-            transform: "translateX(-50%)", opacity: 0.6,
-          }} />
+          {/* SLIDING METALLIC DOUBLE DOORS */}
+          {animStyle === "sliding-doors" && (
+            <>
+              {/* Left Starry Panel */}
+              <div style={{
+                position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: T.door,
+                transform: phase === "opening" ? "translateX(-100%)" : "translateX(0)",
+                transition: "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)",
+                borderRight: `1px solid ${T.seam}`,
+                backgroundImage: `linear-gradient(to right, transparent 99%, ${T.seam}15 100%), radial-gradient(ellipse at 30% 50%, ${T.seam}10 0%, transparent 60%)`
+              }}>
+                <div className="absolute top-8 right-8 text-amber-500/10 pointer-events-none text-7xl font-serif">✨</div>
+              </div>
 
-          {/* WAX SEAL */}
+              {/* Right Starry Panel */}
+              <div style={{
+                position: "absolute", top: 0, right: 0, width: "50%", height: "100%", background: T.door,
+                transform: phase === "opening" ? "translateX(100%)" : "translateX(0)",
+                transition: "transform 1.1s cubic-bezier(0.76, 0, 0.24, 1)",
+                borderLeft: `1px solid ${T.seam}`,
+                backgroundImage: `linear-gradient(to left, transparent 99%, ${T.seam}15 100%), radial-gradient(ellipse at 70% 50%, ${T.seam}10 0%, transparent 60%)`
+              }} />
+            </>
+          )}
+
+          {/* 3D BOOK PAGE FLIP */}
+          {animStyle === "book-flip" && (
+            <div style={{
+              position: "absolute", inset: 0, background: T.bg,
+              perspective: 1200, zIndex: 110,
+              transform: phase === "opening" ? "scale(1)" : "none",
+              transition: "transform 1.2s",
+            }}>
+              <div style={{
+                position: "absolute", inset: 0, background: T.door,
+                transformOrigin: "left center",
+                transform: phase === "opening" ? "rotateY(-130deg)" : "rotateY(0deg)",
+                transition: "transform 1.35s cubic-bezier(0.645, 0.045, 0.355, 1)",
+                boxShadow: "0 0 40px rgba(0,0,0,0.5)",
+                backgroundImage: `radial-gradient(ellipse at center, ${T.seam}08 0%, transparent 80%)`,
+                backfaceVisibility: "hidden"
+              }} />
+            </div>
+          )}
+
+          {/* LUMINOUS FADE ZOOM */}
+          {animStyle === "fade-zoom" && (
+            <div style={{
+              position: "absolute", inset: 0, background: T.door,
+              opacity: phase === "opening" ? 0 : 1,
+              transform: phase === "opening" ? "scale(1.15)" : "scale(1)",
+              transition: "opacity 1.1s ease-in-out, transform 1.1s ease-in-out",
+            }} />
+          )}
+
+          {/* Central Seam line for doors */}
+          {animStyle === "sliding-doors" && (
+            <div style={{
+              position: "absolute", top: 0, left: "50%", width: 1.5, height: "100%",
+              background: `linear-gradient(to bottom, transparent, ${T.seam}, transparent)`,
+              transform: "translateX(-50%)", opacity: 0.5,
+            }} />
+          )}
+
+          {/* INTERACTIVE TAP BUTTON (Wax Seal shape) */}
           <div style={{
             position: "absolute", top: "50%", left: "50%",
-            transform: phase === "opening" ? "translate(-50%, -50%) scale(0) rotate(45deg)" : "translate(-50%, -50%) scale(1) rotate(0deg)",
-            transition: "transform 0.5s cubic-bezier(0.76, 0, 0.24, 1)", zIndex: 10, cursor: "pointer",
+            transform: phase === "opening" ? "translate(-50%, -50%) scale(0) rotate(90deg)" : "translate(-50%, -50%) scale(1) rotate(0deg)",
+            transition: "transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)", zIndex: 120, cursor: "pointer",
           }}
             onClick={handleOpen}
           >
-            <div style={{ position: "absolute", inset: -12, borderRadius: "50%", border: `1px solid ${T.seam}`, opacity: 0.3, animation: "pulse 2.5s ease-in-out infinite" }} />
-            <div style={{
-              width: 96, height: 96, borderRadius: "50%",
-              background: `radial-gradient(circle at 35% 35%, ${isIvory ? "#2a1a08" : "#012519"}, ${isIvory ? "#1a0e04" : "#001810"})`,
-              border: `2px solid ${T.seam}`, boxShadow: `0 0 30px ${T.seam}30, 0 4px 20px rgba(0,0,0,0.4)`,
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2,
-            }}>
-              <span style={{ color: T.gold, fontFamily: "Playfair Display, serif", fontSize: 20, fontWeight: 500, lineHeight: 1 }}>
+            <div style={{ 
+              position: "absolute", inset: -14, borderRadius: "50%", 
+              border: `1px dashed ${T.seam}`, opacity: 0.4, 
+              animation: "pulse 2.2s ease-in-out infinite" 
+            }} />
+            
+            <div 
+              style={{
+                width: 104, height: 104, borderRadius: "50%",
+                backgroundColor: btnBg,
+                color: btnText,
+                border: `3px double ${T.seam}`, 
+                boxShadow: `0 0 35px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.3)`,
+                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 1.5,
+              }}
+            >
+              <span className="font-serif text-lg font-bold tracking-widest leading-none">
                 {invitation.groomName ? (
                   `${invitation.brideName[0]}&${invitation.groomName[0]}`
                 ) : (
                   invitation.brideName[0]
                 )}
               </span>
-              <span style={{ color: `${T.gold}90`, fontFamily: "sans-serif", fontSize: 7, letterSpacing: "0.2em", textTransform: "uppercase" }}>
-                Tap to Open
+              <span className="text-[7.5px] uppercase font-sans tracking-[0.22em] font-extrabold opacity-95">
+                {lang === "ur" ? "کھولیں" : "Tap Open"}
               </span>
             </div>
           </div>
         </div>
       )}
 
-      {/* INNER CARD */}
-      <div style={{
-        opacity: phase === "open" ? 1 : 0,
-        transform: phase === "open" ? "translateY(0)" : "translateY(32px)",
-        transition: "opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s",
-        maxWidth: 680, margin: "0 auto", padding: "48px 24px 80px",
-      }}>
+      {/* FLOATING DOM CONFETTI FLAKES */}
+      {confettiActive && (
+        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999, overflow: "hidden" }}>
+          {confettiFlakes.map((flake) => (
+            <div
+              key={flake.id}
+              style={{
+                position: "absolute",
+                top: "-20px",
+                left: `${flake.left}%`,
+                width: flake.size,
+                height: flake.size * 0.9,
+                backgroundColor: flake.color,
+                borderRadius: Math.random() > 0.5 ? "50%" : "3px",
+                opacity: 0.9,
+                transform: `rotate(${flake.spin}deg)`,
+                animation: `fall ${flake.duration}s linear ${flake.delay}s infinite`
+              }}
+            />
+          ))}
+        </div>
+      )}
 
-        {/* Calligraphy Header */}
+      {/* INNER VIEWPORT INVITATION CARD */}
+      <div 
+        style={{
+          opacity: phase === "open" ? 1 : 0,
+          transform: phase === "open" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s",
+          maxWidth: 660, margin: "0 auto", padding: "48px 24px 96px",
+        }}
+      >
+        {/* Arabic Monogram Header */}
         <ScrollReveal>
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <p style={{ color: T.gold, fontSize: 26, fontFamily: "Noto Naskh Arabic, serif", marginBottom: 6, lineHeight: 1.6 }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <p style={{ color: T.gold, fontSize: 26, fontFamily: "'Noto Naskh Arabic', serif", marginBottom: 8, lineHeight: 1.6 }}>
               {invitation.headerArabic || "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"}
             </p>
             <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase" }}>
@@ -211,39 +439,34 @@ export default function InviteViewer({ invitation }) {
           <GoldDivider color={T.gold} />
         </ScrollReveal>
 
-        {/* Dynamic Wording and Celebrants Names */}
+        {/* Dynamic Celebrations Header and Core Names */}
         <ScrollReveal>
           <div style={{ textAlign: "center", padding: "36px 0" }}>
-            <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: 12 }}>
-              {eventType === "wedding"
-                ? "The Wedding of"
-                : eventType === "birthday"
-                ? "Celebrating the Birthday of"
-                : eventType === "anniversary"
-                ? "Celebrating the Anniversary of"
-                : eventType === "family_function"
-                ? "Welcome to the Family Gathering of"
-                : "Welcome to the Celebration of"}
+            <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10.5, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 16 }}>
+              {eventType === "wedding" ? text.wedding : 
+               eventType === "birthday" ? text.birthday : 
+               eventType === "anniversary" ? text.anniversary : 
+               eventType === "family_function" ? text.family_function : text.general}
             </p>
             
-            <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
+            <h1 style={{ color: T.text, fontSize: 48, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
               {invitation.brideName}
             </h1>
             {invitation.brideParentsName && (
-              <p style={{ color: T.sub, fontSize: 12, marginTop: 4, fontStyle: "italic" }}>
-                {eventType === "wedding" ? `Daughter of ${invitation.brideParentsName}` : invitation.brideParentsName}
+              <p style={{ color: T.sub, fontSize: 12.5, marginTop: 6, fontStyle: "italic" }}>
+                {eventType === "wedding" ? `${text.daughterOf} ${invitation.brideParentsName}` : invitation.brideParentsName}
               </p>
             )}
 
             {invitation.groomName && (
               <>
-                <p style={{ color: T.gold, fontSize: 22, margin: "12px 0", fontStyle: "italic" }}>&amp;</p>
-                <h1 style={{ color: T.text, fontSize: 44, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
+                <p style={{ color: T.gold, fontSize: 24, margin: "14px 0", fontStyle: "italic" }}>&amp;</p>
+                <h1 style={{ color: T.text, fontSize: 48, fontWeight: 400, lineHeight: 1.15, margin: 0 }}>
                   {invitation.groomName}
                 </h1>
                 {invitation.groomParentsName && (
-                  <p style={{ color: T.sub, fontSize: 12, marginTop: 4, fontStyle: "italic" }}>
-                    {eventType === "wedding" ? `Son of ${invitation.groomParentsName}` : invitation.groomParentsName}
+                  <p style={{ color: T.sub, fontSize: 12.5, marginTop: 6, fontStyle: "italic" }}>
+                    {eventType === "wedding" ? `${text.sonOf} ${invitation.groomParentsName}` : invitation.groomParentsName}
                   </p>
                 )}
               </>
@@ -251,42 +474,42 @@ export default function InviteViewer({ invitation }) {
           </div>
         </ScrollReveal>
 
-        {/* Calligraphy / Verse Quote Section */}
+        {/* Celebrations Quran Quote Verse */}
         <ScrollReveal>
-          <div style={{ textAlign: "center", padding: "20px 32px", margin: "0 auto 36px", maxWidth: 420, borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}` }}>
+          <div style={{ textAlign: "center", padding: "20px 32px", margin: "0 auto 40px", maxWidth: 440, borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}` }}>
             {eventType === "wedding" ? (
               <>
-                <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
+                <p style={{ color: T.gold, fontSize: 14.5, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
                   &ldquo;And We created you in pairs&rdquo;
                 </p>
-                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 9.5, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
                   — Quran 78:8
                 </p>
               </>
             ) : eventType === "birthday" ? (
               <>
-                <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
+                <p style={{ color: T.gold, fontSize: 13.5, fontStyle: "italic", margin: 0 }}>
                   &ldquo;Wishing you a year filled with sweet moments, grand milestones, and beautiful memories!&rdquo;
                 </p>
-                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 9.5, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
                   — Happy Birthday
                 </p>
               </>
             ) : eventType === "anniversary" ? (
               <>
-                <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
+                <p style={{ color: T.gold, fontSize: 13.5, fontStyle: "italic", margin: 0 }}>
                   &ldquo;Real love stories never have endings. Wishing you another chapter of happiness together!&rdquo;
                 </p>
-                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 9.5, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
                   — Happy Anniversary
                 </p>
               </>
             ) : (
               <>
-                <p style={{ color: T.gold, fontSize: 13, fontStyle: "italic", margin: 0, letterSpacing: "0.02em" }}>
+                <p style={{ color: T.gold, fontSize: 13.5, fontStyle: "italic", margin: 0 }}>
                   &ldquo;The love of a family is life&apos;s greatest blessing. Join us as we share in this beautiful moment together!&rdquo;
                 </p>
-                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 10, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 9.5, marginTop: 6, letterSpacing: "0.15em", textTransform: "uppercase" }}>
                   — Welcome Guests
                 </p>
               </>
@@ -294,7 +517,7 @@ export default function InviteViewer({ invitation }) {
           </div>
         </ScrollReveal>
 
-        {/* Photo Gallery with Ken Burns slideshow */}
+        {/* Dynamic Gallery Carousel */}
         {(() => {
           const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
           if (galleryPhotos.length === 0) return null;
@@ -369,20 +592,20 @@ export default function InviteViewer({ invitation }) {
           );
         })()}
 
-        {/* Countdown */}
+        {/* Live Countdown Clock */}
         <ScrollReveal>
           <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
             <p style={{ textAlign: "center", color: T.sub, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 16 }}>
-              Countdown to the Celebration
+              {text.countdown}
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
-              {[["days", timeLeft.days], ["hours", timeLeft.hours], ["mins", timeLeft.minutes], ["secs", timeLeft.seconds]].map(([label, val]) => (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }} dir="ltr">
+              {[["days", timeLeft.days, text.days], ["hours", timeLeft.hours, text.hours], ["mins", timeLeft.minutes, text.mins], ["secs", timeLeft.seconds, text.secs]].map(([label, val, transName]) => (
                 <div key={label} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 8px", textAlign: "center" }}>
-                  <span style={{ color: T.text, fontSize: 28, fontWeight: 500, display: "block", lineHeight: 1 }}>
+                  <span style={{ color: T.text, fontSize: 28, fontWeight: 500, display: "block", lineHeight: 1, fontFamily: "sans-serif" }}>
                     {String(val).padStart(2, "0")}
                   </span>
-                  <span style={{ color: T.gold, fontFamily: "sans-serif", fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", marginTop: 4, display: "block" }}>
-                    {label}
+                  <span style={{ color: T.gold, fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : "sans-serif", fontSize: 9.5, letterSpacing: "0.08em", textTransform: "uppercase", marginTop: 5, display: "block" }}>
+                    {transName}
                   </span>
                 </div>
               ))}
@@ -390,31 +613,55 @@ export default function InviteViewer({ invitation }) {
           </div>
         </ScrollReveal>
 
-        {/* Date & Venue Info */}
+        {/* Date & Venue Box with HTML5 Canvas Scratch-off reveal overlay */}
         <ScrollReveal>
-          <div style={{ border: `1px solid ${T.border}`, borderRadius: 16, padding: "28px 32px", margin: "0 auto 40px", maxWidth: 440, background: T.card, textAlign: "center" }}>
-            <p style={{ color: T.gold, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10 }}>Date &amp; Venue</p>
-            <p style={{ color: T.text, fontSize: 16, fontWeight: 500, marginBottom: 4 }}>{fmt}</p>
-            <p style={{ color: T.sub, fontSize: 13, marginBottom: 16 }}>at {fmtTime}</p>
-            <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 14 }}>
-              <p style={{ color: T.text, fontSize: 15, fontWeight: 500, marginBottom: 4 }}>{invitation.venue.name}</p>
-              <p style={{ color: T.sub, fontSize: 12 }}>{invitation.venue.address}</p>
+          <div style={{ position: "relative", margin: "0 auto 40px", maxWidth: 440 }}>
+            
+            {/* Core Card Info Block underneath */}
+            <div style={{ 
+              border: `1px solid ${T.border}`, borderRadius: 16, padding: "28px 32px", 
+              background: T.card, textAlign: "center" 
+            }}>
+              <p style={{ color: T.gold, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10 }}>
+                {text.dateVenue}
+              </p>
+              <p style={{ color: T.text, fontSize: 17, fontWeight: 500, marginBottom: 4 }}>{fmt}</p>
+              <p style={{ color: T.sub, fontSize: 13, marginBottom: 16 }}>at {fmtTime}</p>
+              
+              <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 14 }}>
+                <p style={{ color: T.text, fontSize: 15, fontWeight: 500, marginBottom: 4 }}>{invitation.venue.name}</p>
+                <p style={{ color: T.sub, fontSize: 12.5 }}>{invitation.venue.address}</p>
+              </div>
+
+              {invitation.venue.googleMapsUrl && (
+                <a href={invitation.venue.googleMapsUrl} target="_blank" rel="noopener noreferrer"
+                  style={{ display: "inline-block", marginTop: 16, color: T.gold, fontFamily: "sans-serif", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", borderBottom: `1px solid ${T.gold}40`, paddingBottom: 2 }}>
+                  {text.openMaps}
+                </a>
+              )}
             </div>
-            {invitation.venue.googleMapsUrl && (
-              <a href={invitation.venue.googleMapsUrl} target="_blank" rel="noopener noreferrer"
-                style={{ display: "inline-block", marginTop: 16, color: T.gold, fontFamily: "sans-serif", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", borderBottom: `1px solid ${T.gold}40`, paddingBottom: 2 }}>
-                📍 Open in Maps
-              </a>
+
+            {/* GOLD CANVAS SCRATCH LAYER OVERLAY */}
+            {hasScratch && !scratchRevealed && (
+              <ScratchCardCanvas 
+                textColor={T.text}
+                goldColor={btnBg}
+                onRevealed={() => {
+                  setScratchRevealed(true);
+                  triggerConfettiShower();
+                }}
+                instructionsText={text.scratchText}
+              />
             )}
           </div>
         </ScrollReveal>
 
-        {/* Schedule timeline */}
+        {/* Celebrations Event Timeline */}
         {invitation.details?.schedule?.length > 0 && (
           <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
             <ScrollReveal>
-              <p style={{ textAlign: "center", color: T.sub, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 20 }}>
-                Celebrations Schedule
+              <p style={{ textAlign: "center", color: T.sub, fontFamily: "sans-serif", fontSize: 10.5, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 20 }}>
+                {text.timelineTitle}
               </p>
             </ScrollReveal>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -423,18 +670,18 @@ export default function InviteViewer({ invitation }) {
                 return (
                   <ScrollReveal key={i}>
                     <div style={{ border: `1px solid ${T.border}`, borderRadius: 14, padding: "18px 22px", background: T.card, display: "flex", alignItems: "flex-start", gap: 14 }}>
-                      <div style={{ width: 6, height: 6, borderRadius: "50%", background: T.gold, marginTop: 6, flexShrink: 0 }} />
+                      <div style={{ width: 6, height: 6, borderRadius: "50%", background: T.gold, marginTop: 7, flexShrink: 0 }} />
                       <div style={{ flex: 1 }}>
-                        <p style={{ color: T.text, fontSize: 15, fontWeight: 500, margin: "0 0 4px" }}>{ev.name}</p>
-                        <p style={{ color: T.gold, fontFamily: "sans-serif", fontSize: 11, margin: "0 0 4px" }}>
-                          {d.toLocaleDateString("en-US", { weekday: "short", month: "long", day: "numeric" })} · {d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+                        <p style={{ color: T.text, fontSize: 15.5, fontWeight: 500, margin: "0 0 4px" }}>{ev.name}</p>
+                        <p style={{ color: T.gold, fontFamily: "sans-serif", fontSize: 11.5, margin: "0 0 5px" }}>
+                          {d.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-US", { weekday: "short", month: "long", day: "numeric" })} · {d.toLocaleTimeString(lang === "ur" ? "ur-PK" : "en-US", { hour: "2-digit", minute: "2-digit" })}
                         </p>
                         {ev.venue && (
-                          <p style={{ color: T.text, fontSize: 12, fontWeight: 500, margin: "0 0 4px", opacity: 0.9 }}>
+                          <p style={{ color: T.text, fontSize: 12.5, fontWeight: 500, margin: "0 0 4px", opacity: 0.9 }}>
                             📍 Venue: {ev.venue}
                           </p>
                         )}
-                        {ev.description && <p style={{ color: T.sub, fontSize: 12, margin: 0, fontStyle: "italic" }}>{ev.description}</p>}
+                        {ev.description && <p style={{ color: T.sub, fontSize: 12.5, margin: 0, fontStyle: "italic" }}>{ev.description}</p>}
                       </div>
                     </div>
                   </ScrollReveal>
@@ -444,13 +691,15 @@ export default function InviteViewer({ invitation }) {
           </div>
         )}
 
-        {/* RSVP Form */}
+        {/* RSVP Confirmation Panel */}
         <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
           <ScrollReveal>
             <GoldDivider color={T.gold} />
-            <p style={{ textAlign: "center", color: T.text, fontSize: 22, fontWeight: 400, margin: "28px 0 6px" }}>Kindly RSVP</p>
+            <p style={{ textAlign: "center", color: T.text, fontSize: 23, fontWeight: 400, margin: "28px 0 6px" }}>
+              {text.rsvpTitle}
+            </p>
             <p style={{ textAlign: "center", color: T.sub, fontFamily: "sans-serif", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 24 }}>
-              Let us know you are coming
+              {text.rsvpDesc}
             </p>
           </ScrollReveal>
 
@@ -458,46 +707,63 @@ export default function InviteViewer({ invitation }) {
             <ScrollReveal>
               <div style={{ textAlign: "center", padding: "32px 24px", border: `1px solid ${T.border}`, borderRadius: 16, background: T.card }}>
                 <p style={{ fontSize: 32, marginBottom: 12 }}>✨</p>
-                <p style={{ color: T.text, fontSize: 16 }}>Blessings Received!</p>
-                <p style={{ color: T.sub, fontFamily: "sans-serif", fontSize: 12, marginTop: 6 }}>Thank you — we look forward to celebrating with you.</p>
+                <p style={{ color: T.text, fontSize: 16.5, fontWeight: 600 }}>{text.successTitle}</p>
+                <p style={{ color: T.sub, fontSize: 12.5, marginTop: 6 }}>{text.successDesc}</p>
               </div>
             </ScrollReveal>
           ) : (
             <ScrollReveal>
-              <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                {[
-                  { label: "Your Full Name", type: "text", val: rsvp.name, set: v => setRsvp(r => ({ ...r, name: v })), ph: "e.g. Faisal Khan" },
-                ].map(f => (
-                  <div key={f.label}>
-                    <label style={labelStyle(T)}>{f.label}</label>
-                    <input type={f.type} required placeholder={f.ph} value={f.val} onChange={e => f.set(e.target.value)} style={inputStyle(T)} />
-                  </div>
-                ))}
+              <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 15 }}>
                 <div>
-                  <label style={labelStyle(T)}>Wishes &amp; Blessings</label>
-                  <textarea rows={3} placeholder="Write a blessing..." value={rsvp.blessing} onChange={e => setRsvp(r => ({ ...r, blessing: e.target.value }))} style={{ ...inputStyle(T), resize: "none" }} />
+                  <label style={labelStyle(T)}>{text.fullName}</label>
+                  <input 
+                    type="text" 
+                    required 
+                    placeholder="e.g. Faisal Khan" 
+                    value={rsvp.name} 
+                    onChange={e => setRsvp(r => ({ ...r, name: e.target.value }))} 
+                    style={inputStyle(T)} 
+                  />
                 </div>
-                <button type="submit" disabled={rsvpLoading} style={{
-                  padding: "14px", borderRadius: 12, border: "none", cursor: "pointer",
-                  background: isIvory ? "#1e293b" : `linear-gradient(135deg, #C5A880, #A07840)`,
-                  color: isIvory ? "#fff" : "#00140D",
-                  fontFamily: "sans-serif", fontSize: 11, fontWeight: 700,
-                  letterSpacing: "0.2em", textTransform: "uppercase", transition: "opacity 0.2s",
-                  opacity: rsvpLoading ? 0.6 : 1,
-                }}>
-                  {rsvpLoading ? "Sending..." : "Send RSVP & Blessings"}
+                <div>
+                  <label style={labelStyle(T)}>{text.blessing}</label>
+                  <textarea 
+                    rows={3} 
+                    placeholder="Write a warm blessing..." 
+                    value={rsvp.blessing} 
+                    onChange={e => setRsvp(r => ({ ...r, blessing: e.target.value }))} 
+                    style={{ ...inputStyle(T), resize: "none" }} 
+                  />
+                </div>
+                
+                <button 
+                  type="submit" 
+                  disabled={rsvpLoading} 
+                  style={{
+                    padding: "14px", borderRadius: 12, border: "none", cursor: "pointer",
+                    backgroundColor: btnBg,
+                    color: btnText,
+                    fontFamily: "sans-serif", fontSize: 11.5, fontWeight: 700,
+                    letterSpacing: "0.2em", textTransform: "uppercase", transition: "opacity 0.2s, transform 0.15s",
+                    opacity: rsvpLoading ? 0.6 : 1,
+                    boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.transform = "translateY(-1px)"}
+                  onMouseLeave={e => e.currentTarget.style.transform = "none"}
+                >
+                  {rsvpLoading ? text.sending : text.sendRsvp}
                 </button>
               </form>
             </ScrollReveal>
           )}
         </div>
 
-        {/* Contact info footer */}
+        {/* Contact Hosts / Footer */}
         {invitation.coupleEmail && (
           <ScrollReveal>
             <div style={{ textAlign: "center", margin: "0 auto 40px", maxWidth: 440, borderTop: `1px solid ${T.border}`, paddingTop: 24 }}>
               <p style={{ color: T.gold, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 6 }}>
-                {eventType === "wedding" ? "Contact the Couple" : "Contact the Hosts"}
+                {eventType === "wedding" ? text.contactCouple : text.contactHosts}
               </p>
               <a href={`mailto:${invitation.coupleEmail}`} style={{ color: T.text, fontSize: 14, textDecoration: "none", borderBottom: `1px solid ${T.gold}50`, paddingBottom: 2, fontFamily: "sans-serif" }}>
                 {invitation.coupleEmail}
@@ -507,36 +773,193 @@ export default function InviteViewer({ invitation }) {
         )}
 
         <div style={{ textAlign: "center", paddingTop: 24, borderTop: `1px solid ${T.border}` }}>
-          <p style={{ color: `${T.sub}80`, fontFamily: "sans-serif", fontSize: 9, letterSpacing: "0.25em", textTransform: "uppercase" }}>
+          <p style={{ color: `${T.sub}75`, fontFamily: "sans-serif", fontSize: 9.5, letterSpacing: "0.25em", textTransform: "uppercase" }}>
             Taabir Digital Invitations · Powered by Flynx
           </p>
         </div>
       </div>
 
+      {/* Floating dynamic audio play button */}
       {invitation.musicUrl && phase === "open" && (
         <button onClick={toggleMusic} style={{
           position: "fixed", bottom: 24, right: 24, zIndex: 50,
           width: 48, height: 48, borderRadius: "50%", border: `1px solid ${T.border}`,
-          background: isIvory ? "#fff" : "#022E1F",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.2)", cursor: "pointer",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          color: T.gold, fontSize: 18, transition: "transform 0.15s",
-        }}>
+          backgroundColor: btnBg,
+          color: btnText,
+          boxShadow: "0 4px 20px rgba(0,0,0,0.25)", cursor: "pointer",
+          display: "flex", alignItems: "center", justifyItems: "center", justifyContent: "center",
+          fontSize: 19, transition: "transform 0.15s",
+        }}
+          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.08)"}
+          onMouseLeave={e => e.currentTarget.style.transform = "none"}
+        >
           {isPlaying ? "♪" : "♩"}
         </button>
       )}
 
+      {/* Hardware-accelerated CSS effects */}
       <style>{`
         @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 0.3; }
-          50% { transform: scale(1.15); opacity: 0.6; }
+          0%, 100% { transform: scale(1); opacity: 0.4; }
+          50% { transform: scale(1.16); opacity: 0.75; }
+        }
+        @keyframes fall {
+          0% {
+            transform: translateY(-20px) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) rotate(360deg);
+            opacity: 0;
+          }
         }
       `}</style>
     </div>
   );
 }
 
-/* Scroll Reveal Component */
+/* ─────────────────────────────────────────────────────────────────────────────
+   HTML5 CANVAS GOLDEN DATE SCRATCHER COMPONENT
+   ───────────────────────────────────────────────────────────────────────────── */
+function ScratchCardCanvas({ goldColor, textColor, onRevealed, instructionsText }) {
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    
+    // Scale canvas to match actual bounding box size
+    const resizeCanvas = () => {
+      const rect = containerRef.current.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+
+      // Draw metallic card gradient overlay
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, goldColor);
+      gradient.addColorStop(0.3, "#E8C86B");
+      gradient.addColorStop(0.5, "#FFF2B2");
+      gradient.addColorStop(0.7, "#D4AF37");
+      gradient.addColorStop(1, "#996515");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add elegant borders inside the scratch space
+      ctx.strokeStyle = "rgba(0,0,0,0.15)";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(8, 8, canvas.width - 16, canvas.height - 16);
+
+      // Draw text instructions
+      ctx.fillStyle = "#3a2503";
+      ctx.font = "bold 13px 'Playfair Display', serif, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(instructionsText, canvas.width / 2, canvas.height / 2);
+    };
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+    return () => window.removeEventListener("resize", resizeCanvas);
+  }, [goldColor, instructionsText]);
+
+  // Scratch action drawing
+  const getCoordinates = (e) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    };
+  };
+
+  const handleStart = (e) => {
+    setIsDrawing(true);
+    const coords = getCoordinates(e);
+    scratch(coords.x, coords.y);
+  };
+
+  const handleMove = (e) => {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const coords = getCoordinates(e);
+    scratch(coords.x, coords.y);
+  };
+
+  const handleEnd = () => {
+    setIsDrawing(false);
+    checkScratchPercentage();
+  };
+
+  const scratch = (x, y) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath();
+    ctx.arc(x, y, 22, 0, Math.PI * 2);
+    ctx.fill();
+  };
+
+  const checkScratchPercentage = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imgData.data;
+    let cleared = 0;
+    
+    // Check every 4th byte (alpha channel)
+    for (let i = 3; i < pixels.length; i += 4) {
+      if (pixels[i] === 0) cleared++;
+    }
+
+    const percentage = cleared / (pixels.length / 4);
+    if (percentage > 0.6) {
+      // Fade out canvas automatically
+      canvas.style.transition = "opacity 0.6s ease";
+      canvas.style.opacity = 0;
+      setTimeout(onRevealed, 600);
+    }
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      style={{
+        position: "absolute",
+        inset: 0,
+        borderRadius: 16,
+        overflow: "hidden",
+        zIndex: 20,
+        touchAction: "none",
+        cursor: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" style=\"fill:black\"><circle cx=\"12\" cy=\"12\" r=\"10\" fill=\"gold\" stroke=\"black\" stroke-width=\"2\"/></svg>') 12 12, auto"
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        onMouseDown={handleStart}
+        onMouseMove={handleMove}
+        onMouseUp={handleEnd}
+        onMouseLeave={handleEnd}
+        onTouchStart={handleStart}
+        onTouchMove={handleMove}
+        onTouchEnd={handleEnd}
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "block",
+        }}
+      />
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SCROLL REVEAL UTILITY COMPONENT
+   ───────────────────────────────────────────────────────────────────────────── */
 function ScrollReveal({ children }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
@@ -571,19 +994,30 @@ function ScrollReveal({ children }) {
   );
 }
 
-/* Shared style helpers */
+/* ─────────────────────────────────────────────────────────────────────────────
+   SHARED DIVIDER & LAYOUT DECORATORS
+   ───────────────────────────────────────────────────────────────────────────── */
 function GoldDivider({ color }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "8px 0" }}>
-      <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, transparent, ${color}40)` }} />
-      <div style={{ width: 5, height: 5, borderRadius: "50%", background: color, opacity: 0.6 }} />
-      <div style={{ flex: 1, height: 1, background: `linear-gradient(to left, transparent, ${color}40)` }} />
+      <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, transparent, ${color}45)` }} />
+      <div style={{ width: 5, height: 5, borderRadius: "50%", background: color, opacity: 0.65 }} />
+      <div style={{ flex: 1, height: 1, background: `linear-gradient(to left, transparent, ${color}45)` }} />
     </div>
   );
 }
 
 function labelStyle(T) {
-  return { display: "block", color: T.gold, fontFamily: "sans-serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 6, fontWeight: 700 };
+  return { 
+    display: "block", 
+    color: T.gold, 
+    fontFamily: "sans-serif", 
+    fontSize: 9.5, 
+    letterSpacing: "0.2em", 
+    textTransform: "uppercase", 
+    marginBottom: 6, 
+    fontWeight: 700 
+  };
 }
 
 function inputStyle(T) {
