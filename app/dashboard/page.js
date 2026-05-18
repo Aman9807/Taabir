@@ -156,8 +156,8 @@ export default function DashboardPage() {
         
         {/* Top Navbar */}
         <div className="flex flex-col sm:flex-row items-center justify-between bg-white border border-slate-100 shadow-sm rounded-2xl p-6 mb-8 gap-4">
-          <div className="flex items-center gap-4">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" className="h-10 w-10 shrink-0 shadow-md rounded-xl">
+          <Link href="/" className="flex items-center gap-4 hover:opacity-90 transition-all group shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" className="h-10 w-10 shrink-0 shadow-md rounded-xl group-hover:scale-105 transition-transform duration-300">
               <defs>
                 <linearGradient id="yellow-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#FFF3C4" />
@@ -186,21 +186,33 @@ export default function DashboardPage() {
               <text x="100" y="152" fontFamily="'Inter', 'Montserrat', 'sans-serif'" fontSize="10.5" fontWeight="800" fill="url(#yellow-gold-grad)" textAnchor="middle" letter-spacing="4.5" opacity="0.95">TAABIR</text>
             </svg>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">Taabir Dashboard</h1>
+              <h1 className="text-xl font-bold text-slate-900 tracking-tight group-hover:text-amber-700 transition-colors">Taabir Dashboard</h1>
               <p className="text-xs text-slate-400 font-mono">Logged in as {user.email}</p>
             </div>
-          </div>
+          </Link>
           
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/"
+              className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all uppercase tracking-widest font-sans"
+            >
+              🏠 Home
+            </Link>
+            <Link
+              href="/templates"
+              className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all uppercase tracking-widest font-sans"
+            >
+              🎨 Templates
+            </Link>
             <Link
               href="/dashboard/create"
-              className="px-4 py-2 border border-transparent rounded-xl shadow-md text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 transition-all uppercase tracking-widest"
+              className="px-4 py-2 border border-transparent rounded-xl shadow-md text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 transition-all uppercase tracking-widest font-sans"
             >
               ➕ Create Invitation
             </Link>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all uppercase tracking-widest"
+              className="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-rose-600 transition-all uppercase tracking-widest font-sans"
             >
               🚪 Logout
             </button>
