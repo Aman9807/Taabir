@@ -14,6 +14,7 @@ export default function InviteViewer({ invitation }) {
   const [phase, setPhase] = useState("closed"); // closed → opening → open
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
   const isIvory = invitation.theme?.templateId === "ivory-classic";
 
@@ -277,19 +278,73 @@ export default function InviteViewer({ invitation }) {
           </div>
         </ScrollReveal>
 
-        {/* ── Couple Photo ── */}
-        {invitation.photoUrl && (
-          <ScrollReveal>
-            <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
-              <div style={{ border: `1px solid ${T.border}`, borderRadius: 16, overflow: "hidden", background: T.card, padding: 6 }}>
-                <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "4/3" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={invitation.photoUrl} alt="Couple" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        {/* ── Couple Photo Gallery ── */}
+        {(() => {
+          const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+          if (galleryPhotos.length === 0) return null;
+          return (
+            <ScrollReveal>
+              <div style={{ margin: "0 auto 40px", maxWidth: 440 }}>
+                <div style={{ border: `1px solid ${T.border}`, borderRadius: 16, overflow: "hidden", background: T.card, padding: 6, position: "relative" }}>
+                  <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={galleryPhotos[activePhotoIdx]} alt="Couple" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "all 0.5s ease-in-out" }} />
+                    
+                    {galleryPhotos.length > 1 && (
+                      <>
+                        {/* Left Arrow Button */}
+                        <button
+                          type="button"
+                          onClick={() => setActivePhotoIdx((prev) => (prev === 0 ? galleryPhotos.length - 1 : prev - 1))}
+                          style={{
+                            position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)",
+                            background: "rgba(0,0,0,0.65)", color: "#fff", border: "none", borderRadius: "50%",
+                            width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
+                            cursor: "pointer", fontSize: 18, transition: "background 0.2s", zIndex: 10, outline: "none"
+                          }}
+                        >
+                          ‹
+                        </button>
+
+                        {/* Right Arrow Button */}
+                        <button
+                          type="button"
+                          onClick={() => setActivePhotoIdx((prev) => (prev === galleryPhotos.length - 1 ? 0 : prev + 1))}
+                          style={{
+                            position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+                            background: "rgba(0,0,0,0.65)", color: "#fff", border: "none", borderRadius: "50%",
+                            width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
+                            cursor: "pointer", fontSize: 18, transition: "background 0.2s", zIndex: 10, outline: "none"
+                          }}
+                        >
+                          ›
+                        </button>
+
+                        {/* Dots indicator */}
+                        <div style={{
+                          position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)",
+                          display: "flex", gap: 6, zIndex: 10
+                        }}>
+                          {galleryPhotos.map((_, i) => (
+                            <div
+                              key={i}
+                              onClick={() => setActivePhotoIdx(i)}
+                              style={{
+                                width: 8, height: 8, borderRadius: "50%",
+                                background: i === activePhotoIdx ? T.gold : "rgba(255,255,255,0.5)",
+                                cursor: "pointer", transition: "background 0.2s"
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </ScrollReveal>
-        )}
+            </ScrollReveal>
+          );
+        })()}
 
         {/* ── Countdown ── */}
         <ScrollReveal>

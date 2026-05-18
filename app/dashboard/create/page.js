@@ -39,8 +39,7 @@ export default function CreateInvitationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [uploadedBase64, setUploadedBase64] = useState(""); // base64 representation of uploaded image
-  const [photoMode, setPhotoMode] = useState("upload");     // "upload" or "url"
+  const [photos, setPhotos] = useState([]);                  // Array of direct URL links and Base64 uploads
 
   // Redirect protection
   useEffect(() => {
@@ -95,12 +94,25 @@ export default function CreateInvitationPage() {
 
         // Convert canvas image to highly optimized Base64 JPEG at 0.75 quality
         const compressedBase64 = canvas.toDataURL("image/jpeg", 0.75);
-        setUploadedBase64(compressedBase64);
-        setFormData((prev) => ({ ...prev, photoUrl: "" })); // Clear the pasted link to avoid conflicts
+        setPhotos((prev) => [...prev, compressedBase64]);
       };
       img.src = event.target.result;
     };
     reader.readAsDataURL(file);
+    e.target.value = ""; // Reset so same file can be selected again
+  };
+
+  const addPhotoUrl = (url) => {
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      setError("Please enter a valid URL starting with http:// or https://");
+      return;
+    }
+    setPhotos((prev) => [...prev, url]);
+    setError("");
+  };
+
+  const removePhoto = (index) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
   };
 
   // Helper: Live-sanitizes slug inputs
@@ -214,7 +226,8 @@ export default function CreateInvitationPage() {
           address: venueAddress.trim(),
           googleMapsUrl,
         },
-        photoUrl: uploadedBase64 || photoUrl.trim() || fallbackPhoto,
+        photoUrl: photos[0] || fallbackPhoto,
+        photos: photos.length > 0 ? photos : [fallbackPhoto],
         musicUrl: musicUrl.trim() || "",
         coupleEmail: formData.coupleEmail.trim() || "",
         headerArabic: formData.headerArabic.trim() || "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
@@ -409,91 +422,85 @@ export default function CreateInvitationPage() {
 
               {/* Assets link */}
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {/* Couple Photo Selector Tab Controller */}
-                <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-slate-700">
-                    Couple&apos;s Feature Photo
+                {/* Couple Photo Gallery Selector */}
+                <div className="sm:col-span-2 space-y-3 bg-slate-50/50 p-5 rounded-2xl border border-slate-100">
+                  <label className="block text-sm font-bold text-slate-800 font-sans">
+                    Wedding Photo Gallery (Add 2 or more pictures) *
                   </label>
+                  <p className="text-xs text-slate-400 font-sans">
+                    Upload images from your device or paste direct image URLs below. Add 2 or more images to enable a beautiful slider carousel on the card!
+                  </p>
                   
-                  {/* Luxury tab selectors */}
-                  <div className="flex gap-2 p-1 bg-slate-100/80 rounded-xl max-w-xs mb-3">
-                    <button
-                      type="button"
-                      onClick={() => setPhotoMode("upload")}
-                      className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-all ${
-                        photoMode === "upload"
-                          ? "bg-white text-slate-900 shadow-sm"
-                          : "text-slate-500 hover:text-slate-700"
-                      }`}
-                    >
-                      📁 Upload Photo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPhotoMode("url")}
-                      className={`flex-1 py-1.5 text-center text-xs font-bold rounded-lg transition-all ${
-                        photoMode === "url"
-                          ? "bg-white text-slate-900 shadow-sm"
-                          : "text-slate-500 hover:text-slate-700"
-                      }`}
-                    >
-                      🔗 Paste Link
-                    </button>
-                  </div>
-
-                  {photoMode === "upload" ? (
-                    <div className="space-y-3">
-                      {/* Drag & Drop Visual Box */}
-                      <div className="border-2 border-dashed border-slate-200 hover:border-amber-400/60 rounded-xl p-4 bg-slate-50 text-center transition-all relative">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handlePhotoUpload}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                        />
-                        <span className="text-xl block mb-1">📸</span>
-                        <span className="block text-xs font-bold text-slate-700">
-                          {uploadedBase64 ? "Change Chosen Photo" : "Choose Wedding Image"}
-                        </span>
-                        <span className="block text-[10px] text-slate-400 mt-0.5">
-                          Drag and drop or tap to browse (max 2MB)
+                  {/* Grid of added photos */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-3">
+                    {photos.map((pic, index) => (
+                      <div key={index} className="relative group aspect-[4/3] rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-slate-100">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={pic} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removePhoto(index)}
+                          className="absolute top-1.5 right-1.5 h-6 w-6 bg-rose-500 hover:bg-rose-600 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-md transition-all z-20"
+                          title="Remove Photo"
+                        >
+                          ✕
+                        </button>
+                        <span className="absolute bottom-1.5 left-1.5 text-[9px] font-bold text-white bg-slate-900/60 px-1.5 py-0.5 rounded font-mono z-20">
+                          #{index + 1} {index === 0 ? "(Main Cover)" : ""}
                         </span>
                       </div>
+                    ))}
+                    
+                    {/* Add Photo Action Button box */}
+                    <div className="border-2 border-dashed border-slate-200 hover:border-amber-400/60 rounded-xl p-4 bg-white flex flex-col items-center justify-center min-h-[120px] relative text-center transition-all">
+                      <span className="text-xl block mb-1">📸</span>
+                      <span className="block text-xs font-bold text-slate-700">Add Picture</span>
                       
-                      {/* Image uploader circular preview block */}
-                      {uploadedBase64 && (
-                        <div className="flex items-center gap-3 bg-amber-50/20 border border-amber-500/10 rounded-xl p-3">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={uploadedBase64}
-                            alt="Selected preview"
-                            className="h-12 w-16 object-cover rounded-lg border border-slate-200"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <span className="block text-[11px] font-bold text-slate-800 truncate">Image Loaded Successfully</span>
-                            <span className="block text-[9px] text-slate-400">Converted completely inline for Firestore</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => setUploadedBase64("")}
-                            className="text-xs font-bold text-rose-500 hover:text-rose-600 px-2 py-1 bg-white hover:bg-rose-50 rounded-lg border border-slate-100 transition-all"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      )}
+                      {/* File upload input */}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePhotoUpload}
+                        className="absolute inset-x-0 top-0 bottom-12 w-full opacity-0 cursor-pointer z-10"
+                        title="Upload a photo"
+                      />
+                      <span className="block text-[10px] text-slate-400 mt-0.5 hover:text-slate-600 font-medium cursor-pointer">
+                        📁 Choose File
+                      </span>
+                      
+                      {/* Or paste link input */}
+                      <div className="mt-2 w-full px-1 z-20 flex gap-1">
+                        <input
+                          type="url"
+                          id="manualPhotoUrl"
+                          placeholder="Or paste URL..."
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              if (e.target.value.trim()) {
+                                addPhotoUrl(e.target.value.trim());
+                                e.target.value = "";
+                              }
+                            }
+                          }}
+                          className="flex-1 min-w-0 px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-[10px] focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 font-sans"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const input = document.getElementById("manualPhotoUrl");
+                            if (input && input.value.trim()) {
+                              addPhotoUrl(input.value.trim());
+                              input.value = "";
+                            }
+                          }}
+                          className="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-[10px] font-bold transition-all shrink-0"
+                        >
+                          Add
+                        </button>
+                      </div>
                     </div>
-                  ) : (
-                    <input
-                      type="url"
-                      name="photoUrl"
-                      id="photoUrl"
-                      placeholder="e.g. https://images.unsplash.com/..."
-                      value={formData.photoUrl}
-                      onChange={handleChange}
-                      className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-sm font-sans"
-                    />
-                  )}
+                  </div>
                 </div>
 
                 <div>
