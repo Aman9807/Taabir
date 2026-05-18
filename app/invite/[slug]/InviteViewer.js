@@ -174,7 +174,7 @@ export default function InviteViewer({ invitation }) {
 
   const handleOpen = () => {
     setPhase("opening");
-    setTimeout(() => setPhase("open"), 1200);
+    setTimeout(() => setPhase("open"), 1800);
     if (audioRef.current) {
       audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
     }
@@ -455,9 +455,9 @@ export default function InviteViewer({ invitation }) {
       {/* INNER VIEWPORT INVITATION CARD */}
       <div 
         style={{
-          opacity: phase === "open" ? 1 : 0,
-          transform: phase === "open" ? "translateY(0)" : "translateY(40px)",
-          transition: "opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s",
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
           maxWidth: 660, margin: "0 auto", padding: "48px 24px 96px",
         }}
       >
