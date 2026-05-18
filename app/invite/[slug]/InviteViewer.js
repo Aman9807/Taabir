@@ -23,6 +23,7 @@ export default function InviteViewer({ invitation }) {
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
   const tplId = invitation.theme?.templateId || "emerald-noir";
+  const [activeLayoutId, setActiveLayoutId] = useState(tplId);
   const [activePaletteId, setActivePaletteId] = useState(tplId);
   const [showPaletteMenu, setShowPaletteMenu] = useState(false);
   const eventType = invitation.eventType || "wedding";
@@ -2074,6 +2075,13 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const layouts = [
+    { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
+    { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
+    { id: "dark-moody-elegant", name: "Dark Moody & Elegant", icon: "🖤" },
+    { id: "bohemian-terracotta", name: "Bohemian Terracotta", icon: "🌿" },
+  ];
+
   const palettes = [
     { id: "minimalist-romance", name: "Minimalist Romance", preview: ["#FFFFF0", "#F7E7CE", "#333333"] },
     { id: "emerald-noir", name: "Emerald Noir", preview: ["#001C12", "#C5A880", "#FAF9F5"] },
@@ -2112,33 +2120,33 @@ export default function InviteViewer({ invitation }) {
         </button>
       )}
 
-      {/* FLOATING PALETTE SWITCHER WIDGET */}
+      {/* FLOATING DESIGN CUSTOMIZER WIDGET */}
       {phase === "open" && (
         <div className="fixed bottom-4 left-4 z-[999] font-sans">
           {showPaletteMenu ? (
             <div 
               style={{
-                background: "rgba(255, 255, 255, 0.95)",
-                backdropFilter: "blur(16px)",
-                border: "1px solid rgba(0, 0, 0, 0.08)",
-                borderRadius: 16,
-                padding: "16px 20px",
-                boxShadow: "0 10px 35px rgba(0,0,0,0.18)",
+                background: "rgba(255, 255, 255, 0.96)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid rgba(0, 0, 0, 0.1)",
+                borderRadius: 18,
+                padding: "18px 20px",
+                boxShadow: "0 15px 40px rgba(0,0,0,0.2)",
                 display: "flex",
                 flexDirection: "column",
-                gap: 12,
-                width: 250,
+                gap: 16,
+                width: 275,
                 transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(0,0,0,0.06)", paddingBottom: 8 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#1f2937", letterSpacing: "0.08em", textTransform: "uppercase" }}>Switch Invite Palette</span>
+                <span style={{ fontSize: 11.5, fontWeight: 800, color: "#1f2937", letterSpacing: "0.08em", textTransform: "uppercase" }}>Design Customizer</span>
                 <button 
                   onClick={() => setShowPaletteMenu(false)}
                   style={{
                     border: "none",
                     background: "none",
-                    fontSize: 20,
+                    fontSize: 22,
                     cursor: "pointer",
                     color: "#9ca3af",
                     padding: 0,
@@ -2150,49 +2158,89 @@ export default function InviteViewer({ invitation }) {
                 </button>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {palettes.map((pal) => {
-                  const isActive = activePaletteId === pal.id;
-                  return (
-                    <button
-                      key={pal.id}
-                      onClick={() => setActivePaletteId(pal.id)}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "8px 10px",
-                        borderRadius: 8,
-                        border: isActive ? "2px solid #D4AF37" : "1px solid rgba(0,0,0,0.05)",
-                        backgroundColor: isActive ? "rgba(212, 175, 55, 0.05)" : "transparent",
-                        cursor: "pointer",
-                        transition: "all 0.2s",
-                        textAlign: "left",
-                        width: "100%",
-                        outline: "none"
-                      }}
-                    >
-                      <span style={{ fontSize: 11.5, fontWeight: isActive ? 700 : 500, color: isActive ? "#856404" : "#4b5563" }}>
-                        {pal.name}
-                      </span>
-                      <div style={{ display: "flex", gap: 3 }}>
-                        {pal.preview.map((c, i) => (
-                          <span 
-                            key={i} 
-                            style={{ 
-                              width: 10, 
-                              height: 10, 
-                              borderRadius: "50%", 
-                              backgroundColor: c, 
-                              border: "1px solid rgba(0,0,0,0.1)" 
-                            }} 
-                          />
-                        ))}
-                      </div>
-                    </button>
-                  );
-                })}
+              {/* SECTION 1: LAYOUT & ANIMATION (BODY) */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#6b7280", letterSpacing: "0.05em", textTransform: "uppercase" }}>🏛️ Layout & Animations</span>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {layouts.map((lay) => {
+                    const isLayActive = activeLayoutId === lay.id;
+                    return (
+                      <button
+                        key={lay.id}
+                        onClick={() => setActiveLayoutId(lay.id)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 10,
+                          padding: "8px 10px",
+                          borderRadius: 8,
+                          border: isLayActive ? "2px solid #D4AF37" : "1px solid rgba(0,0,0,0.05)",
+                          backgroundColor: isLayActive ? "rgba(212, 175, 55, 0.05)" : "transparent",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          textAlign: "left",
+                          width: "100%",
+                          outline: "none"
+                        }}
+                      >
+                        <span style={{ fontSize: 14 }}>{lay.icon}</span>
+                        <span style={{ fontSize: 11.5, fontWeight: isLayActive ? 700 : 500, color: isLayActive ? "#856404" : "#4b5563" }}>
+                          {lay.name}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
+
+              {/* SECTION 2: COLOR PALETTE */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#6b7280", letterSpacing: "0.05em", textTransform: "uppercase" }}>🎨 Theme Colors</span>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {palettes.map((pal) => {
+                    const isPalActive = activePaletteId === pal.id;
+                    return (
+                      <button
+                        key={pal.id}
+                        onClick={() => setActivePaletteId(pal.id)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          padding: "8px 10px",
+                          borderRadius: 8,
+                          border: isPalActive ? "2px solid #D4AF37" : "1px solid rgba(0,0,0,0.05)",
+                          backgroundColor: isPalActive ? "rgba(212, 175, 55, 0.05)" : "transparent",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          textAlign: "left",
+                          width: "100%",
+                          outline: "none"
+                        }}
+                      >
+                        <span style={{ fontSize: 11.5, fontWeight: isPalActive ? 700 : 500, color: isPalActive ? "#856404" : "#4b5563" }}>
+                          {pal.name}
+                        </span>
+                        <div style={{ display: "flex", gap: 3 }}>
+                          {pal.preview.map((c, i) => (
+                            <span 
+                              key={i} 
+                              style={{ 
+                                width: 10, 
+                                height: 10, 
+                                borderRadius: "50%", 
+                                backgroundColor: c, 
+                                border: "1px solid rgba(0,0,0,0.1)" 
+                              }} 
+                            />
+                          ))}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
             </div>
           ) : (
             <button
@@ -2202,18 +2250,18 @@ export default function InviteViewer({ invitation }) {
                 backdropFilter: "blur(8px)",
                 border: "1px solid rgba(0,0,0,0.08)",
                 borderRadius: "50%",
-                width: 44,
-                height: 44,
+                width: 46,
+                height: 46,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+                boxShadow: "0 4px 18px rgba(0,0,0,0.15)",
                 cursor: "pointer",
                 transition: "all 0.2s",
-                fontSize: 20,
+                fontSize: 22,
                 outline: "none"
               }}
-              title="Change Color Palette"
+              title="Design Customizer"
               className="hover:scale-105 active:scale-95"
             >
               🎨
@@ -2389,11 +2437,11 @@ export default function InviteViewer({ invitation }) {
       )}
 
       {/* INNER VIEWPORT INVITATION CARD */}
-      {tplId === "minimalist-romance" ? (
+      {activeLayoutId === "minimalist-romance" ? (
         renderMinimalistRomance()
-      ) : tplId === "dark-moody-elegant" ? (
+      ) : activeLayoutId === "dark-moody-elegant" ? (
         renderDarkMoody()
-      ) : tplId === "bohemian-terracotta" ? (
+      ) : activeLayoutId === "bohemian-terracotta" ? (
         renderBohemianTerracotta()
       ) : (
         <div 
