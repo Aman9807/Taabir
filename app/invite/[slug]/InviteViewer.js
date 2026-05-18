@@ -305,6 +305,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#00FF66", 
         border: "rgba(0,255,255,0.25)"
       }
+    : activePaletteId === "elegant-milestone"
+    ? {
+        bg: "#800020", 
+        door: "#4A0012", 
+        seam: "#C0C0C0", 
+        card: "rgba(255, 255, 255, 0.05)", 
+        text: "#FFFFFF", 
+        sub: "#C0C0C0", 
+        gold: "#C0C0C0", 
+        border: "rgba(192, 192, 192, 0.25)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -2581,6 +2592,405 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderElegantMilestone = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+
+    return (
+      <div 
+        style={{
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s ease-out, transform 1.5s ease-out",
+          width: "100%",
+          margin: "0 auto",
+          backgroundColor: "#0F0F0F", 
+          color: "#FFFFFF",
+          fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "'Merriweather', serif",
+        }}
+      >
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+          
+          .magazine-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(192, 192, 192, 0.15);
+            padding: 48px 36px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            position: relative;
+          }
+          .magazine-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(192, 192, 192, 0.2);
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+          }
+          .magazine-input:focus {
+            border-color: #C0C0C0;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 12px rgba(192, 192, 192, 0.15);
+          }
+          .silver-bullet {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #C0C0C0;
+            border: 2px solid #0F0F0F;
+            position: absolute;
+            left: -5.5px;
+            top: 6px;
+          }
+          .magazine-btn {
+            background-color: #800020;
+            color: #FFFFFF;
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            border: 1px solid rgba(192, 192, 192, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+          }
+          .magazine-btn:hover {
+            background-color: #A01030;
+            box-shadow: 0 0 15px rgba(128, 0, 32, 0.4);
+            border-color: #C0C0C0;
+          }
+          .magazine-label {
+            display: block;
+            color: #708090;
+            font-family: 'Merriweather', serif;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 700;
+          }
+        `}</style>
+
+        {/* SECTION 1: SLOW 3S BACKGROUND CROSS-FADE HERO */}
+        <div 
+          style={{
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            overflow: "hidden",
+            backgroundColor: "#0F0F0F"
+          }}
+        >
+          {/* Slow Cross-Fading Images */}
+          {hasPhotos && galleryPhotos.map((photo, idx) => (
+            <div
+              key={idx}
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: `url(${photo})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: activePhotoIdx === idx ? 1 : 0,
+                transition: "opacity 3.0s ease-in-out",
+                zIndex: 0
+              }}
+            />
+          ))}
+
+          {/* Translucent Legibility Gradient Overlay */}
+          <div 
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: `linear-gradient(to bottom, rgba(128, 0, 32, 0.5) 0%, rgba(15, 15, 15, 0.85) 75%, #0F0F0F 100%)`,
+              zIndex: 1,
+            }}
+          />
+
+          {/* Editorial Card Hero Overlay */}
+          <div style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 580, padding: "0 24px" }}>
+            <ElegantFadeInScrollReveal>
+              <div 
+                className="magazine-card"
+                style={{ 
+                  textAlign: "center", 
+                  padding: "64px 40px", 
+                  border: "1px solid rgba(192, 192, 192, 0.25)" 
+                }}
+              >
+                {/* Monogram */}
+                <p style={{ color: "#C0C0C0", fontSize: 24, fontFamily: "'Noto Naskh Arabic', serif", marginBottom: 12, lineHeight: 1.6 }}>
+                  {invitation.headerArabic || "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"}
+                </p>
+                <p style={{ color: "#708090", fontFamily: "'Merriweather', serif", fontSize: 10, letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: 36 }}>
+                  {invitation.headerGrace || "Under the Grace of Almighty Allah"}
+                </p>
+                
+                {/* Event Type Header */}
+                <p style={{ color: "#C0C0C0", fontFamily: "'Merriweather', serif", fontSize: 15, fontStyle: "italic", letterSpacing: "0.05em", marginBottom: 16 }}>
+                  {eventType === "wedding" ? text.wedding : 
+                   eventType === "birthday" ? text.birthday : 
+                   eventType === "anniversary" ? text.anniversary : 
+                   text.general}
+                </p>
+
+                {/* Main Heading Names in Great Vibes */}
+                <h1 style={{ color: "#FFFFFF", fontFamily: "'Great Vibes', cursive", fontSize: "4.8rem", fontWeight: 400, lineHeight: 1.1, margin: "0 0 24px" }}>
+                  {invitation.brideName}
+                  {invitation.groomName && (
+                    <>
+                      <span style={{ display: "block", fontSize: 20, color: "#C0C0C0", fontFamily: "'Merriweather', serif", margin: "14px 0" }}>&amp;</span>
+                      {invitation.groomName}
+                    </>
+                  )}
+                </h1>
+
+                <div style={{ width: 80, height: 1, background: "linear-gradient(to right, transparent, rgba(192, 192, 192, 0.5), transparent)", margin: "0 auto 28px" }} />
+
+                {/* Event date */}
+                <p style={{ color: "#C0C0C0", fontFamily: "'Merriweather', serif", fontSize: 13, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                  {fmt}
+                </p>
+              </div>
+            </ElegantFadeInScrollReveal>
+          </div>
+        </div>
+
+        {/* SECTION 2: INTRO CARD */}
+        <div style={{ padding: "80px 24px 40px", maxWidth: 580, margin: "0 auto" }}>
+          <ElegantFadeInScrollReveal>
+            <div className="magazine-card" style={{ textAlign: "center" }}>
+              <span className="text-xl block mb-4">✨</span>
+              <h2 style={{ fontFamily: "'Merriweather', serif", fontSize: 26, color: "#C0C0C0", fontWeight: 300, marginBottom: 24, letterSpacing: "0.05em" }}>
+                {lang === "ur" ? "تقریب میں خوش آمدید" : "The Honor of Your Presence"}
+              </h2>
+              
+              <p style={{ fontSize: 14, lineHeight: 1.8, opacity: 0.85, marginBottom: 20 }}>
+                {eventType === "birthday" ? (
+                  lang === "ur" ? (
+                    `ہم آپ کو زندگی کے اس شاندار سنگ میل کی خوشی منانے کے لیے مدعو کرتے ہیں۔ ہمارے پیارے ${invitation.brideName} اپنی زندگی کے خوبصورت ${invitation.brideParentsName || "50 ویں"} سال مکمل کر رہے ہیں۔ اس یادگار شام کو مزید شاندار بنانے کے لیے آپ کی شرکت ہمارے لیے باعثِ مسرت ہوگی۔`
+                  ) : (
+                    `We gather to toast a life beautifully lived, rich in memories, achievements, and enduring friendships. Please join us for a sophisticated evening celebrating the milestone ${invitation.brideParentsName || "50th"} birthday of our beloved ${invitation.brideName}.`
+                  )
+                ) : (
+                  lang === "ur" ? (
+                    "خالق کائنات کے شکر گزار ہیں جس نے محبت اور وفا کی اس خوبصورت تقریب کو سجانے کا موقع دیا۔ ہم اپنے خاندان اور قریبی احباب کی موجودگی میں اس بابرکت سفر کا آغاز کرنا چاہتے ہیں۔"
+                  ) : (
+                    "As we celebrate the milestones of life, we invite you to stand beside us in love, unity, and blessing. Your friendship and affection have shaped our journey, and your presence is our greatest gift."
+                  )
+                )}
+              </p>
+
+              {/* Parents Names / Lineage */}
+              {(invitation.brideParentsName || invitation.groomParentsName) && (
+                <div style={{ marginTop: 32, borderTop: "1px solid rgba(192, 192, 192, 0.15)", paddingTop: 24 }}>
+                  {invitation.brideParentsName && (
+                    <p style={{ fontSize: 13, color: "#708090", fontStyle: "italic", marginBottom: 6 }}>
+                      {eventType === "wedding" ? `${text.daughterOf} ${invitation.brideParentsName}` : invitation.brideParentsName}
+                    </p>
+                  )}
+                  {invitation.groomParentsName && (
+                    <p style={{ fontSize: 13, color: "#708090", fontStyle: "italic" }}>
+                      {eventType === "wedding" ? `${text.sonOf} ${invitation.groomParentsName}` : invitation.groomParentsName}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </ElegantFadeInScrollReveal>
+        </div>
+
+        {/* SECTION 3: DATE & TIME COUNTDOWN PANEL */}
+        <div style={{ padding: "40px 24px", maxWidth: 580, margin: "0 auto" }}>
+          <ElegantFadeInScrollReveal>
+            <div className="magazine-card" style={{ textAlign: "center" }}>
+              <h3 style={{ fontFamily: "'Merriweather', serif", fontSize: 18, color: "#C0C0C0", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 32 }}>
+                {text.countdown}
+              </h3>
+
+              {/* Sophisticated Silver-Bordered Grid Countdown */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, margin: "0 auto 36px" }}>
+                {[
+                  { val: timeLeft.days, lbl: text.days },
+                  { val: timeLeft.hours, lbl: text.hours },
+                  { val: timeLeft.minutes, lbl: text.mins },
+                  { val: timeLeft.seconds, lbl: text.secs }
+                ].map((item, i) => (
+                  <div 
+                    key={i} 
+                    style={{ 
+                      padding: "16px 8px", 
+                      border: "1px solid rgba(192, 192, 192, 0.2)",
+                      background: "rgba(255,255,255,0.01)"
+                    }}
+                  >
+                    <span style={{ display: "block", fontSize: 28, fontWeight: 300, color: "#FFFFFF", fontFamily: "'Merriweather', serif" }}>
+                      {String(item.val).padStart(2, "0")}
+                    </span>
+                    <span style={{ display: "block", fontSize: 9, letterSpacing: "0.15em", textTransform: "uppercase", color: "#708090", marginTop: 4 }}>
+                      {item.lbl}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Venue details */}
+              <div style={{ borderTop: "1px solid rgba(192, 192, 192, 0.15)", paddingTop: 28 }}>
+                <p style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#708090", marginBottom: 6 }}>
+                  {text.dateVenue}
+                </p>
+                <p style={{ fontSize: 18, fontWeight: 300, color: "#FFFFFF", marginBottom: 4 }}>
+                  {invitation.venue?.name}
+                </p>
+                <p style={{ fontSize: 13, opacity: 0.7, fontStyle: "italic", marginBottom: 20 }}>
+                  {invitation.venue?.address}
+                </p>
+                <p style={{ fontSize: 13, color: "#C0C0C0" }}>
+                  ⏰ {fmtTime}
+                </p>
+
+                {invitation.venue?.googleMapsUrl && (
+                  <a 
+                    href={invitation.venue.googleMapsUrl}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="magazine-btn"
+                    style={{ display: "inline-block", marginTop: 24, fontSize: 11, textDecoration: "none" }}
+                  >
+                    {text.openMaps}
+                  </a>
+                )}
+              </div>
+            </div>
+          </ElegantFadeInScrollReveal>
+        </div>
+
+        {/* SECTION 4: TIMELINE SCHEDULE */}
+        {invitation.details?.schedule && invitation.details.schedule.length > 0 && (
+          <div style={{ padding: "40px 24px", maxWidth: 580, margin: "0 auto" }}>
+            <ElegantFadeInScrollReveal>
+              <div className="magazine-card">
+                <h3 style={{ fontFamily: "'Merriweather', serif", fontSize: 22, color: "#C0C0C0", textAlign: "center", marginBottom: 40, letterSpacing: "0.05em" }}>
+                  {text.timelineTitle}
+                </h3>
+
+                <div style={{ maxWidth: 440, margin: "0 auto", paddingLeft: 12 }}>
+                  {invitation.details.schedule.map((event, idx) => {
+                    const eventDate = new Date(event.time);
+                    const eventFmtTime = eventDate.toLocaleTimeString(lang === "ur" ? "ur-PK" : "en-US", { hour: "2-digit", minute: "2-digit" });
+                    return (
+                      <div key={idx} className="timeline-node" style={{ paddingLeft: 24, borderLeft: "1px solid rgba(192, 192, 192, 0.25)", paddingBottom: 32 }}>
+                        <span className="silver-bullet" style={{ background: "#C0C0C0", width: 8, height: 8, left: -4.5 }} />
+                        <span style={{ fontSize: 11, color: "#708090", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700 }}>
+                          {eventFmtTime}
+                        </span>
+                        <h4 style={{ fontSize: 16, color: "#FFFFFF", margin: "4px 0", fontWeight: 400 }}>
+                          {event.name}
+                        </h4>
+                        {event.venue && (
+                          <p style={{ fontSize: 12, color: "#C0C0C0", opacity: 0.8, fontStyle: "italic", margin: "2px 0 6px" }}>
+                            📍 {event.venue}
+                          </p>
+                        )}
+                        {event.description && (
+                          <p style={{ fontSize: 13, opacity: 0.7, margin: 0, lineHeight: 1.6 }}>
+                            {event.description}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </ElegantFadeInScrollReveal>
+          </div>
+        )}
+
+        {/* SECTION 5: KINDLY RSVP & BLESSING DECK */}
+        <div style={{ padding: "40px 24px 80px", maxWidth: 580, margin: "0 auto" }}>
+          <ElegantFadeInScrollReveal>
+            <div className="magazine-card">
+              <h3 style={{ fontFamily: "'Merriweather', serif", fontSize: 22, color: "#C0C0C0", textAlign: "center", marginBottom: 12, letterSpacing: "0.05em" }}>
+                {text.rsvpTitle}
+              </h3>
+              <p style={{ fontSize: 13, opacity: 0.7, textAlign: "center", marginBottom: 36 }}>
+                {text.rsvpDesc}
+              </p>
+
+              {rsvpDone ? (
+                <div style={{ textAlign: "center", padding: "20px 0" }}>
+                  <span style={{ fontSize: "3rem", display: "block", marginBottom: 12 }}>💌</span>
+                  <h4 style={{ fontSize: 18, color: "#C0C0C0", marginBottom: 8 }}>{text.successTitle}</h4>
+                  <p style={{ fontSize: 14, opacity: 0.8 }}>{text.successDesc}</p>
+                </div>
+              ) : (
+                <form onSubmit={submitRsvp}>
+                  <div style={{ marginBottom: 20 }}>
+                    <label className="magazine-label">{text.fullName}</label>
+                    <input 
+                      type="text" 
+                      className="magazine-input"
+                      value={rsvp.name}
+                      onChange={(e) => setRsvp(prev => ({ ...prev, name: e.target.value }))}
+                      required
+                      placeholder="e.g. Al-haaj Minhaj Khan"
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: 28 }}>
+                    <label className="magazine-label">{text.blessing}</label>
+                    <textarea 
+                      className="magazine-input"
+                      style={{ height: 100, resize: "none" }}
+                      value={rsvp.blessing}
+                      onChange={(e) => setRsvp(prev => ({ ...prev, blessing: e.target.value }))}
+                      placeholder={lang === "ur" ? "نیک خواہشات اور دعائیں یہاں لکھیں..." : "Write your premium wishes & prayers..."}
+                    />
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    className="magazine-btn"
+                    style={{ width: "100%" }}
+                    disabled={rsvpLoading}
+                  >
+                    {rsvpLoading ? text.sending : text.sendRsvp}
+                  </button>
+                </form>
+              )}
+            </div>
+
+            {/* CONTACT INFO / EMAIL HOSTS */}
+            {invitation.coupleEmail && (
+              <p style={{ textAlign: "center", fontSize: 13, color: "#708090" }}>
+                {eventType === "wedding" ? text.contactCouple : text.contactHosts}:{" "}
+                <a 
+                  href={`mailto:${invitation.coupleEmail}`} 
+                  style={{ color: "#C0C0C0", textDecoration: "none", borderBottom: "1px solid rgba(192, 192, 192, 0.4)", paddingBottom: 2 }}
+                >
+                  {invitation.coupleEmail}
+                </a>
+              </p>
+            )}
+
+            <div style={{ paddingTop: 36, marginTop: 44, borderTop: "1px solid rgba(192,192,192,0.12)", textAlign: "center" }}>
+              <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.4 }}>
+                Taabir Premium Invitations · Powered by Flynx
+              </p>
+            </div>
+          </ElegantFadeInScrollReveal>
+        </div>
+      </div>
+    );
+  };
+
   const renderNeonNightclub = () => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
     const hasPhotos = galleryPhotos.length > 0;
@@ -3249,6 +3659,7 @@ export default function InviteViewer({ invitation }) {
     { id: "bohemian-terracotta", name: "Bohemian Terracotta", icon: "🌿" },
     { id: "royal-glamour", name: "Royal Glamour & Glassmorphism", icon: "💎" },
     { id: "neon-nightclub", name: "Neon Nightclub", icon: "⚡" },
+    { id: "elegant-milestone", name: "Elegant Milestone (50th/60th)", icon: "🍷" },
   ];
 
   const palettes = [
@@ -3260,6 +3671,7 @@ export default function InviteViewer({ invitation }) {
     { id: "midnight-gold", name: "Midnight Gold", preview: ["#040B16", "#D4AF37", "#E2E8F0"] },
     { id: "royal-glamour", name: "Royal Glamour", preview: ["#0A1128", "#B76E79", "#FFFFFF"] },
     { id: "neon-nightclub", name: "Neon Nightclub", preview: ["#000000", "#00FF66", "#00FFFF"] },
+    { id: "elegant-milestone", name: "Elegant Milestone", preview: ["#800020", "#C0C0C0", "#708090"] },
   ];
 
   return (
@@ -3666,6 +4078,8 @@ export default function InviteViewer({ invitation }) {
         renderRoyalGlamour()
       ) : activeLayoutId === "neon-nightclub" ? (
         renderNeonNightclub()
+      ) : activeLayoutId === "elegant-milestone" ? (
+        renderElegantMilestone()
       ) : (
         <div 
           style={{
@@ -4424,3 +4838,38 @@ function BounceInDownScrollReveal({ children }) {
     </div>
   );
 }
+
+function ElegantFadeInScrollReveal({ children }) {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
+    );
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transition: "opacity 2s ease-in-out",
+        width: "100%"
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+

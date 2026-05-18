@@ -186,6 +186,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-300",
     featureColor: "text-slate-200",
     btnSecondaryClass: "bg-[#00FF66]/15 hover:bg-[#00FF66]/25 text-[#FFFFFF] border-transparent"
+  },
+  {
+    id: "elegant-milestone",
+    name: "Elegant Milestone (50th/60th VIP)",
+    badge: "Premium Magazine Style",
+    vibe: "A mature, highly sophisticated magazine-style layout for milestone birthday dinners. Deep burgundy elements, classic silver trims, slate text, and slow 3s image cross-fades.",
+    primaryColor: "bg-[#800020]",
+    textColor: "text-[#C0C0C0]",
+    paletteColors: ["#800020", "#C0C0C0", "#708090", "#FFFFFF"],
+    fonts: "Great Vibes, Merriweather",
+    features: [
+      "Sophisticated Magazine-Style Editorial Layout",
+      "Stationary Slow 3s Background Image Cross-Fade",
+      "Elegantly Slow 2s Stationary Text Fade-Ins",
+      "Delicate Great Vibes Calligraphy Headers",
+      "Fine Silver Lines & High-Contrast Cards",
+      "Integrated RSVP Guest Blessing Deck & Email Sync"
+    ],
+    bgClass: "bg-[#0F0F0F] border-slate-700/50",
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-red-500/10 text-red-400 border-red-500/30",
+    titleColor: "text-white group-hover:text-red-300",
+    vibeColor: "text-slate-300",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-red-500/15 hover:bg-red-500/25 text-[#FFFFFF] border-transparent"
   }
 ];
 
