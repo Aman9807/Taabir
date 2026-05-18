@@ -14,7 +14,7 @@ import { collection, addDoc } from "firebase/firestore";
 
 export default function InviteViewer({ invitation }) {
   const [phase, setPhase] = useState("closed"); // closed → opening → open
-  const [lang, setLang] = useState("en"); // en or ur
+  const [lang, setLang] = useState("en"); // en, ur, or hi
   const [scratchRevealed, setScratchRevealed] = useState(false);
   const [confettiActive, setConfettiActive] = useState(false);
   const [confettiFlakes, setConfettiFlakes] = useState([]);
@@ -43,7 +43,7 @@ export default function InviteViewer({ invitation }) {
   const hasScratch = !!customStyle.enableScratchCard;
   const hasLang = !!customStyle.enableLanguageSwitcher;
 
-  // Urdu translation dictionary
+  // Multilingual translation dictionary
   const dict = {
     en: {
       wedding: "The Wedding of",
@@ -100,10 +100,38 @@ export default function InviteViewer({ invitation }) {
       contactHosts: "میزبانوں سے رابطہ کریں",
       contactCouple: "جوڑے سے رابطہ کریں",
       scratchText: "تاریخ دیکھنے کے لیے یہاں سکریچ کریں!"
+    },
+    hi: {
+      wedding: "की शुभ विवाह",
+      birthday: "के जन्मदिन का उत्सव",
+      anniversary: "की वर्षगांठ का उत्सव",
+      family_function: "का पारिवारिक समारोह",
+      general: "का शुभ उत्सव",
+      daughterOf: "सुपुत्री",
+      sonOf: "सुपुत्र",
+      countdown: "समारोह की उल्टी गिनती",
+      days: "दिन",
+      hours: "घंटे",
+      mins: "मिनट",
+      secs: "सेकंड",
+      dateVenue: "तिथि एवं स्थान",
+      openMaps: "📍 मैप्स पर देखें",
+      timelineTitle: "कार्यक्रम की समय-सारणी",
+      rsvpTitle: "आरएसवीपी (उत्तर दें)",
+      rsvpDesc: "कृपया हमें अपनी उपस्थिति बताएं",
+      fullName: "आपका पूरा नाम",
+      blessing: "शुभकामनाएं एवं आशीर्वाद",
+      sending: "भेजा जा रहा है...",
+      sendRsvp: "आरएसवीपी और शुभकामनाएं भेजें",
+      successTitle: "शुभकामनाएं प्राप्त हुईं!",
+      successDesc: "आपकी शुभकामनाओं और उपस्थिति की सूचना के लिए धन्यवाद - हम आपके स्वागत की प्रतीक्षा कर रहे हैं।",
+      contactHosts: "मेजबानों से संपर्क करें",
+      contactCouple: "वर-वधू से संपर्क करें",
+      scratchText: "तारीख देखने के लिए यहां स्क्रैच करें!"
     }
   };
 
-  const text = dict[lang];
+  const text = dict[lang] || dict.en;
 
   // Music Player setup
   useEffect(() => {
@@ -196,8 +224,14 @@ export default function InviteViewer({ invitation }) {
     }, 5000);
   };
 
-  const fmt = targetDate.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-  const fmtTime = targetDate.toLocaleTimeString(lang === "ur" ? "ur-PK" : "en-US", { hour: "2-digit", minute: "2-digit" });
+  const fmt = targetDate.toLocaleDateString(
+    lang === "ur" ? "ur-PK" : lang === "hi" ? "hi-IN" : "en-US",
+    { weekday: "long", year: "numeric", month: "long", day: "numeric" }
+  );
+  const fmtTime = targetDate.toLocaleTimeString(
+    lang === "ur" ? "ur-PK" : lang === "hi" ? "hi-IN" : "en-US",
+    { hour: "2-digit", minute: "2-digit" }
+  );
 
   /* ──────────────── THEME TOKENS ──────────────── */
   const isIvory = tplId === "ivory-classic" || tplId === "ivory-elegance";
@@ -227,7 +261,11 @@ export default function InviteViewer({ invitation }) {
     <div style={{ 
       background: T.bg, 
       minHeight: "100vh", 
-      fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : "'Playfair Display', serif", 
+      fontFamily: lang === "ur" 
+        ? "'Noto Nastaliq Urdu', serif" 
+        : lang === "hi"
+        ? "'Outfit', 'Playfair Display', sans-serif"
+        : "'Playfair Display', serif", 
       position: "relative", 
       overflowX: "hidden",
       direction: lang === "ur" ? "rtl" : "ltr"
@@ -236,15 +274,15 @@ export default function InviteViewer({ invitation }) {
       {/* FLOAT TRANSLATION TOGGLE BUTTON */}
       {hasLang && (
         <button
-          onClick={() => setLang(l => l === "en" ? "ur" : "en")}
-          className="fixed top-4 right-4 z-[999] px-3.5 py-1.5 rounded-full text-xs font-bold shadow-lg transition-transform hover:scale-105 select-none font-sans"
+          onClick={() => setLang(l => l === "en" ? "ur" : l === "ur" ? "hi" : "en")}
+          className="fixed top-4 right-4 z-[999] px-4 py-2 rounded-full text-xs font-bold shadow-lg transition-transform hover:scale-105 select-none font-sans"
           style={{
             backgroundColor: btnBg,
             color: btnText,
             border: `1px solid ${T.border}`,
           }}
         >
-          {lang === "en" ? "Urdu / اردو" : "English"}
+          {lang === "en" ? "اردو / हिंदी" : lang === "ur" ? "हिंदी / English" : "English / اردو"}
         </button>
       )}
 
@@ -517,6 +555,39 @@ export default function InviteViewer({ invitation }) {
           </div>
         </ScrollReveal>
 
+        {/* PREMIUM CUSTOM ANNOUNCEMENT NOTE (MIDDLE POSITION) */}
+        {customStyle.customNote && (!customStyle.notePosition || customStyle.notePosition === "middle") && (
+          <ScrollReveal>
+            <div style={{
+              margin: "0 auto 40px",
+              maxWidth: 440,
+              padding: "24px",
+              background: T.card,
+              borderRadius: 16,
+              border: `1px solid ${T.border}`,
+              borderLeft: `4px solid ${T.gold}`,
+              textAlign: "center",
+              boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)",
+              position: "relative",
+              overflow: "hidden"
+            }}>
+              <div style={{ position: "absolute", top: 8, left: 12, color: T.gold, opacity: 0.15, fontSize: 32, fontFamily: "serif", lineHeight: 1 }}>“</div>
+              <p style={{
+                margin: 0,
+                fontSize: 14,
+                color: T.text,
+                fontStyle: "italic",
+                lineHeight: 1.6,
+                whiteSpace: "pre-line",
+                fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "sans-serif"
+              }}>
+                {customStyle.customNote}
+              </p>
+              <div style={{ position: "absolute", bottom: 0, right: 12, color: T.gold, opacity: 0.15, fontSize: 32, fontFamily: "serif", lineHeight: 1 }}>”</div>
+            </div>
+          </ScrollReveal>
+        )}
+
         {/* Dynamic Gallery Carousel */}
         {(() => {
           const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
@@ -689,6 +760,39 @@ export default function InviteViewer({ invitation }) {
               })}
             </div>
           </div>
+        )}
+
+        {/* PREMIUM CUSTOM ANNOUNCEMENT NOTE (BOTTOM POSITION) */}
+        {customStyle.customNote && customStyle.notePosition === "bottom" && (
+          <ScrollReveal>
+            <div style={{
+              margin: "0 auto 40px",
+              maxWidth: 440,
+              padding: "24px",
+              background: T.card,
+              borderRadius: 16,
+              border: `1px solid ${T.border}`,
+              borderLeft: `4px solid ${T.gold}`,
+              textAlign: "center",
+              boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)",
+              position: "relative",
+              overflow: "hidden"
+            }}>
+              <div style={{ position: "absolute", top: 8, left: 12, color: T.gold, opacity: 0.15, fontSize: 32, fontFamily: "serif", lineHeight: 1 }}>“</div>
+              <p style={{
+                margin: 0,
+                fontSize: 14,
+                color: T.text,
+                fontStyle: "italic",
+                lineHeight: 1.6,
+                whiteSpace: "pre-line",
+                fontFamily: lang === "ur" ? "'Noto Nastaliq Urdu', serif" : lang === "hi" ? "'Outfit', sans-serif" : "sans-serif"
+              }}>
+                {customStyle.customNote}
+              </p>
+              <div style={{ position: "absolute", bottom: 0, right: 12, color: T.gold, opacity: 0.15, fontSize: 32, fontFamily: "serif", lineHeight: 1 }}>”</div>
+            </div>
+          </ScrollReveal>
         )}
 
         {/* RSVP Confirmation Panel */}

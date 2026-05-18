@@ -33,6 +33,8 @@ export default function CreateInvitationPage() {
     doorAnimation: "sliding-doors",
     enableScratchCard: false,
     enableLanguageSwitcher: false,
+    customNote: "",        // Hosts custom note text
+    notePosition: "bottom", // middle or bottom position
   });
 
   // Dynamic Timeline State
@@ -62,6 +64,12 @@ export default function CreateInvitationPage() {
       ...prev,
       [name]: value,
     }));
+    
+    // Auto trigger animation preview if user changes the door transition
+    if (name === "doorAnimation") {
+      setPreviewingAnim(true);
+      setTimeout(() => setPreviewingAnim(false), 2200);
+    }
   };
 
   // Set default schedules and text coordinates when event category changes
@@ -290,6 +298,8 @@ export default function CreateInvitationPage() {
           doorAnimation: formData.doorAnimation || "sliding-doors",
           enableScratchCard: !!formData.enableScratchCard,
           enableLanguageSwitcher: !!formData.enableLanguageSwitcher,
+          customNote: formData.customNote.trim(),
+          notePosition: formData.notePosition || "bottom",
         },
         details: {
           story: "",
@@ -872,6 +882,9 @@ export default function CreateInvitationPage() {
                             } else if (tpl.id === "ivory-elegance") {
                               setFormData(prev => ({ ...prev, doorAnimation: "velvet-curtains", btnBgColor: "#800020", btnTextColor: "#FFFFFF" }));
                             }
+                            // Auto trigger animation preview
+                            setPreviewingAnim(true);
+                            setTimeout(() => setPreviewingAnim(false), 2200);
                           }}
                           className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-slate-300 cursor-pointer shrink-0"
                         />
@@ -1035,13 +1048,64 @@ export default function CreateInvitationPage() {
                       />
                       <div>
                         <span className="block text-xs font-bold text-slate-800">
-                          🗣️ Enable English / Urdu Translation Switcher
+                          🗣️ Enable Multilingual Switcher (English / Urdu / Hindi)
                         </span>
                         <span className="block text-[10px] text-slate-500">
-                          Adds a gorgeous floating translation toggle to switch the invitation completely to Urdu Nastaliq typography dynamically.
+                          Adds a gorgeous floating translation toggle to switch the invitation completely between English, Urdu Nastaliq, and Hindi Devanagari scripts dynamically.
                         </span>
                       </div>
                     </label>
+
+                    {/* Custom note form controls */}
+                    <div className="pt-4 border-t border-slate-100 mt-4 space-y-3">
+                      <div>
+                        <label htmlFor="customNote" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                          Custom Invitation Note / Announcement
+                        </label>
+                        <span className="block text-[10px] text-slate-400 mb-2">
+                          Add a custom announcement, e.g. "Note: No boxed gifts please" or RSVP note.
+                        </span>
+                        <textarea
+                          id="customNote"
+                          name="customNote"
+                          value={formData.customNote}
+                          onChange={handleChange}
+                          placeholder="e.g. Please join us for dinner after the ceremony. No boxed gifts please!"
+                          rows={2}
+                          className="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm font-sans"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                          Note Box Position
+                        </label>
+                        <div className="flex gap-4">
+                          <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-700 font-sans">
+                            <input
+                              type="radio"
+                              name="notePosition"
+                              value="middle"
+                              checked={formData.notePosition === "middle"}
+                              onChange={handleChange}
+                              className="text-amber-600 focus:ring-amber-500"
+                            />
+                            <span>Middle (Under Quotes)</span>
+                          </label>
+                          <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-700 font-sans">
+                            <input
+                              type="radio"
+                              name="notePosition"
+                              value="bottom"
+                              checked={formData.notePosition === "bottom"}
+                              onChange={handleChange}
+                              className="text-amber-600 focus:ring-amber-500"
+                            />
+                            <span>Bottom (Above Footer)</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
