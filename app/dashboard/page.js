@@ -238,7 +238,7 @@ export default function DashboardPage() {
                       onClick={() => handleViewRsvps(invite)}
                       className="px-4 py-2 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-xs font-semibold hover:bg-amber-100 transition-all uppercase tracking-wider"
                     >
-                      📈 View Guest RSVPs
+                      💬 View Wishes &amp; Messages
                     </button>
                     
                     <a
@@ -274,10 +274,10 @@ export default function DashboardPage() {
               <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                 <div>
                   <h3 className="text-lg font-bold text-slate-800">
-                    RSVPs: {selectedInvite.brideName} &amp; {selectedInvite.groomName}
+                    Wishes &amp; Messages: {selectedInvite.brideName} &amp; {selectedInvite.groomName}
                   </h3>
                   <p className="text-xs text-slate-400 mt-1 font-mono">
-                    Total guest responses listed below
+                    All guest blessings and greetings listed below
                   </p>
                 </div>
                 <button
@@ -293,66 +293,34 @@ export default function DashboardPage() {
                 {fetchingRsvps ? (
                   <div className="flex flex-col items-center py-10 gap-2">
                     <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-amber-600"></div>
-                    <p className="text-slate-400 text-xs font-mono">Loading RSVPs from cloud...</p>
+                    <p className="text-slate-400 text-xs font-mono">Loading Messages from cloud...</p>
                   </div>
                 ) : rsvps.length === 0 ? (
                   <div className="text-center py-12">
-                    <span className="text-4xl">🗒️</span>
-                    <h4 className="text-sm font-semibold text-slate-700 mt-4">No Responses Yet</h4>
+                    <span className="text-4xl">💬</span>
+                    <h4 className="text-sm font-semibold text-slate-700 mt-4">No Messages Yet</h4>
                     <p className="text-xs text-slate-400 max-w-xs mx-auto mt-1 leading-relaxed">
-                      RSVPs will automatically populate here as guests click the RSVP button on the card.
+                      Wishes and blessings will automatically populate here as guests submit their messages.
                     </p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     
-                    {/* Headcount statistics cards */}
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                      <div className="p-4 rounded-xl border border-emerald-100 bg-emerald-50/50 text-center">
-                        <span className="text-[10px] text-emerald-800 font-bold uppercase tracking-widest font-sans">Attending Guests</span>
-                        <span className="block text-2xl font-bold text-emerald-800 mt-1">
-                          {rsvps.filter(r => r.attending).reduce((sum, r) => sum + (r.guests || 1), 0)}
-                        </span>
-                      </div>
-                      <div className="p-4 rounded-xl border border-rose-100 bg-rose-50/50 text-center">
-                        <span className="text-[10px] text-rose-800 font-bold uppercase tracking-widest font-sans font-medium">Declined Invites</span>
-                        <span className="block text-2xl font-bold text-rose-800 mt-1">
-                          {rsvps.filter(r => !r.attending).length}
-                        </span>
-                      </div>
-                    </div>
-
                     {/* Guest list mapping */}
                     <div className="border border-slate-100 rounded-xl overflow-hidden shadow-sm">
                       <table className="w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-slate-50 text-[10px] uppercase font-bold text-slate-600 tracking-wider border-b border-slate-100 font-sans">
-                            <th className="py-3 px-4">Guest Name</th>
-                            <th className="py-3 px-4">Status</th>
-                            <th className="py-3 px-4">Attendees</th>
-                            <th className="py-3 px-4">Blessings / Message</th>
+                            <th className="py-3 px-6 w-1/3">Guest Name</th>
+                            <th className="py-3 px-6">Wishes &amp; Blessings</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 text-xs text-slate-700 font-sans">
                           {rsvps.map((rsvp) => (
                             <tr key={rsvp.id} className="hover:bg-slate-50/60 transition-colors">
-                              <td className="py-3.5 px-4 font-semibold text-slate-900">{rsvp.name}</td>
-                              <td className="py-3.5 px-4">
-                                {rsvp.attending ? (
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-100 text-emerald-800 uppercase">
-                                    Attending
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-100 text-rose-800 uppercase">
-                                    Declined
-                                  </span>
-                                )}
-                              </td>
-                              <td className="py-3.5 px-4 font-mono font-bold">
-                                {rsvp.attending ? `${rsvp.guests || 1} guest(s)` : "—"}
-                              </td>
-                              <td className="py-3.5 px-4 text-slate-500 italic max-w-[200px] truncate" title={rsvp.blessing}>
-                                {rsvp.blessing || <span className="text-slate-300">No message</span>}
+                              <td className="py-4 px-6 font-semibold text-slate-900 align-top">{rsvp.name}</td>
+                              <td className="py-4 px-6 text-slate-600 italic whitespace-pre-wrap leading-relaxed align-top">
+                                {rsvp.blessing || <span className="text-slate-300">No message left</span>}
                               </td>
                             </tr>
                           ))}

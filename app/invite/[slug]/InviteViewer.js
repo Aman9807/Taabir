@@ -79,8 +79,8 @@ export default function InviteViewer({ invitation }) {
     try {
       await addDoc(collection(db, "invitations", invitation.id, "rsvps"), {
         name: rsvp.name.trim(),
-        attending: rsvp.attending === "yes",
-        guests: rsvp.attending === "yes" ? Number(rsvp.guests) : 0,
+        attending: true,
+        guests: 1,
         blessing: rsvp.blessing.trim(),
         submittedAt: new Date().toISOString(),
       });
@@ -395,24 +395,9 @@ export default function InviteViewer({ invitation }) {
                     <input type={f.type} required placeholder={f.ph} value={f.val} onChange={e => f.set(e.target.value)} style={inputStyle(T)} />
                   </div>
                 ))}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                  <div>
-                    <label style={labelStyle(T)}>Attendance</label>
-                    <select value={rsvp.attending} onChange={e => setRsvp(r => ({ ...r, attending: e.target.value }))} style={inputStyle(T)}>
-                      <option value="yes">Joyfully Attending</option>
-                      <option value="no">Declining with Regrets</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label style={labelStyle(T)}>Guests</label>
-                    <select disabled={rsvp.attending === "no"} value={rsvp.guests} onChange={e => setRsvp(r => ({ ...r, guests: Number(e.target.value) }))} style={{ ...inputStyle(T), opacity: rsvp.attending === "no" ? 0.4 : 1 }}>
-                      {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n} Guest{n > 1 ? "s" : ""}</option>)}
-                    </select>
-                  </div>
-                </div>
                 <div>
                   <label style={labelStyle(T)}>Wishes &amp; Blessings</label>
-                  <textarea rows={2} placeholder="Write a blessing..." value={rsvp.blessing} onChange={e => setRsvp(r => ({ ...r, blessing: e.target.value }))} style={{ ...inputStyle(T), resize: "none" }} />
+                  <textarea rows={3} placeholder="Write a blessing..." value={rsvp.blessing} onChange={e => setRsvp(r => ({ ...r, blessing: e.target.value }))} style={{ ...inputStyle(T), resize: "none" }} />
                 </div>
                 <button type="submit" disabled={rsvpLoading} style={{
                   padding: "14px", borderRadius: 12, border: "none", cursor: "pointer",
