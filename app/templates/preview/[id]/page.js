@@ -444,6 +444,49 @@ const DEMO_DATA = {
       btnBgColor: "#FF7F50",
       btnTextColor: "#FFFFFF"
     }
+  },
+  "corporate-gala": {
+    id: "__demo_corporate_gala__",
+    brideName: "FALIX NEXT-GEN GALA LAUNCH",
+    brideParentsName: "Falix Technologies Ltd.",
+    weddingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Platinum Executive Plaza",
+      address: "100 Innovation Way, Financial District, NY",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200"
+    ],
+    eventType: "general",
+    musicUrl: "",
+    coupleEmail: "events@falix.com",
+    theme: { templateId: "corporate-gala" },
+    details: {
+      schedule: [
+        {
+          name: "Red Carpet Reception & Cocktails",
+          time: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Exclusive red carpet welcome, media interviews, live jazz, and premium cocktails.",
+          venue: "Executive Foyer Hall A"
+        },
+        {
+          name: "Next-Gen Keynote & Live Demo",
+          time: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000).toISOString(),
+          description: "Unveiling the future of sport tech, live platform presentation, and panel Q&A.",
+          venue: "Grand Plaza Auditorium"
+        }
+      ],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#E5E4E2",
+      btnTextColor: "#191970"
+    }
   }
 };
 
@@ -459,7 +502,8 @@ export async function generateMetadata({ params }) {
     "neon-nightclub": "Neon Nightclub",
     "elegant-milestone": "Elegant Milestone",
     "playful-kidsparty": "Playful & Interactive",
-    "summer-poolparty": "Summer Pool Party"
+    "summer-poolparty": "Summer Pool Party",
+    "corporate-gala": "Sleek Corporate Gala"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

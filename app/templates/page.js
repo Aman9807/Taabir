@@ -264,6 +264,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-600",
     featureColor: "text-slate-700",
     btnSecondaryClass: "bg-teal-900/5 hover:bg-teal-900/10 text-slate-800 border-slate-200"
+  },
+  {
+    id: "corporate-gala",
+    name: "Sleek Corporate Gala / Launch Party",
+    badge: "Ultra-Modern & Minimalist",
+    vibe: "Professional ultra-modern luxury. Oswald headers slide revealing from left-to-right, elegant dark blue mesh, and smooth 0.4s accordion RSVP delegation.",
+    primaryColor: "bg-[#191970]",
+    textColor: "text-[#E5E4E2]",
+    paletteColors: ["#0A0E1A", "#191970", "#E5E4E2", "#FFFFFF"],
+    fonts: "Oswald, Helvetica Neue, Arial",
+    features: [
+      "Wipe-Left-to-Right Animated Headings (0.8s)",
+      "High-Fidelity Midnight Blue & Platinum Corporate Palette",
+      "Seamless Accordion-Expand RSVP Registration Form (0.4s)",
+      "Structured Strict Bento-Box Event Schedule Timeline",
+      "Strict Clean Data Presentation & Interactive Countdown",
+      "Integrated Premium Map Locations & Email Host Sync"
+    ],
+    bgClass: "bg-[#0A0E1A] border-[#E5E4E2]/25",
+    image: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-slate-500/15 text-slate-300 border-slate-700/50",
+    titleColor: "text-white group-hover:text-slate-300",
+    vibeColor: "text-slate-400",
+    featureColor: "text-slate-300",
+    btnSecondaryClass: "bg-white/10 hover:bg-white/20 text-[#E5E4E2] border-white/10"
   }
 ];
 

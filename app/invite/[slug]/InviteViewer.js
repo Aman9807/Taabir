@@ -36,6 +36,7 @@ export default function InviteViewer({ invitation }) {
   const [rsvp, setRsvp] = useState({ name: "", attending: "yes", blessing: "" });
   const [rsvpDone, setRsvpDone] = useState(false);
   const [rsvpLoading, setRsvpLoading] = useState(false);
+  const [rsvpExpanded, setRsvpExpanded] = useState(false);
 
   const targetDate = new Date(invitation.weddingDate);
 
@@ -337,6 +338,17 @@ export default function InviteViewer({ invitation }) {
         sub: "#C2B280",
         gold: "#FFDAB9",
         border: "rgba(127,255,212,0.35)"
+      }
+    : activePaletteId === "corporate-gala"
+    ? {
+        bg: "#0A0E1A",
+        door: "#191970",
+        seam: "#E5E4E2",
+        card: "rgba(25, 25, 112, 0.2)",
+        text: "#FFFFFF",
+        sub: "#E5E4E2",
+        gold: "#E5E4E2",
+        border: "rgba(229, 228, 226, 0.2)"
       }
     : isIvory
     ? { 
@@ -4651,6 +4663,394 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderCorporateGala = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+    const coverPhoto = galleryPhotos[0] || "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200";
+
+    return (
+      <div 
+        style={{
+          opacity: phase !== "closed" ? 1 : 0,
+          transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
+          width: "100%",
+          margin: "0 auto",
+          backgroundColor: "#0A0E1A",
+          color: "#FFFFFF",
+          fontFamily: "'Helvetica Neue', Arial, sans-serif",
+          position: "relative",
+          zIndex: 5
+        }}
+      >
+        {/* Dynamic Font Import inside style tag to be self-contained */}
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap');
+          
+          @keyframes wipeLeftToRight {
+            0% {
+              clip-path: inset(0 100% 0 0);
+            }
+            100% {
+              clip-path: inset(0 0 0 0);
+            }
+          }
+
+          .wipe-header {
+            font-family: 'Oswald', sans-serif !important;
+            animation: wipeLeftToRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            clip-path: inset(0 100% 0 0);
+          }
+
+          .gala-button {
+            border: 1px solid #E5E4E2;
+            background: transparent;
+            color: #FFFFFF;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.15em;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+          .gala-button:hover {
+            background: #E5E4E2;
+            color: #191970;
+            box-shadow: 0 0 15px rgba(229, 228, 226, 0.4);
+            transform: translateY(-2px);
+          }
+
+          .gala-input {
+            width: 100%;
+            background: rgba(25, 25, 112, 0.3);
+            border: 1px solid rgba(229, 228, 226, 0.3);
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #FFFFFF;
+            border-radius: 4px;
+            outline: none;
+            transition: all 0.3s;
+          }
+          .gala-input:focus {
+            border-color: #E5E4E2;
+            background: rgba(25, 25, 112, 0.5);
+            box-shadow: 0 0 8px rgba(229, 228, 226, 0.2);
+          }
+        `}</style>
+
+        <div style={{ maxWidth: 640, margin: "0 auto", padding: "0 0 80px", position: "relative" }}>
+          
+          {/* ======================================================== */}
+          {/* 🏛️ HERO SECTION                                           */}
+          {/* ======================================================== */}
+          <div style={{ position: "relative", height: "60vh", minHeight: 450, overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "40px 24px" }}>
+            {/* Dark Midnight Blue overlay */}
+            <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(to bottom, rgba(10, 14, 26, 0.2), #0A0E1A)`, zIndex: 2 }} />
+            
+            {/* Hero Cover Photo */}
+            <img 
+              src={coverPhoto} 
+              alt="Gala Cover" 
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 1, filter: "brightness(0.6) contrast(1.1)" }} 
+            />
+
+            <div style={{ position: "relative", zIndex: 10 }}>
+              <div style={{ display: "inline-block", borderLeft: "4px solid #E5E4E2", paddingLeft: 12, marginBottom: 16 }}>
+                <p style={{ fontSize: 12, letterSpacing: "0.25em", textTransform: "uppercase", color: "#E5E4E2", fontWeight: 700, margin: 0 }}>
+                  {invitation.brideParentsName || "FALIX TECHNOLOGIES"} PRESENTS
+                </p>
+              </div>
+
+              <h1 
+                className="wipe-header"
+                style={{
+                  fontSize: "2.5rem",
+                  fontWeight: 700,
+                  color: "#FFFFFF",
+                  margin: "0 0 8px",
+                  lineHeight: 1.1,
+                  letterSpacing: "0.03em",
+                  textTransform: "uppercase"
+                }}
+              >
+                {invitation.brideName}
+              </h1>
+
+              <div style={{ width: 80, height: 2, background: "#E5E4E2", margin: "16px 0 20px" }} />
+
+              <p style={{ fontSize: 15, color: "#E5E4E2", letterSpacing: "0.05em", lineHeight: 1.5, margin: 0, maxWidth: 500 }}>
+                {invitation.groomParentsName || "Join us for an exclusive evening celebrating innovation, future scaling, and technical excellence."}
+              </p>
+            </div>
+          </div>
+
+          {/* ======================================================== */}
+          {/* ⏱️ COUNTDOWN & EVENT INFO GRID                          */}
+          {/* ======================================================== */}
+          <div style={{ padding: "40px 24px 24px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, background: "rgba(25, 25, 112, 0.2)", border: "1px solid rgba(229, 228, 226, 0.2)", padding: 20, borderRadius: 8, textAlign: "center", marginBottom: 32 }}>
+              <div>
+                <span style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Oswald', sans-serif", display: "block", color: "#FFFFFF" }}>{timeLeft.days}</span>
+                <span style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "#E5E4E2", opacity: 0.8 }}>DAYS</span>
+              </div>
+              <div>
+                <span style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Oswald', sans-serif", display: "block", color: "#FFFFFF" }}>{timeLeft.hours}</span>
+                <span style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "#E5E4E2", opacity: 0.8 }}>HOURS</span>
+              </div>
+              <div>
+                <span style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Oswald', sans-serif", display: "block", color: "#FFFFFF" }}>{timeLeft.minutes}</span>
+                <span style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "#E5E4E2", opacity: 0.8 }}>MINUTES</span>
+              </div>
+              <div>
+                <span style={{ fontSize: 24, fontWeight: 700, fontFamily: "'Oswald', sans-serif", display: "block", color: "#FFFFFF" }}>{timeLeft.seconds}</span>
+                <span style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "#E5E4E2", opacity: 0.8 }}>SECONDS</span>
+              </div>
+            </div>
+
+            {/* Date & Location Bento Block */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>
+              <div style={{ border: "1px solid rgba(229, 228, 226, 0.15)", background: "rgba(255, 255, 255, 0.02)", padding: 24, borderRadius: 8 }}>
+                <h3 className="wipe-header" style={{ fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "#E5E4E2", margin: "0 0 12px" }}>
+                  📅 THE SCHEDULED EVENING
+                </h3>
+                <p style={{ fontSize: 18, fontWeight: 600, color: "#FFFFFF", margin: "0 0 6px" }}>{fmt}</p>
+                <p style={{ fontSize: 14, color: "#E5E4E2", opacity: 0.9, margin: 0 }}>Starting Promptly At {fmtTime}</p>
+              </div>
+
+              <div style={{ border: "1px solid rgba(229, 228, 226, 0.15)", background: "rgba(255, 255, 255, 0.02)", padding: 24, borderRadius: 8 }}>
+                <h3 className="wipe-header" style={{ fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "#E5E4E2", margin: "0 0 12px" }}>
+                  📍 VENUE & LOCATION
+                </h3>
+                <p style={{ fontSize: 18, fontWeight: 600, color: "#FFFFFF", margin: "0 0 6px" }}>{invitation.venue?.name || "The Platinum Auditorium"}</p>
+                <p style={{ fontSize: 14, color: "#E5E4E2", opacity: 0.9, margin: "0 0 16px" }}>{invitation.venue?.address || "100 Innovation Plaza, Financial Hub, NY"}</p>
+                
+                {invitation.venue?.googleMapsUrl && (
+                  <a 
+                    href={invitation.venue.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="gala-button"
+                    style={{
+                      display: "inline-block",
+                      padding: "10px 20px",
+                      borderRadius: 4,
+                      fontSize: 11,
+                      textTransform: "uppercase",
+                      textDecoration: "none",
+                    }}
+                  >
+                    📍 GET DIRECTIONS
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* ======================================================== */}
+          {/* 📅 TIMELINE / ITINERARY                                  */}
+          {/* ======================================================== */}
+          {invitation.details?.schedule && invitation.details.schedule.length > 0 && (
+            <div style={{ padding: "24px 24px 40px" }}>
+              <h2 className="wipe-header" style={{ fontSize: 22, letterSpacing: "0.15em", textTransform: "uppercase", color: "#FFFFFF", textAlign: "center", marginBottom: 28 }}>
+                EVENT ITINERARY
+              </h2>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {invitation.details.schedule.map((item, idx) => (
+                  <div 
+                    key={idx}
+                    style={{
+                      borderLeft: "2px solid #E5E4E2",
+                      paddingLeft: 20,
+                      position: "relative",
+                      marginLeft: 8
+                    }}
+                  >
+                    <div style={{
+                      position: "absolute",
+                      left: -6,
+                      top: 4,
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      background: "#E5E4E2"
+                    }} />
+                    
+                    <span style={{ fontSize: 11, fontWeight: 700, color: "#E5E4E2", letterSpacing: "0.1em", display: "block", marginBottom: 4 }}>
+                      {new Date(item.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                    <h4 style={{ fontSize: 16, fontWeight: 600, color: "#FFFFFF", margin: "0 0 4px" }}>
+                      {item.name}
+                    </h4>
+                    <p style={{ fontSize: 13, opacity: 0.7, margin: "0 0 6px", lineHeight: 1.4 }}>
+                      {item.description}
+                    </p>
+                    <span style={{ fontSize: 11, color: "#E5E4E2", opacity: 0.9, fontWeight: 500 }}>
+                      🏢 {item.venue}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ======================================================== */}
+          {/* 📬 INTERACTIVE RSVP CARD & ACCORDION FORM                 */}
+          {/* ======================================================== */}
+          <div style={{ padding: "0 24px 24px" }}>
+            <div style={{ border: "1px solid rgba(229, 228, 226, 0.25)", background: "rgba(25, 25, 112, 0.15)", borderRadius: 8, padding: 28 }}>
+              
+              <div 
+                onClick={() => setRsvpExpanded(!rsvpExpanded)}
+                style={{ cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+              >
+                <div>
+                  <h3 className="wipe-header" style={{ fontSize: 18, letterSpacing: "0.15em", textTransform: "uppercase", color: "#FFFFFF", margin: "0 0 4px" }}>
+                    📬 RSVP PORTAL
+                  </h3>
+                  <p style={{ fontSize: 13, opacity: 0.8, margin: 0 }}>
+                    {rsvpDone ? "Registration Received" : "Confirm your delegate registration details below."}
+                  </p>
+                </div>
+                
+                {!rsvpDone && (
+                  <span style={{ fontSize: 20, color: "#E5E4E2", transition: "transform 0.3s", transform: rsvpExpanded ? "rotate(180deg)" : "rotate(0deg)" }}>
+                    ▼
+                  </span>
+                )}
+              </div>
+
+              {rsvpDone ? (
+                <div style={{ textAlign: "center", padding: "24px 0 8px" }}>
+                  <div style={{ fontSize: 32, marginBottom: 12 }}>✔️</div>
+                  <h4 className="wipe-header" style={{ fontSize: 18, letterSpacing: "0.1em", textTransform: "uppercase", color: "#FFFFFF", margin: "0 0 8px" }}>
+                    REGISTRATION CONFIRMED
+                  </h4>
+                  <p style={{ fontSize: 13, opacity: 0.8, margin: 0, lineHeight: 1.4 }}>
+                    Your corporate registration is complete. A formal confirmation email has been logged. We look forward to welcoming you.
+                  </p>
+                </div>
+              ) : (
+                <div 
+                  style={{
+                    maxHeight: rsvpExpanded ? 500 : 0,
+                    overflow: "hidden",
+                    transition: "max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
+                  }}
+                >
+                  <div style={{ width: "100%", height: 1, background: "rgba(229, 228, 226, 0.15)", margin: "20px 0" }} />
+                  
+                  <form 
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      if (!rsvp.name.trim()) return;
+                      setRsvpLoading(true);
+                      try {
+                        const rsvpsRef = collection(db, "invitations", invitation.id, "rsvps");
+                        await addDoc(rsvpsRef, {
+                          ...rsvp,
+                          submittedAt: new Date().toISOString()
+                        });
+                        setRsvpDone(true);
+                      } catch (err) {
+                        console.error("RSVP Failure:", err);
+                      } finally {
+                        setRsvpLoading(false);
+                      }
+                    }}
+                    style={{ display: "flex", flexDirection: "column", gap: 16 }}
+                  >
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 700, color: "#E5E4E2", display: "block", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                        FULL DELEGATE NAME
+                      </label>
+                      <input 
+                        type="text" 
+                        required
+                        className="gala-input"
+                        placeholder="e.g. Dr. Sarah Jenkins"
+                        value={rsvp.name}
+                        onChange={(e) => setRsvp({ ...rsvp, name: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 700, color: "#E5E4E2", display: "block", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                        ATTENDANCE CONFIRMATION
+                      </label>
+                      <select 
+                        className="gala-input"
+                        style={{ cursor: "pointer" }}
+                        value={rsvp.attending}
+                        onChange={(e) => setRsvp({ ...rsvp, attending: e.target.value })}
+                      >
+                        <option value="yes" style={{ background: "#0A0E1A" }}>YES, I WILL ATTEND</option>
+                        <option value="no" style={{ background: "#0A0E1A" }}>NO, UNABLE TO ATTEND</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 700, color: "#E5E4E2", display: "block", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>
+                        SPECIAL REQUESTS / WISHES
+                      </label>
+                      <textarea 
+                        className="gala-input"
+                        placeholder="Dietary requests, corporate greetings, or special accommodation requirements..."
+                        rows={3}
+                        value={rsvp.blessing}
+                        onChange={(e) => setRsvp({ ...rsvp, blessing: e.target.value })}
+                      />
+                    </div>
+
+                    <button 
+                      type="submit" 
+                      className="gala-button"
+                      disabled={rsvpLoading}
+                      style={{
+                        padding: 14,
+                        borderRadius: 4,
+                        fontSize: 13,
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                        marginTop: 8
+                      }}
+                    >
+                      {rsvpLoading ? "TRANSMITTING..." : "SUBMIT REGISTRATION"}
+                    </button>
+                  </form>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ======================================================== */}
+          {/* 👥 HOST CONTACT / FOOTER SIGNATURE                       */}
+          {/* ======================================================== */}
+          <div style={{ padding: "40px 24px 80px", textAlign: "center", borderTop: "1px solid rgba(229, 228, 226, 0.1)", background: "rgba(0,0,0,0.2)", position: "relative", zIndex: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+              <p style={{ fontFamily: "'Oswald', sans-serif", fontSize: 20, color: "#E5E4E2", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12 }}>
+                WE LOOK FORWARD TO YOUR PRESENCE
+              </p>
+              
+              {invitation.coupleEmail && (
+                <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>
+                  For inquiries or schedule details, please contact:{" "}
+                  <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#E5E4E2", textDecoration: "underline", fontWeight: 600 }}>
+                    {invitation.coupleEmail}
+                  </a>
+                </p>
+              )}
+
+              <div style={{ paddingTop: 36, marginTop: 44, borderTop: "1px solid rgba(229, 228, 226, 0.06)", width: "100%" }}>
+                <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.4 }}>
+                  Taabir Premium Invitations · Powered by Flynx
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+  };
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
@@ -4659,6 +5059,9 @@ export default function InviteViewer({ invitation }) {
     { id: "royal-glamour", name: "Royal Glamour & Glassmorphism", icon: "💎" },
     { id: "neon-nightclub", name: "Neon Nightclub", icon: "⚡" },
     { id: "elegant-milestone", name: "Elegant Milestone (50th/60th)", icon: "🍷" },
+    { id: "playful-kidsparty", name: "Playful Kids Party", icon: "🎈" },
+    { id: "summer-poolparty", name: "Summer Pool Party", icon: "🏊" },
+    { id: "corporate-gala", name: "Sleek Corporate Gala", icon: "🏢" },
   ];
 
   const palettes = [
@@ -4671,6 +5074,9 @@ export default function InviteViewer({ invitation }) {
     { id: "royal-glamour", name: "Royal Glamour", preview: ["#0A1128", "#B76E79", "#FFFFFF"] },
     { id: "neon-nightclub", name: "Neon Nightclub", preview: ["#000000", "#00FF66", "#00FFFF"] },
     { id: "elegant-milestone", name: "Elegant Milestone", preview: ["#800020", "#C0C0C0", "#708090"] },
+    { id: "playful-kidsparty", name: "Playful Kids Party", preview: ["#87CEEB", "#FF7F50", "#FFD700"] },
+    { id: "summer-poolparty", name: "Summer Pool Party", preview: ["#7FFFD4", "#FFDAB9", "#C2B280"] },
+    { id: "corporate-gala", name: "Sleek Corporate Gala", preview: ["#0A0E1A", "#191970", "#E5E4E2"] },
   ];
 
   return (
@@ -5148,6 +5554,8 @@ export default function InviteViewer({ invitation }) {
         renderPlayfulKidsParty()
       ) : activeLayoutId === "summer-poolparty" ? (
         renderSummerPoolparty()
+      ) : activeLayoutId === "corporate-gala" ? (
+        renderCorporateGala()
       ) : (
         <div 
           style={{
