@@ -290,6 +290,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-400",
     featureColor: "text-slate-300",
     btnSecondaryClass: "bg-white/10 hover:bg-white/20 text-[#E5E4E2] border-white/10"
+  },
+  {
+    id: "cozy-dinner",
+    name: "Cozy Holiday / Dinner Party",
+    badge: "Warm & Immersive",
+    vibe: "Warm scrolling winter feast theme. Rich pine green mesh, continuous floating golden embers & snow particles, classic Garamond bento menus, and Dancing Script titles.",
+    primaryColor: "bg-[#228B22]",
+    textColor: "text-[#CFB53B]",
+    paletteColors: ["#0C1D12", "#228B22", "#CFB53B", "#9E1B32"],
+    fonts: "Dancing Script, Garamond",
+    features: [
+      "Continuous Floating Gold Stars & Snow Particles",
+      "Dynamic Fade-In & Cinematic 1.5s Gallery Zoom-Out",
+      "Handwritten Elegant Dancing Script Typography titles",
+      "Course-by-Course Bento Food & Drink Menu display",
+      "Classic Garamond high-end serif editorial layout",
+      "Cozy Cranberry Red (#9E1B32) responsive RSVP portal"
+    ],
+    bgClass: "bg-[#0C1D12] border-[#CFB53B]/25",
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-green-950/40 text-green-300 border-green-800/40",
+    titleColor: "text-white group-hover:text-green-300",
+    vibeColor: "text-green-200/70",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-green-900/20 hover:bg-green-900/40 text-[#CFB53B] border-green-800/40"
   }
 ];
 

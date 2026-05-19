@@ -350,6 +350,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#191970",
         border: "rgba(229, 228, 226, 0.2)"
       }
+    : activePaletteId === "cozy-dinner"
+    ? {
+        bg: "#0C1D12",
+        door: "#228B22",
+        seam: "#CFB53B",
+        card: "rgba(18, 41, 26, 0.82)",
+        text: "#FFFFFF",
+        sub: "#CFB53B",
+        gold: "#CFB53B",
+        border: "rgba(207, 181, 59, 0.25)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -5051,6 +5062,515 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderCozyDinner = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+    
+    // Sample holiday/dinner menu if none is specified in invitation details
+    const menuCourses = [
+      {
+        course: "HORS D'ŒUVRES",
+        name: "Cranberry Balsamic Crostini",
+        desc: "Toasted artisan baguette with whipped goat cheese, fresh rosemary, and warm honey-drizzled cranberry compote."
+      },
+      {
+        course: "MAIN COURSE",
+        name: "Herb-Crusted Roasted Roast",
+        desc: "Slow-roasted tenderloin served with rosemary fingerling potatoes, caramelized winter roots, and red wine reduction."
+      },
+      {
+        course: "SWEET ENDINGS",
+        name: "Warm Golden Apple Cobbler",
+        desc: "Spiced Gala apples baked under a brown butter crumble, topped with vanilla bean gelato and gold leaf flakes."
+      },
+      {
+        course: "FESTIVE DRINKS",
+        name: "Signature Mulled Wine & Cider",
+        desc: "Warm Cabernet infused with orange peel, cloves, star anise, and fresh cranberry cider sprigs."
+      }
+    ];
+
+    // Fallback holiday photos for background/galleries
+    const cozyPhotos = galleryPhotos.length > 0 ? galleryPhotos : [
+      "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800",
+      "https://images.unsplash.com/photo-1575549594211-18c1d50c7760?q=80&w=800"
+    ];
+
+    // Generate falling particle settings
+    const particleList = Array.from({ length: 35 }).map((_, i) => {
+      const left = (i * 2.9 + Math.random() * 4) % 100;
+      const delay = -Math.random() * 15;
+      const duration = 9 + Math.random() * 10;
+      const size = 3 + Math.random() * 7;
+      const opacity = 0.25 + Math.random() * 0.45;
+      const isStar = Math.random() > 0.45;
+      return { id: i, left, delay, duration, size, opacity, isStar };
+    });
+
+    return (
+      <div 
+        style={{
+          background: "linear-gradient(to bottom, #0D2013 0%, #15351E 45%, #0D2013 100%)",
+          color: "#FFFFFF",
+          fontFamily: "'Cormorant Garamond', serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+        }}
+      >
+        {/* Dynamic Fonts Import and Cozy Custom Styles */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+          @keyframes fallAndSway {
+            0% {
+              transform: translateY(-10px) translateX(0) rotate(0deg);
+              opacity: 0;
+            }
+            10% {
+              opacity: 0.8;
+            }
+            90% {
+              opacity: 0.8;
+            }
+            100% {
+              transform: translateY(105vh) translateX(40px) rotate(360deg);
+              opacity: 0;
+            }
+          }
+
+          @keyframes zoomOutFadeIn {
+            0% {
+              opacity: 0;
+              transform: scale(1.1);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1.0);
+            }
+          }
+
+          .cozy-particle {
+            position: absolute;
+            top: -20px;
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 50%;
+            animation-name: fallAndSway;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+          }
+
+          .cozy-gallery-img {
+            animation: zoomOutFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          }
+
+          .cozy-card {
+            background: rgba(18, 41, 26, 0.82);
+            border: 1px solid rgba(207, 181, 59, 0.25);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          .cozy-card:hover {
+            border-color: rgba(207, 181, 59, 0.45);
+            box-shadow: 0 20px 48px rgba(0,0,0,0.55);
+          }
+
+          .cozy-btn-cranberry {
+            background: #9E1B32;
+            color: #FFFFFF;
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 600;
+            border: 1px solid #CFB53B;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 12px rgba(158, 27, 50, 0.3);
+          }
+
+          .cozy-btn-cranberry:hover {
+            background: #B22234;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(158, 27, 50, 0.5), 0 0 8px rgba(207, 181, 59, 0.4);
+          }
+
+          .cozy-input {
+            background: rgba(13, 32, 19, 0.6);
+            border: 1px solid rgba(207, 181, 59, 0.3);
+            color: #FFFFFF;
+            font-family: 'Cormorant Garamond', serif;
+            transition: all 0.3s;
+          }
+
+          .cozy-input:focus {
+            outline: none;
+            border-color: #CFB53B;
+            box-shadow: 0 0 10px rgba(207, 181, 59, 0.2);
+          }
+        ` }} />
+
+        {/* ❄️ CONTINUOUS FALLING PARTICLES (GOLD EMBERS & SNOW) */}
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
+          {particleList.map((p) => (
+            <div
+              key={p.id}
+              className="cozy-particle"
+              style={{
+                left: `${p.left}%`,
+                animationDelay: `${p.delay}s`,
+                animationDuration: `${p.duration}s`,
+                width: p.size,
+                height: p.size,
+                opacity: p.opacity,
+                backgroundColor: p.isStar ? "#CFB53B" : "#FFFFFF",
+                boxShadow: p.isStar ? "0 0 8px #CFB53B" : "0 0 4px #FFFFFF",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* MAIN VIEWPORT LAYOUT */}
+        <div 
+          style={{
+            opacity: phase !== "closed" ? 1 : 0,
+            transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+            transition: "opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
+            maxWidth: 680,
+            margin: "0 auto",
+            padding: "56px 20px 120px",
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          {/* ======================================================== */}
+          {/* 🌟 INTRO HERO / TITLE                                    */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div style={{ textAlign: "center", marginBottom: 54, position: "relative" }}>
+              {/* Gold Pine Ornament Icon */}
+              <div style={{ fontSize: 32, color: "#CFB53B", marginBottom: 16 }}>🎄</div>
+              
+              <h1 
+                style={{
+                  fontFamily: "'Dancing Script', cursive",
+                  fontSize: "3.4rem",
+                  color: "#CFB53B",
+                  textShadow: "0 2px 10px rgba(207, 181, 59, 0.25)",
+                  margin: "0 0 12px",
+                  lineHeight: 1.2
+                }}
+              >
+                {invitation.groomName ? "Holiday Gathering" : (invitation.brideName || "Warm Winter Dinner")}
+              </h1>
+
+              <div style={{ width: 140, height: 1.5, background: "linear-gradient(to right, transparent, #CFB53B, transparent)", margin: "16px auto" }} />
+              
+              <p 
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: 20,
+                  fontStyle: "italic",
+                  letterSpacing: "0.08em",
+                  color: "#E2E8F0",
+                  opacity: 0.95,
+                  margin: 0
+                }}
+              >
+                You are cordially invited to celebrate a warm & intimate evening of festive cheer, gourmet dining, and friendly laughter.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* 📅 EVENT METADATA / DATE & VENUE BENTO                    */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="cozy-card" style={{ borderRadius: 16, padding: "36px 28px", marginBottom: 36, textAlign: "center" }}>
+              <p style={{ textTransform: "uppercase", fontSize: 13, letterSpacing: "0.22em", color: "#CFB53B", marginBottom: 20 }}>
+                - Date & Time -
+              </p>
+              
+              <p style={{ fontSize: 26, fontWeight: 500, margin: "0 0 6px" }}>
+                {targetDate.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-US", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+              
+              <p style={{ fontSize: 19, fontStyle: "italic", color: "#CFB53B", margin: "0 0 24px" }}>
+                {targetDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} onwards
+              </p>
+
+              <div style={{ width: 60, height: 1, backgroundColor: "rgba(207, 181, 59, 0.2)", margin: "16px auto" }} />
+
+              <p style={{ textTransform: "uppercase", fontSize: 13, letterSpacing: "0.22em", color: "#CFB53B", marginTop: 24, marginBottom: 12 }}>
+                - The Hearth -
+              </p>
+              <p style={{ fontSize: 21, fontWeight: 600, margin: "0 0 4px" }}>
+                {invitation.venue?.name || "The Cozy Hearth Lodge"}
+              </p>
+              <p style={{ fontSize: 15, opacity: 0.8, fontStyle: "italic", margin: "0 0 20px" }}>
+                {invitation.venue?.address || "12 Holly Berry Lane, Snowy Hills, VT"}
+              </p>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cozy-btn-cranberry"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "10px 24px",
+                    borderRadius: 30,
+                    textDecoration: "none",
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
+                  📍 NAVIGATE TO VENUE
+                </a>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* ⏳ LIVE COUNTDOWN DISPLAY                                 */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="cozy-card" style={{ borderRadius: 16, padding: "28px 24px", marginBottom: 36, textAlign: "center" }}>
+              <p style={{ textTransform: "uppercase", fontSize: 12, letterSpacing: "0.18em", color: "#CFB53B", marginBottom: 20 }}>
+                The Fireplace Ignites In
+              </p>
+              <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
+                {[
+                  { value: timeLeft.days, label: "Days" },
+                  { value: timeLeft.hours, label: "Hours" },
+                  { value: timeLeft.minutes, label: "Mins" },
+                  { value: timeLeft.seconds, label: "Secs" },
+                ].map((unit, idx) => (
+                  <div key={idx} style={{ minWidth: 72 }}>
+                    <div style={{ fontSize: 28, fontWeight: 700, color: "#CFB53B", lineHeight: 1 }}>
+                      {String(unit.value).padStart(2, "0")}
+                    </div>
+                    <div style={{ fontSize: 11, textTransform: "uppercase", opacity: 0.5, letterSpacing: "0.08em", marginTop: 4 }}>
+                      {unit.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* 🍽️ FESTIVE DINNER MENU (BENTO DISPLAY)                    */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="cozy-card" style={{ borderRadius: 16, padding: "36px 28px", marginBottom: 36 }}>
+              <div style={{ textAlign: "center", marginBottom: 28 }}>
+                <span style={{ fontSize: 24 }}>🍷</span>
+                <h2 style={{ fontFamily: "'Dancing Script', cursive", fontSize: "2.5rem", color: "#CFB53B", margin: "6px 0 0" }}>
+                  The Dinner Menu
+                </h2>
+                <p style={{ fontSize: 14, fontStyle: "italic", opacity: 0.7, margin: "2px 0 0" }}>
+                  A curated selection of seasonal delicacies
+                </p>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                {menuCourses.map((c, idx) => (
+                  <div key={idx} style={{ display: "grid", gridTemplateColumns: "1fr", gap: 4, position: "relative", paddingLeft: 12 }}>
+                    <div style={{ position: "absolute", left: 0, top: 4, bottom: 4, width: 2, background: "linear-gradient(to bottom, #CFB53B, #9E1B32)" }} />
+                    <p style={{ textTransform: "uppercase", fontSize: 10, letterSpacing: "0.18em", color: "#CFB53B", margin: 0 }}>
+                      {c.course}
+                    </p>
+                    <p style={{ fontSize: 17, fontWeight: 600, margin: 0, color: "#FFFFFF" }}>
+                      {c.name}
+                    </p>
+                    <p style={{ fontSize: 13, opacity: 0.8, margin: 0, fontStyle: "italic", lineHeight: 1.4 }}>
+                      {c.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* 🖼️ HIGH-FIDELITY EVENT GALLERY (ZOOM-OUT ANIMATED SLIDER)  */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="cozy-card" style={{ borderRadius: 16, padding: 12, marginBottom: 36, overflow: "hidden" }}>
+              <div style={{ position: "relative", height: 360, width: "100%", borderRadius: 12, overflow: "hidden", backgroundColor: "#061209" }}>
+                
+                {/* Dynamically Render Active Image with keying on index to trigger CSS zoomOutFadeIn animation */}
+                <img 
+                  key={activePhotoIdx}
+                  src={cozyPhotos[activePhotoIdx]} 
+                  alt="Dinner & Venue Showcase" 
+                  className="cozy-gallery-img"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    position: "absolute",
+                    inset: 0,
+                  }}
+                />
+
+                {/* Dark Vignette Overlay */}
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 40%, rgba(0,0,0,0.45) 100%)", pointerEvents: "none" }} />
+                
+                {/* Slider Title Tag */}
+                <div style={{ position: "absolute", bottom: 16, left: 16, right: 16, zIndex: 10 }}>
+                  <p style={{ fontFamily: "'Dancing Script', cursive", fontSize: "1.6rem", color: "#CFB53B", margin: 0, textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
+                    Cozy Atmosphere
+                  </p>
+                  <p style={{ fontSize: 12, opacity: 0.8, margin: 0, textShadow: "0 1px 3px rgba(0,0,0,0.8)", fontStyle: "italic" }}>
+                    Prepared with warm hospitality
+                  </p>
+                </div>
+
+                {/* Slideshow Navigation Indicators */}
+                {cozyPhotos.length > 1 && (
+                  <div style={{ position: "absolute", bottom: 18, right: 16, display: "flex", gap: 6, zIndex: 10 }}>
+                    {cozyPhotos.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setActivePhotoIdx(idx)}
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          backgroundColor: activePhotoIdx === idx ? "#CFB53B" : "rgba(255,255,255,0.4)",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: 0,
+                          transition: "background-color 0.3s"
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* 📝 RSVP REGISTRATION PORTAL                              */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="cozy-card" style={{ borderRadius: 16, padding: "36px 28px", marginBottom: 36 }}>
+              <div style={{ textAlign: "center", marginBottom: 24 }}>
+                <span style={{ fontSize: 24 }}>✉️</span>
+                <h2 style={{ fontFamily: "'Dancing Script', cursive", fontSize: "2.4rem", color: "#CFB53B", margin: "6px 0 0" }}>
+                  Kindly Respond
+                </h2>
+                <p style={{ fontSize: 13, opacity: 0.7, margin: 0, fontStyle: "italic" }}>
+                  Please reserve your seat by entering your details below.
+                </p>
+              </div>
+
+              {rsvpDone ? (
+                <div style={{ textAlign: "center", padding: "24px 0", color: "#CFB53B" }}>
+                  <p style={{ fontSize: 32, margin: 0 }}>✓</p>
+                  <p style={{ fontFamily: "'Dancing Script', cursive", fontSize: "1.8rem", margin: "8px 0 0" }}>
+                    Thank You!
+                  </p>
+                  <p style={{ fontSize: 14, opacity: 0.8, margin: "4px 0 0", fontStyle: "italic" }}>
+                    Your presence has been warmheartedly registered.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", color: "#CFB53B", marginBottom: 6 }}>
+                      Your Name / Party Name
+                    </label>
+                    <input 
+                      type="text" 
+                      required 
+                      className="cozy-input"
+                      style={{ width: "100%", padding: "12px 16px", borderRadius: 8 }}
+                      value={rsvp.name}
+                      onChange={(e) => setRsvp({ ...rsvp, name: e.target.value })}
+                      placeholder="e.g. The Harrison Family"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", color: "#CFB53B", marginBottom: 6 }}>
+                      Warm Blessings / Dietary Notes
+                    </label>
+                    <textarea 
+                      rows={3} 
+                      className="cozy-input"
+                      style={{ width: "100%", padding: "12px 16px", borderRadius: 8, resize: "none" }}
+                      value={rsvp.blessing}
+                      onChange={(e) => setRsvp({ ...rsvp, blessing: e.target.value })}
+                      placeholder="Share a wish or mention any allergen details..."
+                    />
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={rsvpLoading}
+                    className="cozy-btn-cranberry"
+                    style={{
+                      width: "100%",
+                      padding: "14px 20px",
+                      borderRadius: 8,
+                      fontSize: 13,
+                      cursor: "pointer",
+                      marginTop: 8
+                    }}
+                  >
+                    {rsvpLoading ? "REGISTERING..." : "CONFIRM PRESENCE"}
+                  </button>
+                </form>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* 👥 HOST CONTACT & FOOTER SIGNATURE                       */}
+          {/* ======================================================== */}
+          <div style={{ padding: "40px 24px 80px", textAlign: "center", borderTop: "1px solid rgba(207, 181, 59, 0.15)", background: "rgba(0,0,0,0.15)", position: "relative", zIndex: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+              <p style={{ fontFamily: "'Dancing Script', cursive", fontSize: "1.9rem", color: "#CFB53B", marginBottom: 12 }}>
+                We look forward to sharing this warm evening with you.
+              </p>
+              
+              {invitation.coupleEmail && (
+                <p style={{ fontSize: 13, opacity: 0.7, margin: 0, fontStyle: "italic" }}>
+                  For inquiries or schedule changes, please reach out to:{" "}
+                  <a href={`mailto:${invitation.coupleEmail}`} style={{ color: "#CFB53B", textDecoration: "underline" }}>
+                    {invitation.coupleEmail}
+                  </a>
+                </p>
+              )}
+
+              <div style={{ paddingTop: 36, marginTop: 44, borderTop: "1px solid rgba(207, 181, 59, 0.08)", width: "100%" }}>
+                <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", opacity: 0.4 }}>
+                  Taabir Premium Invitations · Powered by Flynx
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    );
+  };
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
@@ -5062,6 +5582,7 @@ export default function InviteViewer({ invitation }) {
     { id: "playful-kidsparty", name: "Playful Kids Party", icon: "🎈" },
     { id: "summer-poolparty", name: "Summer Pool Party", icon: "🏊" },
     { id: "corporate-gala", name: "Sleek Corporate Gala", icon: "🏢" },
+    { id: "cozy-dinner", name: "Cozy Holiday / Dinner Party", icon: "🎄" },
   ];
 
   const palettes = [
@@ -5077,6 +5598,7 @@ export default function InviteViewer({ invitation }) {
     { id: "playful-kidsparty", name: "Playful Kids Party", preview: ["#87CEEB", "#FF7F50", "#FFD700"] },
     { id: "summer-poolparty", name: "Summer Pool Party", preview: ["#7FFFD4", "#FFDAB9", "#C2B280"] },
     { id: "corporate-gala", name: "Sleek Corporate Gala", preview: ["#0A0E1A", "#191970", "#E5E4E2"] },
+    { id: "cozy-dinner", name: "Cozy Holiday / Dinner Party", preview: ["#0C1D12", "#CFB53B", "#9E1B32"] },
   ];
 
   return (
@@ -5556,6 +6078,8 @@ export default function InviteViewer({ invitation }) {
         renderSummerPoolparty()
       ) : activeLayoutId === "corporate-gala" ? (
         renderCorporateGala()
+      ) : activeLayoutId === "cozy-dinner" ? (
+        renderCozyDinner()
       ) : (
         <div 
           style={{

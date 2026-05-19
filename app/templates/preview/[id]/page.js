@@ -487,6 +487,37 @@ const DEMO_DATA = {
       btnBgColor: "#191970",
       btnTextColor: "#FFFFFF"
     }
+  },
+  "cozy-dinner": {
+    id: "__demo_cozy_dinner__",
+    brideName: "Intimate Holiday Feast",
+    brideParentsName: "The Sterling Estate",
+    weddingDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Hearthstone Lodge",
+      address: "404 Pine Forest Road, Aspen, CO",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1200",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200",
+      "https://images.unsplash.com/photo-1575549594211-18c1d50c7760?q=80&w=1200"
+    ],
+    eventType: "general",
+    musicUrl: "",
+    coupleEmail: "dinner@sterling.com",
+    theme: { templateId: "cozy-dinner" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#9E1B32",
+      btnTextColor: "#FFFFFF"
+    }
   }
 };
 
@@ -503,7 +534,8 @@ export async function generateMetadata({ params }) {
     "elegant-milestone": "Elegant Milestone",
     "playful-kidsparty": "Playful & Interactive",
     "summer-poolparty": "Summer Pool Party",
-    "corporate-gala": "Sleek Corporate Gala"
+    "corporate-gala": "Sleek Corporate Gala",
+    "cozy-dinner": "Cozy Holiday / Dinner Party"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,
