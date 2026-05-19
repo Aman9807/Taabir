@@ -586,6 +586,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#B76E79",
         border: "rgba(255, 255, 255, 0.15)"
       }
+    : activePaletteId === "ethereal-coastal"
+    ? {
+        bg: "#001020",
+        door: "#001020",
+        seam: "#F7E7CE",
+        card: "rgba(247, 231, 206, 0.05)",
+        text: "#F7E7CE",
+        sub: "#C2B280",
+        gold: "#F7E7CE",
+        border: "rgba(247, 231, 206, 0.2)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -7022,6 +7033,399 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderEtherealCoastal = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200"; // Beach scenery
+
+    const scheduleItems = invitation.details?.schedule?.length > 0 ? invitation.details.schedule : [
+      {
+        name: "Sunset Ceremony",
+        time: "05:00 PM",
+        description: "Exchanging vows by the shoreline as the sun dips below the horizon",
+        venue: "The Private Cove"
+      },
+      {
+        name: "Seaside Dinner",
+        time: "07:30 PM",
+        description: "Oceanfront candlelit dinner and dance celebration",
+        venue: "Cliffside Terrace"
+      }
+    ];
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#001020",
+          color: "#F7E7CE",
+          fontFamily: "'Cormorant Garamond', serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          padding: "16px",
+          boxSizing: "border-box",
+        }}
+      >
+        <style dangerouslySetInnerHTML={{ __html: `
+          @keyframes ripple {
+            0% { transform: translateY(0) scaleY(1); opacity: 0.03; }
+            50% { transform: translateY(-5px) scaleY(1.05); opacity: 0.08; }
+            100% { transform: translateY(0) scaleY(1); opacity: 0.03; }
+          }
+          .coastal-vignette {
+            position: fixed;
+            inset: 0;
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.95);
+            pointer-events: none;
+            z-index: 99;
+          }
+          .ripple-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 30%, #001020 80%);
+            animation: ripple 8s ease-in-out infinite;
+            z-index: 2;
+            pointer-events: none;
+          }
+          .coastal-card {
+            background: rgba(0, 16, 32, 0.75);
+            border: 1px solid rgba(247, 231, 206, 0.15);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+          }
+          .nautical-icon {
+            transition: transform 0.5s ease;
+          }
+          .nautical-icon:hover {
+            transform: rotate(360deg) scale(1.1);
+          }
+          .coastal-input {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: rgba(247, 231, 206, 0.04);
+            border: 1px solid rgba(247, 231, 206, 0.2);
+            color: #F7E7CE;
+            outline: none;
+            border-radius: 8px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+          }
+          .coastal-input:focus {
+            border-color: #F7E7CE;
+            box-shadow: 0 0 10px rgba(247, 231, 206, 0.15);
+          }
+          .coastal-btn {
+            background: transparent;
+            color: #F7E7CE;
+            border: 1px solid #F7E7CE;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+          }
+          .coastal-btn:hover {
+            background: #F7E7CE;
+            color: #001020;
+            box-shadow: 0 0 20px rgba(247, 231, 206, 0.4);
+          }
+        `}} />
+
+        {/* Soft Edge Vignette Shadow */}
+        <div className="coastal-vignette" />
+
+        {/* Ocean Ripple Background Overlay */}
+        <div className="ripple-bg" />
+
+        {/* Main Content */}
+        <div 
+          style={{
+            maxWidth: 600,
+            margin: "0 auto",
+            padding: "80px 16px 120px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* HERO SECTION */}
+          <BlurFocusReveal>
+            <div style={{ textAlign: "center", marginBottom: 60, marginTop: 40 }}>
+              <p style={{ fontSize: 13, letterSpacing: "0.25em", textTransform: "uppercase", color: "#C2B280", fontStyle: "italic", marginBottom: 16 }}>
+                A Destination Celebration
+              </p>
+              
+              <h1 style={{ 
+                fontFamily: "'Cormorant Garamond', serif", 
+                fontSize: 44, 
+                fontWeight: 300,
+                lineHeight: 1.2,
+                marginBottom: 20,
+                color: "#F7E7CE"
+              }}>
+                {invitation.brideName} <span style={{ fontStyle: "italic", color: "#C2B280" }}>and</span> {invitation.groomName}
+              </h1>
+
+              <div style={{ width: 60, height: 1, backgroundColor: "rgba(247, 231, 206, 0.4)", margin: "0 auto 24px" }} />
+
+              <p style={{ fontSize: 18, fontStyle: "italic", color: "#C2B280", letterSpacing: "0.05em" }}>
+                Request the pleasure of your company
+              </p>
+              
+              <p style={{ fontSize: 16, marginTop: 16, opacity: 0.9 }}>
+                {targetDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              </p>
+            </div>
+          </BlurFocusReveal>
+
+          {/* HORIZONTAL PHOTO GALLERY */}
+          {galleryPhotos.length > 0 && (
+            <BlurFocusReveal>
+              <div style={{ marginBottom: 60 }}>
+                <p style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: "0.15em", color: "#C2B280", textAlign: "center", marginBottom: 16, fontStyle: "italic" }}>
+                  ~ Gallery ~
+                </p>
+                <div 
+                  style={{ 
+                    display: "flex", 
+                    gap: 16, 
+                    overflowX: "auto", 
+                    paddingBottom: 16,
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none"
+                  }}
+                >
+                  {galleryPhotos.map((photo, i) => (
+                    <div 
+                      key={i}
+                      style={{ 
+                        flexShrink: 0, 
+                        width: 260, 
+                        height: 180, 
+                        borderRadius: 12, 
+                        border: "1px solid #F7E7CE", 
+                        overflow: "hidden",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.3)"
+                      }}
+                    >
+                      <img 
+                        src={photo} 
+                        alt="Scenery" 
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </BlurFocusReveal>
+          )}
+
+          {/* COUNTDOWN TIMER */}
+          <BlurFocusReveal>
+            <div style={{ marginBottom: 60, textAlign: "center" }}>
+              <p style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: "0.15em", color: "#C2B280", marginBottom: 16, fontStyle: "italic" }}>
+                Counting down the tides
+              </p>
+              <div style={{ display: "flex", justifyContent: "center", gap: 24 }}>
+                <div>
+                  <div style={{ fontSize: 32, fontWeight: 300 }}>{timeLeft.days}</div>
+                  <div style={{ fontSize: 11, fontStyle: "italic", opacity: 0.7 }}>days</div>
+                </div>
+                <div style={{ width: 1, height: 30, backgroundColor: "rgba(247, 231, 206, 0.2)", alignSelf: "center" }} />
+                <div>
+                  <div style={{ fontSize: 32, fontWeight: 300 }}>{timeLeft.hours}</div>
+                  <div style={{ fontSize: 11, fontStyle: "italic", opacity: 0.7 }}>hours</div>
+                </div>
+                <div style={{ width: 1, height: 30, backgroundColor: "rgba(247, 231, 206, 0.2)", alignSelf: "center" }} />
+                <div>
+                  <div style={{ fontSize: 32, fontWeight: 300 }}>{timeLeft.minutes}</div>
+                  <div style={{ fontSize: 11, fontStyle: "italic", opacity: 0.7 }}>minutes</div>
+                </div>
+              </div>
+            </div>
+          </BlurFocusReveal>
+
+          {/* VENUE SECTION */}
+          <BlurFocusReveal>
+            <div className="coastal-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              {/* Nautical Wave Icon */}
+              <div style={{ marginBottom: 16 }}>
+                <svg className="nautical-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F7E7CE" strokeWidth="1.5" style={{ margin: "0 auto" }}>
+                  <path d="M2 12c3.5-3.5 6.5 3.5 10 0 3.5-3.5 6.5 3.5 10 0" />
+                  <path d="M2 17c3.5-3.5 6.5 3.5 10 0 3.5-3.5 6.5 3.5 10 0" />
+                </svg>
+              </div>
+
+              {/* Cliffside Villa Line-Art */}
+              <svg viewBox="0 0 200 120" fill="none" stroke="#F7E7CE" strokeWidth="1" style={{ width: "100%", height: 120, marginBottom: 24, opacity: 0.8 }}>
+                <path d="M 0 100 C 40 100, 60 90, 80 75 C 90 67, 105 67, 120 70 C 135 73, 150 55, 170 50 C 185 45, 200 48, 200 48" />
+                <path d="M 80 75 L 80 120" />
+                <path d="M 120 70 L 120 120" />
+                <path d="M 170 50 L 170 120" />
+                <rect x="135" y="25" width="30" height="25" fill="#001020" />
+                <polygon points="130,25 150,12 170,25" fill="#001020" />
+                <rect x="145" y="37" width="10" height="13" />
+                <circle cx="150" cy="20" r="3" />
+                <circle cx="50" cy="40" r="15" strokeDasharray="3 3" />
+                <path d="M 10 115 C 30 112, 50 118, 70 115 C 90 112, 110 118, 130 115 C 150 112, 170 118, 190 115" />
+              </svg>
+
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontStyle: "italic", marginBottom: 16 }}>
+                The Destination
+              </h2>
+              <p style={{ fontSize: 18, fontWeight: 500, marginBottom: 8, color: "#F7E7CE" }}>
+                {invitation.venue?.name || "The Villa Resort"}
+              </p>
+              <p style={{ fontSize: 14, opacity: 0.8, lineHeight: 1.6, marginBottom: 24, color: "#C2B280" }}>
+                {invitation.venue?.address || "Cliffside Road, Coastal Paradise"}
+              </p>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: "inline-block", textDecoration: "none" }}
+                >
+                  <button className="coastal-btn" style={{ padding: "12px 32px", cursor: "pointer", borderRadius: 24 }}>
+                    View Map
+                  </button>
+                </a>
+              )}
+            </div>
+          </BlurFocusReveal>
+
+          {/* ITINERARY */}
+          <BlurFocusReveal>
+            <div className="coastal-card" style={{ padding: "40px 24px", marginBottom: 48 }}>
+              <div style={{ textAlign: "center", marginBottom: 32 }}>
+                <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontStyle: "italic", color: "#F7E7CE" }}>
+                  Schedule of Events
+                </h2>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+                {scheduleItems.map((ev, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: 16 }}>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 40 }}>
+                      <svg className="nautical-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F7E7CE" strokeWidth="1.5">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      {idx !== scheduleItems.length - 1 && (
+                        <div style={{ width: 1, height: "100%", background: "linear-gradient(to bottom, #F7E7CE, transparent)", margin: "8px 0" }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1, paddingBottom: idx !== scheduleItems.length - 1 ? 16 : 0 }}>
+                      <p style={{ fontSize: 13, fontStyle: "italic", color: "#C2B280", margin: "0 0 4px" }}>
+                        {ev.time}
+                      </p>
+                      <p style={{ fontSize: 18, fontWeight: 500, margin: "0 0 6px" }}>
+                        {ev.name}
+                      </p>
+                      <p style={{ fontSize: 14, opacity: 0.8, margin: 0, lineHeight: 1.5, color: "#C2B280" }}>
+                        {ev.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </BlurFocusReveal>
+
+          {/* RSVP PORTAL */}
+          <BlurFocusReveal>
+            <div className="coastal-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              <div style={{ marginBottom: 16 }}>
+                <svg className="nautical-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F7E7CE" strokeWidth="1.5" style={{ margin: "0 auto" }}>
+                  <circle cx="12" cy="12" r="10" />
+                  <polygon points="12,4 15,12 12,15 9,12" />
+                  <polygon points="12,20 15,12 12,9 9,12" />
+                </svg>
+              </div>
+
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontStyle: "italic", marginBottom: 24 }}>
+                Response Requested
+              </h2>
+              
+              {!rsvpDone ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 16, textAlign: "left" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 13, color: "#C2B280", marginBottom: 8, fontStyle: "italic" }}>
+                      Guest Name
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvp.name}
+                      onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                      className="coastal-input"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 13, color: "#C2B280", marginBottom: 8, fontStyle: "italic" }}>
+                      Attendance
+                    </label>
+                    <select 
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({...rsvp, attending: e.target.value === "true"})}
+                      className="coastal-input"
+                      style={{ appearance: "none" }}
+                    >
+                      <option value="true" style={{ color: "#000" }}>Joyfully Accepts</option>
+                      <option value="false" style={{ color: "#000" }}>Regretfully Declines</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 13, color: "#C2B280", marginBottom: 8, fontStyle: "italic" }}>
+                      Warm Blessings
+                    </label>
+                    <textarea 
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                      className="coastal-input"
+                      style={{ minHeight: 80 }}
+                      placeholder="Optional message"
+                    />
+                  </div>
+                  <button 
+                    onClick={submitRsvp}
+                    disabled={rsvpLoading || !rsvp.name}
+                    className="coastal-btn"
+                    style={{
+                      width: "100%",
+                      padding: "14px",
+                      marginTop: 8,
+                      fontWeight: 500,
+                      cursor: rsvpLoading || !rsvp.name ? "not-allowed" : "pointer",
+                      opacity: rsvpLoading || !rsvp.name ? 0.6 : 1,
+                      borderRadius: 24
+                    }}
+                  >
+                    {rsvpLoading ? "Recording..." : "Confirm RSVP"}
+                  </button>
+                </div>
+              ) : (
+                <div style={{ padding: "32px 0" }}>
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: "#F7E7CE", margin: "0 0 8px", fontStyle: "italic" }}>Response Received</p>
+                  <p style={{ fontSize: 15, opacity: 0.8 }}>Thank you for filling out your details.</p>
+                </div>
+              )}
+            </div>
+          </BlurFocusReveal>
+
+          {/* Footer */}
+          <div style={{ textAlign: "center", opacity: 0.5 }}>
+            <p style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "'Cormorant Garamond', serif" }}>
+              By the shores of our love
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
 
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
@@ -7038,6 +7442,7 @@ export default function InviteViewer({ invitation }) {
     { id: "royal-heritage", name: "The Royal Heritage", icon: "👑" },
     { id: "enchanted-wireframe", name: "The Enchanted Wireframe", icon: "🌿" },
     { id: "modern-urban-skyline", name: "Modern Urban Skyline", icon: "🏙️" },
+    { id: "ethereal-coastal", name: "The Ethereal Coastal", icon: "🌊" },
   ];
 
   const palettes = [
@@ -7057,6 +7462,7 @@ export default function InviteViewer({ invitation }) {
     { id: "royal-heritage", name: "The Royal Heritage", preview: ["#0C0C0C", "#D4AF37", "#800000"] },
     { id: "enchanted-wireframe", name: "The Enchanted Wireframe", preview: ["#0A1A14", "#CFB53B", "#E6F2EC"] },
     { id: "modern-urban-skyline", name: "Modern Urban Skyline", preview: ["#050A1F", "#B76E79", "#FFFFFF"] },
+    { id: "ethereal-coastal", name: "The Ethereal Coastal", preview: ["#001020", "#F7E7CE", "#C2B280"] },
   ];
 
   return (
@@ -7544,6 +7950,8 @@ export default function InviteViewer({ invitation }) {
         renderEnchantedWireframe()
       ) : activeLayoutId === "modern-urban-skyline" ? (
         renderModernUrbanSkyline()
+      ) : activeLayoutId === "ethereal-coastal" ? (
+        renderEtherealCoastal()
       ) : (
         <div 
           style={{
@@ -8384,6 +8792,40 @@ function BalloonFloater({ color, left, delay, size }) {
       <div style={{ position: "absolute", bottom: "-46px", width: 2, height: 40, borderLeft: "1px dashed rgba(255,255,255,0.5)" }} />
       {/* Tiny text invite overlay */}
       <span style={{ fontFamily: "'Fredoka One', cursive", fontSize: 9, color: "white", textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}>POP!</span>
+    </div>
+  );
+}
+
+function BlurFocusReveal({ children, duration = "1.5s" }) {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
+    );
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        filter: isVisible ? "blur(0px)" : "blur(8px)",
+        transition: `opacity ${duration} ease-out, filter ${duration} ease-out`,
+      }}
+    >
+      {children}
     </div>
   );
 }

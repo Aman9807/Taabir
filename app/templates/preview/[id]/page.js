@@ -613,6 +613,39 @@ const DEMO_DATA = {
       btnBgColor: "#B76E79",
       btnTextColor: "#050A1F"
     }
+  },
+  "ethereal-coastal": {
+    id: "__demo_ethereal_coastal__",
+    brideName: "Adrian",
+    groomName: "Marina",
+    brideParentsName: "",
+    groomParentsName: "",
+    weddingDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Villa Cliffside Resort",
+      address: "Clifftop Lane, Santorini, Greece",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200",
+      "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200",
+      "https://images.unsplash.com/photo-1545231027-63b3f1e997f5?q=80&w=1200"
+    ],
+    eventType: "wedding",
+    musicUrl: "",
+    coupleEmail: "adrian.marina@gmail.com",
+    theme: { templateId: "ethereal-coastal" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: false,
+      enableLanguageSwitcher: false,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#F7E7CE",
+      btnTextColor: "#001020"
+    }
   }
 };
 
@@ -633,7 +666,8 @@ export async function generateMetadata({ params }) {
     "cozy-dinner": "Cozy Holiday / Dinner Party",
     "royal-heritage": "The Royal Heritage",
     "enchanted-wireframe": "The Enchanted Wireframe",
-    "modern-urban-skyline": "The Modern Urban Skyline"
+    "modern-urban-skyline": "The Modern Urban Skyline",
+    "ethereal-coastal": "The Ethereal Coastal"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

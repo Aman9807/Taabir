@@ -394,6 +394,32 @@ const TEMPLATES = [
     vibeColor: "text-slate-300",
     featureColor: "text-slate-200",
     btnSecondaryClass: "bg-[#B76E79]/20 hover:bg-[#B76E79]/40 text-[#B76E79] border-[#B76E79]/40"
+  },
+  {
+    id: "ethereal-coastal",
+    name: "The Ethereal Coastal",
+    badge: "Destination Event",
+    vibe: "Soft, airy, yet dark ocean themed scrolling invitation. Perfect for destination weddings, beachside parties, and coastal villa events.",
+    primaryColor: "bg-[#001020]",
+    textColor: "text-[#F7E7CE]",
+    paletteColors: ["#001020", "#F7E7CE", "#C2B280"],
+    fonts: "Cormorant Garamond",
+    features: [
+      "Soft Viewport Edge Vignette Shadowing",
+      "Dynamic Ocean Wave/Ripple CSS Overlay Effect",
+      "Soft Blur-to-Focus Fade Reveal Text Animations",
+      "Horizontally Scrollable Premium Photo Gallery",
+      "Minimalist Line-Art Custom Cliffside Villa Illustration",
+      "Tiny Nautical Wave & Compass SVGs"
+    ],
+    bgClass: "bg-[#001020] border-[#F7E7CE]/15",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-sky-950/40 text-sky-300 border-sky-800/40",
+    titleColor: "text-[#F7E7CE] group-hover:text-white",
+    vibeColor: "text-amber-200/70",
+    featureColor: "text-slate-300",
+    btnSecondaryClass: "bg-sky-900/20 hover:bg-sky-900/40 text-[#F7E7CE] border-sky-800/40"
   }
 ];
 
