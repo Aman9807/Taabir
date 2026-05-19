@@ -487,9 +487,5 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
-  );      Powered by Flynx
-        </div>
-      </div>
-    </div>
   );
 }
