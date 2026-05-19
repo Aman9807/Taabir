@@ -710,6 +710,37 @@ const DEMO_DATA = {
       btnBgColor: "#D4AF37",
       btnTextColor: "#000000"
     }
+  },
+  "golden-keepsake": {
+    id: "__demo_golden_keepsake__",
+    brideName: "Arthur",
+    groomName: "Beatrice",
+    brideParentsName: "",
+    groomParentsName: "",
+    weddingDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Rosewood Manor Hall",
+      address: "25 Silver Anniversary Lane, Napa Valley, CA",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200"
+    ],
+    eventType: "anniversary",
+    musicUrl: "",
+    coupleEmail: "arthur.beatrice@manor-events.com",
+    theme: { templateId: "golden-keepsake" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: false,
+      enableLanguageSwitcher: false,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#D4AF37",
+      btnTextColor: "#242424"
+    }
   }
 };
 
@@ -733,7 +764,8 @@ export async function generateMetadata({ params }) {
     "modern-urban-skyline": "The Modern Urban Skyline",
     "ethereal-coastal": "The Ethereal Coastal",
     "opulent-gala": "The Opulent Gala",
-    "elegant-memory-frame": "The Elegant Memory Frame"
+    "elegant-memory-frame": "The Elegant Memory Frame",
+    "golden-keepsake": "The Golden Keepsake"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

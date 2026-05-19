@@ -619,6 +619,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#D4AF37",
         border: "rgba(212, 175, 55, 0.15)"
       }
+    : activePaletteId === "golden-keepsake"
+    ? {
+        bg: "#242424",
+        door: "#242424",
+        seam: "#B5A642",
+        card: "rgba(255, 255, 255, 0.03)",
+        text: "#F9F6EE",
+        sub: "#D4AF37",
+        gold: "#D4AF37",
+        border: "rgba(212, 175, 55, 0.2)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -8329,6 +8340,433 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderGoldenKeepsake = () => {
+    const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200";
+
+    const scheduleItems = invitation.details?.schedule?.length > 0 ? invitation.details.schedule : [
+      {
+        name: "Renewal of Vows",
+        time: "05:00 PM",
+        description: "A celebration of 25 years of devotion and partnership",
+        venue: "The Rosewood Chapel"
+      },
+      {
+        name: "Silver Jubilee Dinner",
+        time: "07:00 PM",
+        description: "An evening of fine dining, shared stories, and dancing",
+        venue: "The Grand Pavilion"
+      }
+    ];
+
+    // Sparkles coordinate coordinates
+    const sparkleStars = [
+      { top: "15%", left: "10%" },
+      { top: "25%", left: "85%" },
+      { top: "45%", left: "12%" },
+      { top: "60%", left: "88%" },
+      { top: "75%", left: "8%" },
+      { top: "85%", left: "82%" },
+      { top: "8%", left: "75%" },
+      { top: "92%", left: "20%" }
+    ];
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#242424",
+          color: "#F9F6EE",
+          fontFamily: "'Montserrat', sans-serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          padding: "24px",
+          boxSizing: "border-box",
+        }}
+        className="keepsake-canvas"
+      >
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Montserrat:wght@200;300;400;500&display=swap');
+          
+          .keepsake-canvas {
+            background-color: #242424;
+            background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 0), radial-gradient(rgba(255,255,255,0.01) 1px, transparent 0);
+            background-size: 8px 8px;
+            background-position: 0 0, 4px 4px;
+          }
+          @keyframes sparkle {
+            0%, 100% { opacity: 0.15; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 0.85; transform: scale(1.2) rotate(180deg); }
+          }
+          @keyframes hangFrame {
+            0% { transform: translateY(-70px) rotate(-2deg); opacity: 0; }
+            60% { transform: translateY(8px) rotate(0.8deg); opacity: 1; }
+            80% { transform: translateY(-3px) rotate(-0.3deg); }
+            100% { transform: translateY(0) rotate(0); }
+          }
+          .sparkle-element {
+            position: absolute;
+            animation: sparkle 3.5s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 2;
+          }
+          .hang-reveal {
+            animation: hangFrame 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          }
+          .keepsake-couple-name {
+            font-family: 'Dancing Script', cursive !important;
+            color: #D4AF37;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+          }
+          .keepsake-card {
+            background: #1C1C1C;
+            border: 1px solid rgba(212, 175, 55, 0.18);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            padding: 32px 24px;
+            margin-bottom: 48px;
+            position: relative;
+            z-index: 10;
+          }
+          .keepsake-hero-frame {
+            border: 10px solid #D4AF37;
+            border-image: repeating-linear-gradient(45deg, #B5A642, #D4AF37 4px, #8A7322 8px) 10;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0,0,0,0.5);
+            overflow: hidden;
+            width: 100%;
+            height: 300px;
+            margin-bottom: 32px;
+          }
+          .keepsake-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            color: #F9F6EE;
+            padding: 12px 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+          }
+          .keepsake-input:focus {
+            border-bottom-color: #D4AF37;
+            box-shadow: 0 4px 12px -4px rgba(212, 175, 55, 0.15);
+          }
+        `}} />
+
+        {/* Shimmer sparkle elements */}
+        {sparkleStars.map((s, idx) => (
+          <svg 
+            key={idx} 
+            className="sparkle-element" 
+            style={{ top: s.top, left: s.left, width: 14, height: 14, animationDelay: `${idx * 0.4}s` }}
+            viewBox="0 0 24 24" 
+            fill="#D4AF37"
+          >
+            <path d="M12,2 L14.5,9.5 L22,12 L14.5,14.5 L12,22 L9.5,14.5 L2,12 L9.5,9.5 Z" />
+          </svg>
+        ))}
+
+        {/* Main Content framed container */}
+        <div 
+          style={{
+            maxWidth: 580,
+            margin: "0 auto",
+            padding: "60px 8px 100px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* HERO WALL FRAME */}
+          <div className="hang-reveal">
+            <div className="keepsake-card" style={{ textAlign: "center" }}>
+              {/* Antique gold rope hero photo frame */}
+              <div className="keepsake-hero-frame">
+                <div 
+                  style={{
+                    backgroundImage: `url('${bgImage}')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    width: "100%",
+                    height: "100%"
+                  }}
+                />
+              </div>
+
+              <span style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: "0.2em", color: "#D4AF37" }}>
+                Silver Jubilee Invitation
+              </span>
+
+              <h1 className="keepsake-couple-name" style={{ fontSize: 44, margin: "16px 0 8px", fontWeight: 600 }}>
+                {invitation.brideName} & {invitation.groomName}
+              </h1>
+
+              {/* Central Floral Underlined Divider */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "20px 0", color: "#D4AF37" }}>
+                <div style={{ width: 60, height: 1, backgroundColor: "#D4AF37", opacity: 0.5 }} />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+                  <path d="M 12 4 C 10 9 6 12 12 20 C 18 12 14 9 12 4 Z" fill="none" />
+                  <path d="M 4 12 C 9 10 12 6 20 12 C 12 18 9 14 4 12 Z" fill="none" />
+                  <circle cx="12" cy="12" r="2" fill="#D4AF37" />
+                </svg>
+                <div style={{ width: 60, height: 1, backgroundColor: "#D4AF37", opacity: 0.5 }} />
+              </div>
+
+              <p style={{ fontSize: 15, fontWeight: 300, opacity: 0.9 }}>
+                25 Years of Shared Devotion
+              </p>
+            </div>
+          </div>
+
+          {/* DATE & TIME PANEL */}
+          <ScrollReveal>
+            <div className="keepsake-card" style={{ textAlign: "center" }}>
+              {/* Miniature framed Calendar icon */}
+              <div style={{
+                border: "1px solid #D4AF37",
+                padding: "8px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "rgba(0,0,0,0.3)",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+                marginBottom: "20px"
+              }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+                  <rect x="3" y="4" width="18" height="17" rx="2" />
+                  <line x1="3" y1="9" x2="21" y2="9" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <circle cx="8" cy="13" r="1.2" fill="#D4AF37" />
+                  <circle cx="12" cy="13" r="1.2" fill="#D4AF37" />
+                  <circle cx="16" cy="13" r="1.2" fill="#D4AF37" />
+                  <circle cx="8" cy="17" r="1.2" fill="#D4AF37" />
+                  <circle cx="12" cy="17" r="1.2" fill="#D4AF37" />
+                </svg>
+              </div>
+
+              <h2 style={{ fontSize: 22, fontWeight: 300, color: "#D4AF37", marginBottom: 16 }}>
+                The Anniversary Party
+              </h2>
+              
+              <p style={{ fontSize: 18, fontWeight: 400, marginBottom: 8 }}>
+                {targetDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              </p>
+              <p style={{ fontSize: 14, opacity: 0.7 }}>
+                At {targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+              </p>
+
+              {/* Small Floral Underline */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "20px 0", color: "#D4AF37" }}>
+                <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", opacity: 0.4 }} />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+                  <path d="M 12 4 C 10 9 6 12 12 20 C 18 12 14 9 12 4 Z" fill="none" />
+                  <path d="M 4 12 C 9 10 12 6 20 12 C 12 18 9 14 4 12 Z" fill="none" />
+                  <circle cx="12" cy="12" r="1.5" fill="#D4AF37" />
+                </svg>
+                <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", opacity: 0.4 }} />
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* VENUE PANEL */}
+          <ScrollReveal>
+            <div className="keepsake-card" style={{ textAlign: "center" }}>
+              {/* Miniature framed Compass icon */}
+              <div style={{
+                border: "1px solid #D4AF37",
+                padding: "8px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "rgba(0,0,0,0.3)",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+                marginBottom: "20px"
+              }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+                  <circle cx="12" cy="12" r="9" />
+                  <polygon points="12,5 15,12 12,19 9,12" fill="none" />
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                </svg>
+              </div>
+
+              <h2 style={{ fontSize: 22, fontWeight: 300, color: "#D4AF37", marginBottom: 16 }}>
+                The Location
+              </h2>
+
+              <p style={{ fontSize: 18, fontWeight: 400, marginBottom: 8 }}>
+                {invitation.venue?.name || "The Manor Hall"}
+              </p>
+              <p style={{ fontSize: 14, opacity: 0.8, lineHeight: 1.6, marginBottom: 24 }}>
+                {invitation.venue?.address || "25 Silver Anniversary Lane, Napa Valley, CA"}
+              </p>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: "inline-block", textDecoration: "none" }}
+                >
+                  <button 
+                    style={{ 
+                      padding: "10px 28px", 
+                      cursor: "pointer", 
+                      backgroundColor: "transparent", 
+                      border: "1px solid #D4AF37",
+                      color: "#F9F6EE",
+                      fontSize: 11,
+                      textTransform: "uppercase"
+                    }}
+                  >
+                    View Map
+                  </button>
+                </a>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* SCHEDULE PANEL */}
+          <ScrollReveal>
+            <div className="keepsake-card">
+              <div style={{ textAlign: "center", marginBottom: 28 }}>
+                <h2 style={{ fontSize: 22, fontWeight: 300, color: "#D4AF37" }}>
+                  Order of Celebration
+                </h2>
+                {/* Underline */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "16px 0", color: "#D4AF37" }}>
+                  <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", opacity: 0.4 }} />
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+                    <path d="M 12 4 C 10 9 6 12 12 20 C 18 12 14 9 12 4 Z" fill="none" />
+                    <path d="M 4 12 C 9 10 12 6 20 12 C 12 18 9 14 4 12 Z" fill="none" />
+                    <circle cx="12" cy="12" r="1.5" fill="#D4AF37" />
+                  </svg>
+                  <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", opacity: 0.4 }} />
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                {scheduleItems.map((ev, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: 16 }}>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 32 }}>
+                      <span style={{ color: "#D4AF37", fontSize: 12 }}>✿</span>
+                      {idx !== scheduleItems.length - 1 && (
+                        <div style={{ width: 1, height: "100%", backgroundColor: "rgba(212, 175, 55, 0.25)", margin: "8px 0" }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontSize: 11, color: "#D4AF37", margin: "0 0 4px", textTransform: "uppercase" }}>
+                        {ev.time}
+                      </p>
+                      <p style={{ fontSize: 16, fontWeight: 400, margin: "0 0 4px" }}>
+                        {ev.name}
+                      </p>
+                      <p style={{ fontSize: 13, opacity: 0.7, margin: 0, lineHeight: 1.5 }}>
+                        {ev.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* RSVP FORM */}
+          <ScrollReveal>
+            <div className="keepsake-card">
+              <h2 style={{ fontSize: 22, fontWeight: 300, color: "#D4AF37", textAlign: "center", marginBottom: 8 }}>
+                RSVP
+              </h2>
+              {/* Floral divider */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "16px 0 28px", color: "#D4AF37" }}>
+                <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", opacity: 0.4 }} />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+                  <path d="M 12 4 C 10 9 6 12 12 20 C 18 12 14 9 12 4 Z" fill="none" />
+                  <path d="M 4 12 C 9 10 12 6 20 12 C 12 18 9 14 4 12 Z" fill="none" />
+                  <circle cx="12" cy="12" r="1.5" fill="#D4AF37" />
+                </svg>
+                <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", opacity: 0.4 }} />
+              </div>
+
+              {!rsvpDone ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, color: "#D4AF37", textTransform: "uppercase", marginBottom: 4 }}>
+                      Guest Name
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvp.name}
+                      onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                      className="keepsake-input"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, color: "#D4AF37", textTransform: "uppercase", marginBottom: 4 }}>
+                      Attendance
+                    </label>
+                    <select 
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({...rsvp, attending: e.target.value === "true"})}
+                      className="keepsake-input"
+                      style={{ appearance: "none" }}
+                    >
+                      <option value="true" style={{ color: "#000" }}>Attending with Pleasure</option>
+                      <option value="false" style={{ color: "#000" }}>Regretfully Declining</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, color: "#D4AF37", textTransform: "uppercase", marginBottom: 4 }}>
+                      Wishes or Notes
+                    </label>
+                    <textarea 
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                      className="keepsake-input"
+                      style={{ minHeight: 60, resize: "none" }}
+                      placeholder="Send a warm message"
+                    />
+                  </div>
+                  <button 
+                    onClick={submitRsvp}
+                    disabled={!rsvp.name}
+                    style={{
+                      width: "100%",
+                      backgroundColor: rsvp.name ? "#D4AF37" : "transparent",
+                      color: rsvp.name ? "#000000" : "rgba(249, 246, 238, 0.4)",
+                      border: "1px solid #D4AF37",
+                      padding: "14px",
+                      cursor: rsvp.name ? "pointer" : "default",
+                      fontSize: 12,
+                      textTransform: "uppercase",
+                      marginTop: 12
+                    }}
+                  >
+                    Submit RSVP
+                  </button>
+                </div>
+              ) : (
+                <div style={{ textAlign: "center", padding: "24px 0" }}>
+                  <p style={{ fontSize: 18, color: "#D4AF37", margin: "0 0 6px" }}>Thank You</p>
+                  <p style={{ fontSize: 14, opacity: 0.8 }}>Your response has been registered.</p>
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* Footer details */}
+          <div style={{ textAlign: "center", opacity: 0.4, padding: "16px 0 0" }}>
+            <p style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.2em" }}>
+              Silver Keepsake Anniversary Invite
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
@@ -8347,6 +8785,7 @@ export default function InviteViewer({ invitation }) {
     { id: "ethereal-coastal", name: "The Ethereal Coastal", icon: "🌊" },
     { id: "opulent-gala", name: "The Opulent Gala", icon: "✨" },
     { id: "elegant-memory-frame", name: "The Elegant Memory Frame", icon: "🖼️" },
+    { id: "golden-keepsake", name: "The Golden Keepsake", icon: "🏆" },
   ];
 
   const palettes = [
@@ -8369,6 +8808,7 @@ export default function InviteViewer({ invitation }) {
     { id: "ethereal-coastal", name: "The Ethereal Coastal", preview: ["#001020", "#F7E7CE", "#C2B280"] },
     { id: "opulent-gala", name: "The Opulent Gala", preview: ["#1A1A1A", "#E5E4E2", "#B5A642"] },
     { id: "elegant-memory-frame", name: "The Elegant Memory Frame", preview: ["#000000", "#D4AF37", "#F3EFE0"] },
+    { id: "golden-keepsake", name: "The Golden Keepsake", preview: ["#242424", "#D4AF37", "#F9F6EE"] },
   ];
 
   return (
@@ -8862,6 +9302,8 @@ export default function InviteViewer({ invitation }) {
         renderOpulentGala()
       ) : activeLayoutId === "elegant-memory-frame" ? (
         renderElegantMemoryFrame()
+      ) : activeLayoutId === "golden-keepsake" ? (
+        renderGoldenKeepsake()
       ) : (
         <div 
           style={{

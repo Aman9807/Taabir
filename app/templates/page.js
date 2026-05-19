@@ -474,6 +474,33 @@ const TEMPLATES = [
     vibeColor: "text-yellow-200/70",
     featureColor: "text-slate-300",
     btnSecondaryClass: "bg-yellow-950/20 hover:bg-yellow-950/40 text-[#D4AF37] border-yellow-850/40"
+  },
+  {
+    id: "golden-keepsake",
+    name: "The Golden Keepsake",
+    badge: "25th Anniversary / Party",
+    vibe: "A warm, intimate anniversary theme styled like traditional pictures hung on a canvas wall. Features an antique gold rope border, floral dividers, and custom framed icon modules.",
+    primaryColor: "bg-[#242424]",
+    textColor: "text-[#F9F6EE]",
+    paletteColors: ["#242424", "#D4AF37", "#F9F6EE"],
+    fonts: "Dancing Script, Montserrat",
+    features: [
+      "Textured Charcoal Canvas Texture background",
+      "Antique Gold Rope-Textured Hero Photo Frame",
+      "Wall-Hanging Settling Bounce Reveal animations",
+      "Symmetrical Floral Underlined section lines",
+      "Miniature framed Calendar & Compass details SVGs",
+      "Persistent floating background Sparkles / Shimmer particles",
+      "Flowing Warm Gold Script couple typography"
+    ],
+    bgClass: "bg-[#242424] border-[#D4AF37]/20",
+    image: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-amber-950/40 text-amber-300 border-amber-800/40",
+    titleColor: "text-[#F9F6EE] group-hover:text-amber-400",
+    vibeColor: "text-amber-200/70",
+    featureColor: "text-slate-300",
+    btnSecondaryClass: "bg-amber-950/20 hover:bg-amber-950/40 text-[#D4AF37] border-amber-850/40"
   }
 ];
 
