@@ -75,7 +75,7 @@ const TEMPLATES = [
       "Interactive Date Scratcher & Message Sync"
     ],
     bgClass: "bg-[#FFFFF0] border-amber-200/40",
-    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800",
     cardTheme: "light",
     badgeClass: "bg-yellow-500/10 text-yellow-800 border-yellow-500/30",
     titleColor: "text-slate-900 group-hover:text-yellow-600",
@@ -101,7 +101,7 @@ const TEMPLATES = [
       "Interactive Golden Date Scratcher Canvas"
     ],
     bgClass: "bg-[#0f0f0f] border-amber-500/25",
-    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800",
     cardTheme: "dark",
     badgeClass: "bg-amber-500/10 text-amber-400 border-amber-500/30",
     titleColor: "text-white group-hover:text-amber-300",
@@ -153,7 +153,7 @@ const TEMPLATES = [
       "Integrated Modern RSVP Widget & Countdown"
     ],
     bgClass: "bg-[#0A1128] border-pink-500/20",
-    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=800",
     cardTheme: "dark",
     badgeClass: "bg-pink-500/10 text-pink-400 border-pink-500/30",
     titleColor: "text-white group-hover:text-pink-300",
@@ -205,7 +205,7 @@ const TEMPLATES = [
       "Integrated RSVP Guest Blessing Deck & Email Sync"
     ],
     bgClass: "bg-[#0F0F0F] border-slate-700/50",
-    image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?q=80&w=800",
     cardTheme: "dark",
     badgeClass: "bg-red-500/10 text-red-400 border-red-500/30",
     titleColor: "text-white group-hover:text-red-300",
@@ -494,7 +494,7 @@ const TEMPLATES = [
       "Flowing Warm Gold Script couple typography"
     ],
     bgClass: "bg-[#242424] border-[#D4AF37]/20",
-    image: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=800",
     cardTheme: "dark",
     badgeClass: "bg-amber-950/40 text-amber-300 border-amber-800/40",
     titleColor: "text-[#F9F6EE] group-hover:text-amber-400",
