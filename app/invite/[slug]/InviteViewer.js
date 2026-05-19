@@ -221,6 +221,19 @@ export default function InviteViewer({ invitation }) {
     return { id: i, left, top, delay, duration, size, opacity };
   }), []);
 
+  // Generate modern-urban floating ambient neon particles
+  const modernParticleList = useMemo(() => Array.from({ length: 30 }).map((_, i) => {
+    const left = Math.random() * 100;
+    const bottom = -5 - Math.random() * 10;
+    const delay = -Math.random() * 15;
+    const duration = 12 + Math.random() * 20;
+    const size = 4 + Math.random() * 8;
+    const opacity = 0.1 + Math.random() * 0.4;
+    const color = Math.random() > 0.5 ? "#B76E79" : "#FFFFFF"; // Rose gold or White
+    const isComet = Math.random() > 0.9; // 10% chance to be a fast shooting star
+    return { id: i, left, bottom, delay, duration, size, opacity, color, isComet };
+  }), []);
+
   // Read styling preferences
   const customStyle = invitation.styling || {};
   let btnBg = customStyle.btnBgColor || (tplId === "ivory-elegance" ? "#800020" : "#D4AF37");
@@ -6623,6 +6636,30 @@ export default function InviteViewer({ invitation }) {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
           }
+          @keyframes textGlitch {
+            0% { text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+            20% { text-shadow: 2px 0 0 #B76E79, -2px 0 0 #00FFFF, 0 0 20px rgba(255,255,255,0.2); }
+            21% { text-shadow: -2px 0 0 #B76E79, 2px 0 0 #00FFFF, 0 0 20px rgba(255,255,255,0.2); }
+            22% { text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+            40% { text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+            41% { text-shadow: -1px 0 0 #00FFFF, 0 0 20px rgba(255,255,255,0.2); }
+            42% { text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+            100% { text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+          }
+          @keyframes floatOrb {
+            0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
+            20% { opacity: var(--orb-opacity); }
+            80% { opacity: var(--orb-opacity); }
+            100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+          }
+          @keyframes shootingStar {
+            0% { transform: translate(100vw, -10vh) rotate(45deg); opacity: 1; }
+            100% { transform: translate(-50vw, 100vh) rotate(45deg); opacity: 0; }
+          }
+          @keyframes shimmerSweep {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+          }
           .modern-bg {
             position: absolute;
             inset: -5%;
@@ -6648,6 +6685,21 @@ export default function InviteViewer({ invitation }) {
             backdrop-filter: blur(12px);
             border-radius: 2px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+          }
+          .modern-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, transparent, rgba(183, 110, 121, 0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmerSweep 8s infinite linear;
+            pointer-events: none;
+            z-index: 0;
+          }
+          .glitch-text {
+            animation: textGlitch 4s infinite linear;
           }
           .glow-divider {
             height: 1px;
@@ -6670,6 +6722,17 @@ export default function InviteViewer({ invitation }) {
             text-align: center;
             border-radius: 4px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+          }
+          .timer-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background-size: 200% 100%;
+            animation: shimmerSweep 5s infinite linear;
+            pointer-events: none;
           }
           .modern-btn {
             background: rgba(183, 110, 121, 0.15);
@@ -6691,6 +6754,43 @@ export default function InviteViewer({ invitation }) {
         {/* Ken Burns Background */}
         <div className="modern-bg" />
 
+        {/* Floating Ambient Neon Orbs & Comets */}
+        {modernParticleList.map((p) => 
+          p.isComet ? (
+            <div 
+              key={p.id}
+              style={{
+                position: "absolute",
+                width: 100,
+                height: 2,
+                background: `linear-gradient(90deg, ${p.color}, transparent)`,
+                boxShadow: `0 0 10px ${p.color}`,
+                animation: `shootingStar ${p.duration}s linear ${p.delay}s infinite`,
+                zIndex: 3,
+                pointerEvents: "none"
+              }}
+            />
+          ) : (
+            <div 
+              key={p.id}
+              style={{
+                position: "absolute",
+                left: `${p.left}%`,
+                bottom: `${p.bottom}%`,
+                width: p.size,
+                height: p.size,
+                borderRadius: "50%",
+                backgroundColor: p.color,
+                boxShadow: `0 0 ${p.size * 2}px ${p.color}, 0 0 ${p.size * 4}px ${p.color}`,
+                animation: `floatOrb ${p.duration}s ease-in ${p.delay}s infinite`,
+                '--orb-opacity': p.opacity,
+                zIndex: 2,
+                pointerEvents: "none"
+              }}
+            />
+          )
+        )}
+
         {/* Sharp Glass Box Inner Border */}
         <div className="modern-glass-border" />
 
@@ -6711,7 +6811,7 @@ export default function InviteViewer({ invitation }) {
                 You Are Invited
               </p>
               
-              <h1 style={{ 
+              <h1 className="glitch-text" style={{ 
                 fontFamily: "'Oswald', sans-serif", 
                 fontSize: 48, 
                 lineHeight: 1.1,
