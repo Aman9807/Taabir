@@ -8114,7 +8114,7 @@ export default function InviteViewer({ invitation }) {
                 <h2 className="memory-header-font" style={{ fontSize: 24, fontWeight: 300, color: "#D4AF37", marginBottom: 12 }}>
                   Our Journey
                 </h2>
-                <p style={{ fontSize: 16, lineHeight: 1.7, fontStyle: "italic", opacity: 0.85, fontWeight: 300 }}>
+                <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, lineHeight: 1.6, fontStyle: "italic", opacity: 0.85, fontWeight: 400, letterSpacing: "0.02em" }}>
                   "Ten years of shared smiles, adventures, and a love that grows more beautiful with every passing year."
                 </p>
               </div>
@@ -9074,6 +9074,49 @@ export default function InviteViewer({ invitation }) {
                 }}
               >
                 <div style={{ position: "absolute", top: 0, bottom: 0, left: 10, width: 4, background: `linear-gradient(to bottom, #d4af37, #856404, #d4af37)`, opacity: 0.7 }} />
+              </div>
+            </>
+          )}
+
+          {/* CURTAIN REVEAL (GOLD/MATTE BLACK SLIDING PANELS) */}
+          {animStyle === "curtain-reveal" && (
+            <>
+              {/* Left Panel */}
+              <div 
+                style={{
+                  position: "absolute", top: 0, left: 0, width: "50%", height: "100%",
+                  background: "#000000",
+                  borderRight: "1.5px solid #D4AF37",
+                  transform: phase === "opening" ? "translateX(-100%)" : "translateX(0)",
+                  transition: "transform 1.35s cubic-bezier(0.77, 0, 0.175, 1)",
+                  boxSizing: "border-box"
+                }}
+              >
+                {/* Symmetrical left gold inner border frame */}
+                <div style={{
+                  position: "absolute", top: 12, left: 12, bottom: 12, right: 12,
+                  border: "1px solid rgba(212, 175, 55, 0.08)",
+                  pointerEvents: "none"
+                }} />
+              </div>
+
+              {/* Right Panel */}
+              <div 
+                style={{
+                  position: "absolute", top: 0, right: 0, width: "50%", height: "100%",
+                  background: "#000000",
+                  borderLeft: "1.5px solid #D4AF37",
+                  transform: phase === "opening" ? "translateX(100%)" : "translateX(0)",
+                  transition: "transform 1.35s cubic-bezier(0.77, 0, 0.175, 1)",
+                  boxSizing: "border-box"
+                }}
+              >
+                {/* Symmetrical right gold inner border frame */}
+                <div style={{
+                  position: "absolute", top: 12, left: 12, bottom: 12, right: 12,
+                  border: "1px solid rgba(212, 175, 55, 0.08)",
+                  pointerEvents: "none"
+                }} />
               </div>
             </>
           )}
