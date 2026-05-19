@@ -501,6 +501,60 @@ const TEMPLATES = [
     vibeColor: "text-amber-200/70",
     featureColor: "text-slate-300",
     btnSecondaryClass: "bg-amber-950/20 hover:bg-amber-950/40 text-[#D4AF37] border-amber-850/40"
+  },
+  {
+    id: "minimalist-white-gold",
+    name: "Minimalist Modern White-and-Gold",
+    badge: "Clean & Bright",
+    vibe: "A sleek, bright modern design set on spacious ivory canvas. Features parallax floating card decks, elegant gold-brushed corner brackets, and a slow-fade cinematic image slideshow.",
+    primaryColor: "bg-[#FDFBF7]",
+    textColor: "text-[#1A1A1A]",
+    paletteColors: ["#FDFBF7", "#FFFFFF", "#D4AF37", "#1A1A1A"],
+    fonts: "Playfair Display, Montserrat",
+    features: [
+      "Spacious Cream/Antique White Canvas background",
+      "Layered Photo-Slideshow Cross-Fade animation",
+      "Floating Parallax Event Content Blocks",
+      "Gold-Brushed Corner Accent Brackets for RSVP section",
+      "Minimalist Sleek Black Line-Art Map details SVG",
+      "Sharp & Elegant Reveal-from-Left wipe animation text",
+      "Clean Playfair Display & Montserrat typography pair"
+    ],
+    bgClass: "bg-[#FDFBF7] border-slate-200",
+    image: "https://images.unsplash.com/photo-1509319117193-57bab727e09d?q=80&w=800",
+    cardTheme: "light",
+    badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+    titleColor: "text-[#1A1A1A] group-hover:text-amber-700",
+    vibeColor: "text-slate-600",
+    featureColor: "text-slate-700",
+    btnSecondaryClass: "bg-slate-900/5 hover:bg-slate-900/10 text-slate-800 border-slate-200"
+  },
+  {
+    id: "dramatic-moody-photo",
+    name: "Dramatic and Moody Photo-First",
+    badge: "Dramatic & Immersive",
+    vibe: "A dramatic, dark single-pageScrolling layout. Features high-contrast solid white typography, heavy black-and-white photos in thick gunmetal frames with reveal color fade transitions, and a persistent drifting mist backdrop.",
+    primaryColor: "bg-[#030F0D]",
+    textColor: "text-[#FAF9F6]",
+    paletteColors: ["#030F0D", "#2C3539", "#FFB300", "#FFFFFF"],
+    fonts: "Playfair Display, Inter",
+    features: [
+      "Deep, Almost-Black Blue-Green backdrop",
+      "Persistent slow Drifting-Mist background overlay",
+      "Color-Fade-to-Color slow photo transition on scroll",
+      "Thick dark Gunmetal border portrait frames",
+      "Subtle glowing Amber label above event details",
+      "Thick high-contrast solid White date/time texts",
+      "Minimalist Map Pin inside a thin gold circle SVG"
+    ],
+    bgClass: "bg-[#030F0D] border-emerald-950/40",
+    image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-amber-900/40 text-amber-300 border-amber-800/40",
+    titleColor: "text-white group-hover:text-amber-300",
+    vibeColor: "text-slate-300",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-amber-950/20 hover:bg-amber-950/40 text-[#FFB300] border-amber-850/40"
   }
 ];
 

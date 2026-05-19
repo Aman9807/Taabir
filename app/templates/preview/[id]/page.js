@@ -772,6 +772,37 @@ const DEMO_DATA = {
       btnBgColor: "#1A1A1A",
       btnTextColor: "#FAF9F6"
     }
+  },
+  "dramatic-moody-photo": {
+    id: "__demo_dramatic_moody_photo__",
+    brideName: "Nicholas",
+    groomName: "Genevieve",
+    brideParentsName: "",
+    groomParentsName: "",
+    weddingDate: new Date(Date.now() + 50 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Obsidian Sanctuary",
+      address: "800 Mist Valley Rd, Pacific Northwest, WA",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200"
+    ],
+    eventType: "anniversary",
+    musicUrl: "",
+    coupleEmail: "nicholas.genevieve@obsidian.com",
+    theme: { templateId: "dramatic-moody-photo" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: false,
+      enableLanguageSwitcher: false,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#FFB300",
+      btnTextColor: "#030F0D"
+    }
   }
 };
 
@@ -797,7 +828,8 @@ export async function generateMetadata({ params }) {
     "opulent-gala": "The Opulent Gala",
     "elegant-memory-frame": "The Elegant Memory Frame",
     "golden-keepsake": "The Golden Keepsake",
-    "minimalist-white-gold": "Minimalist Modern White-and-Gold"
+    "minimalist-white-gold": "Minimalist Modern White-and-Gold",
+    "dramatic-moody-photo": "Dramatic and Moody Photo-First"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

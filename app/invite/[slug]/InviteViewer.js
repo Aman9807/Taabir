@@ -8340,6 +8340,380 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderDramaticMoodyPhoto = () => {
+    const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200";
+
+    const scheduleItems = invitation.details?.schedule && invitation.details.schedule.length > 0
+      ? invitation.details.schedule
+      : [
+          {
+            name: "Reaffirming Our Vows",
+            time: "06:00 PM",
+            description: "A deeply personal and emotional ceremony under the forest canopy.",
+            venue: "The Stone Amphitheater"
+          },
+          {
+            name: "Cocktail Hours",
+            time: "07:00 PM",
+            description: "Signature amber cocktails, jazz arrangements, and appetizers.",
+            venue: "The Mist Terrace"
+          },
+          {
+            name: "Reception Banquet",
+            time: "08:30 PM",
+            description: "A candlelit dinner celebrating love, commitment, and future journeys.",
+            venue: "The Obsidian Dining Room"
+          }
+        ];
+
+    const SleekLocationPin = () => (
+      <div style={{ margin: "24px 0", display: "flex", justifyContent: "center" }}>
+        <svg width="64" height="64" viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="30" r="28" stroke="#D4AF37" strokeWidth="1.2" />
+          <circle cx="30" cy="30" r="24" stroke="#D4AF37" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.5" />
+          <path d="M30,16 C25,16 21,20 21,25 C21,31 30,42 30,42 C30,42 39,31 39,25 C39,20 35,16 30,16 Z" fill="none" stroke="#FAF9F6" strokeWidth="1.5" />
+          <circle cx="30" cy="24" r="2.5" fill="#D4AF37" />
+        </svg>
+      </div>
+    );
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#030F0D",
+          color: "#FAF9F6",
+          fontFamily: "'Inter', sans-serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          boxSizing: "border-box",
+        }}
+      >
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;700;900&display=swap');
+          
+          .moody-serif {
+            font-family: 'Playfair Display', serif !important;
+          }
+          
+          .moody-text-glow {
+            color: #FFB300;
+            text-shadow: 0 0 10px rgba(255, 179, 0, 0.4), 0 0 20px rgba(255, 179, 0, 0.2);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 700;
+          }
+          
+          .gunmetal-frame {
+            border: 8px solid #2C3539;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 20px 45px rgba(0,0,0,0.7);
+            background-color: #15191C;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 48px;
+            transition: transform 0.4s ease;
+          }
+          
+          .gunmetal-frame:hover {
+            transform: translateY(-4px);
+          }
+          
+          .moody-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            color: #FAF9F6;
+            padding: 14px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+          }
+          
+          .moody-input:focus {
+            border-color: #FFB300;
+            background: rgba(255, 255, 255, 0.07);
+          }
+          
+          @keyframes driftMist {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.12; }
+            50% { transform: translate(6%, 5%) scale(1.15); opacity: 0.22; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.12; }
+          }
+          
+          .drifting-mist-layer-1 {
+            animation: driftMist 35s ease-in-out infinite;
+          }
+          .drifting-mist-layer-2 {
+            animation: driftMist 45s ease-in-out infinite alternate;
+          }
+        `}} />
+
+        {/* Persistent drifting mist overlays */}
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0, pointerEvents: "none" }}>
+          {/* Mist Cloud 1 */}
+          <div 
+            className="drifting-mist-layer-1"
+            style={{
+              position: "absolute",
+              width: "140%",
+              height: "140%",
+              background: "radial-gradient(circle at 30% 20%, rgba(100, 140, 130, 0.15) 0%, transparent 60%)",
+              filter: "blur(50px)",
+              top: "-20%",
+              left: "-20%",
+            }} 
+          />
+          {/* Mist Cloud 2 */}
+          <div 
+            className="drifting-mist-layer-2"
+            style={{
+              position: "absolute",
+              width: "140%",
+              height: "140%",
+              background: "radial-gradient(circle at 80% 70%, rgba(80, 120, 110, 0.12) 0%, transparent 55%)",
+              filter: "blur(60px)",
+              top: "-10%",
+              left: "-10%",
+            }} 
+          />
+          {/* Base linear overlay for deep dramatic vignette */}
+          <div 
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to bottom, rgba(3, 15, 13, 0.4) 0%, rgba(3, 15, 13, 0.95) 100%)"
+            }} 
+          />
+        </div>
+
+        {/* Scrollable content container */}
+        <div 
+          style={{
+            maxWidth: 580,
+            margin: "0 auto",
+            padding: "80px 20px 120px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* HERO PANEL */}
+          <div style={{ textAlign: "center", marginBottom: 72 }}>
+            <span style={{ fontSize: 10.5, letterSpacing: "0.25em", textTransform: "uppercase", color: "#FFB300", fontWeight: 700 }}>
+              VOW RENEWAL CEREMONY
+            </span>
+            
+            <h1 className="moody-serif" style={{ fontSize: 44, margin: "24px 0 16px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.01em" }}>
+              {invitation.brideName} & {invitation.groomName}
+            </h1>
+
+            <p className="moody-serif" style={{ fontSize: 18, fontStyle: "italic", color: "rgba(250, 249, 246, 0.75)", marginBottom: 44 }}>
+              Reclaiming love, reaffirming our commitment
+            </p>
+
+            {/* Central Large Black-and-white Photo in thick gunmetal frame */}
+            <div className="gunmetal-frame" style={{ width: "100%", height: 420 }}>
+              <ColorFadeImage 
+                src={bgImage} 
+                alt={`${invitation.brideName} and ${invitation.groomName}`} 
+              />
+            </div>
+          </div>
+
+          {/* DATE & TIME (Thick, solid white contrast headers) */}
+          <div style={{ textAlign: "center", marginBottom: 80 }}>
+            <span className="moody-text-glow" style={{ display: "block", marginBottom: 12 }}>
+              THE DATE
+            </span>
+            <h2 className="moody-serif" style={{ fontSize: 32, fontWeight: 900, color: "#FFFFFF", margin: "0 0 10px", textTransform: "uppercase" }}>
+              {targetDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+            </h2>
+            <h3 style={{ fontSize: 24, fontWeight: 700, color: "#FAF9F6", margin: 0 }}>
+              AT {targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+            </h3>
+            <div style={{ width: 40, height: 1, backgroundColor: "#FFB300", margin: "24px auto 0", opacity: 0.6 }} />
+          </div>
+
+          {/* PROGRAM OF EVENTS (Subtle glowing Amber title) */}
+          <div style={{ marginBottom: 80 }}>
+            <div style={{ textAlign: "center", marginBottom: 40 }}>
+              <span className="moody-text-glow">Reaffirming Our Vows</span>
+              <h2 className="moody-serif" style={{ fontSize: 32, fontWeight: 700, color: "#FFFFFF", margin: "8px 0 0" }}>
+                Program of Events
+              </h2>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 36 }}>
+              {scheduleItems.map((ev, idx) => (
+                <div key={idx} style={{ display: "flex", gap: 24 }}>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 48 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: "#FFB300", border: "2px solid #FAF9F6" }} />
+                    {idx !== scheduleItems.length - 1 && (
+                      <div style={{ width: 1.5, height: "100%", backgroundColor: "rgba(255, 179, 0, 0.25)", margin: "8px 0" }} />
+                    )}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: 13, color: "#FFB300", margin: "0 0 4px", fontWeight: 700, letterSpacing: "0.08em" }}>
+                      {ev.time}
+                    </p>
+                    <p className="moody-serif" style={{ fontSize: 19, fontWeight: 700, margin: "0 0 6px", color: "#FFFFFF" }}>
+                      {ev.name}
+                    </p>
+                    <p style={{ fontSize: 14, color: "rgba(250, 249, 246, 0.7)", margin: 0, lineHeight: 1.6 }}>
+                      {ev.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* LOCATION PANEL */}
+          <div style={{ textAlign: "center", marginBottom: 80 }}>
+            <span className="moody-text-glow" style={{ display: "block", marginBottom: 16 }}>
+              THE VENUE
+            </span>
+            <h2 className="moody-serif" style={{ fontSize: 28, fontWeight: 700, color: "#FFFFFF", margin: "0 0 10px" }}>
+              {invitation.venue?.name || "The Obsidian Sanctuary"}
+            </h2>
+            <p style={{ fontSize: 14, color: "rgba(250, 249, 246, 0.75)", lineHeight: 1.6, marginBottom: 24 }}>
+              {invitation.venue?.address || "800 Mist Valley Rd, Pacific Northwest, WA"}
+            </p>
+
+            {/* Location map pin inside a thin gold circle */}
+            <SleekLocationPin />
+
+            {invitation.venue?.googleMapsUrl && (
+              <a 
+                href={invitation.venue.googleMapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                style={{ display: "inline-block", textDecoration: "none" }}
+              >
+                <button 
+                  style={{ 
+                    padding: "14px 44px", 
+                    cursor: "pointer", 
+                    backgroundColor: "#FFB300", 
+                    border: "1px solid #FFB300",
+                    color: "#030F0D",
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.15em",
+                    fontWeight: 700,
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 4px 15px rgba(255, 179, 0, 0.25)"
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#FFB300"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#FFB300"; e.currentTarget.style.color = "#030F0D"; }}
+                >
+                  Locate Venue
+                </button>
+              </a>
+            )}
+          </div>
+
+          {/* RSVP FORM */}
+          <div style={{ border: "1px solid rgba(255,179,0,0.3)", backgroundColor: "rgba(15, 30, 27, 0.65)", padding: "40px 24px", backdropFilter: "blur(10px)" }}>
+            <h2 className="moody-serif" style={{ fontSize: 28, fontWeight: 700, color: "#FFFFFF", textAlign: "center", marginBottom: 8 }}>
+              RSVP
+            </h2>
+            <p style={{ fontSize: 12, color: "#FFB300", letterSpacing: "0.15em", textTransform: "uppercase", textAlign: "center", marginBottom: 32 }}>
+              Join Our Celebration
+            </p>
+
+            {!rsvpDone ? (
+              <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                <div>
+                  <label style={{ display: "block", fontSize: 11, color: "rgba(250,249,246,0.6)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6, fontWeight: 600 }}>
+                    Full Name
+                  </label>
+                  <input 
+                    type="text" 
+                    value={rsvp.name}
+                    onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                    className="moody-input"
+                    placeholder="Enter name"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label style={{ display: "block", fontSize: 11, color: "rgba(250,249,246,0.6)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6, fontWeight: 600 }}>
+                    Attendance
+                  </label>
+                  <select 
+                    value={rsvp.attending}
+                    onChange={e => setRsvp({...rsvp, attending: e.target.value})}
+                    className="moody-input"
+                    style={{ appearance: "none" }}
+                  >
+                    <option value="yes" style={{ color: "#000" }}>Accepts with Pleasure</option>
+                    <option value="no" style={{ color: "#000" }}>Declines with Regret</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label style={{ display: "block", fontSize: 11, color: "rgba(250,249,246,0.6)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6, fontWeight: 600 }}>
+                    Message for the Couple
+                  </label>
+                  <textarea 
+                    value={rsvp.blessing}
+                    onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                    className="moody-input"
+                    style={{ minHeight: 60, resize: "none" }}
+                    placeholder="Wishes or special notes..."
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  disabled={!rsvp.name.trim() || rsvpLoading}
+                  style={{
+                    width: "100%",
+                    backgroundColor: rsvp.name.trim() ? "#FFB300" : "transparent",
+                    color: rsvp.name.trim() ? "#030F0D" : "rgba(250, 249, 246, 0.4)",
+                    border: "1px solid #FFB300",
+                    padding: "14px",
+                    cursor: rsvp.name.trim() ? "pointer" : "default",
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.15em",
+                    fontWeight: 700,
+                    marginTop: 12,
+                    transition: "all 0.3s ease"
+                  }}
+                  onMouseEnter={e => {
+                    if (rsvp.name.trim()) {
+                      e.currentTarget.style.backgroundColor = "transparent";
+                      e.currentTarget.style.color = "#FFB300";
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (rsvp.name.trim()) {
+                      e.currentTarget.style.backgroundColor = "#FFB300";
+                      e.currentTarget.style.color = "#030F0D";
+                    }
+                  }}
+                >
+                  {rsvpLoading ? "Sending..." : "Submit RSVP"}
+                </button>
+              </form>
+            ) : (
+              <div style={{ textAlign: "center", padding: "24px 0" }}>
+                <p className="moody-serif" style={{ fontSize: 20, color: "#FFB300", margin: "0 0 8px" }}>Response Saved</p>
+                <p style={{ fontSize: 14, opacity: 0.8, color: "#FAF9F6" }}>Thank you for sharing this milestone with us.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderMinimalistWhiteGold = () => {
     // 3 Slideshow Images (User cover photo + 2 high-quality romantic backups)
     const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1509319117193-57bab727e09d?q=80&w=1200";
@@ -9832,6 +10206,8 @@ export default function InviteViewer({ invitation }) {
         renderGoldenKeepsake()
       ) : activeLayoutId === "minimalist-white-gold" ? (
         renderMinimalistWhiteGold()
+      ) : activeLayoutId === "dramatic-moody-photo" ? (
+        renderDramaticMoodyPhoto()
       ) : (
         <div 
           style={{
@@ -10800,6 +11176,41 @@ function TextRevealLeft({ children, delay = 0 }) {
     </div>
   );
 }
+
+function ColorFadeImage({ src, alt }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(ref.current);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <img
+      ref={ref}
+      src={src}
+      alt={alt}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        filter: isVisible ? "grayscale(0)" : "grayscale(100%)",
+        transition: "filter 2.5s cubic-bezier(0.25, 1, 0.5, 1)",
+      }}
+    />
+  );
+}
+
 
 
 
