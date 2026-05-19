@@ -8370,6 +8370,36 @@ export default function InviteViewer({ invitation }) {
       { top: "92%", left: "20%" }
     ];
 
+    // Keepsake-specific scroll reveal with wall-hanging slide bounce animation
+    const KeepsakeScrollReveal = ({ children }) => {
+      const [isVisible, setIsVisible] = useState(false);
+      const revealRef = useRef(null);
+
+      useEffect(() => {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setIsVisible(true);
+              observer.unobserve(entry.target);
+            }
+          },
+          { threshold: 0.05 }
+        );
+        if (revealRef.current) observer.observe(revealRef.current);
+        return () => observer.disconnect();
+      }, []);
+
+      return (
+        <div
+          ref={revealRef}
+          className={isVisible ? "hang-reveal" : ""}
+          style={{ opacity: isVisible ? 1 : 0 }}
+        >
+          {children}
+        </div>
+      );
+    };
+
     return (
       <div 
         style={{
@@ -8390,16 +8420,19 @@ export default function InviteViewer({ invitation }) {
           
           .keepsake-canvas {
             background-color: #242424;
-            background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 0), radial-gradient(rgba(255,255,255,0.01) 1px, transparent 0);
-            background-size: 8px 8px;
-            background-position: 0 0, 4px 4px;
+            background-image: 
+              linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+              linear-gradient(rgba(0, 0, 0, 0.15) 2px, transparent 2px),
+              linear-gradient(90deg, rgba(0, 0, 0, 0.15) 2px, transparent 2px);
+            background-size: 20px 20px, 20px 20px, 4px 4px, 4px 4px;
           }
           @keyframes sparkle {
             0%, 100% { opacity: 0.15; transform: scale(0.8) rotate(0deg); }
             50% { opacity: 0.85; transform: scale(1.2) rotate(180deg); }
           }
           @keyframes hangFrame {
-            0% { transform: translateY(-70px) rotate(-2deg); opacity: 0; }
+            0% { transform: translateY(-70px) rotate(-2.5deg); opacity: 0; }
             60% { transform: translateY(8px) rotate(0.8deg); opacity: 1; }
             80% { transform: translateY(-3px) rotate(-0.3deg); }
             100% { transform: translateY(0) rotate(0); }
@@ -8411,7 +8444,7 @@ export default function InviteViewer({ invitation }) {
             z-index: 2;
           }
           .hang-reveal {
-            animation: hangFrame 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: hangFrame 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
           }
           .keepsake-couple-name {
             font-family: 'Dancing Script', cursive !important;
@@ -8419,10 +8452,10 @@ export default function InviteViewer({ invitation }) {
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
           }
           .keepsake-card {
-            background: #1C1C1C;
-            border: 1px solid rgba(212, 175, 55, 0.18);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-            padding: 32px 24px;
+            background: #1E1E1E;
+            border: 3px double #D4AF37;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.75), inset 0 0 15px rgba(0,0,0,0.8);
+            padding: 36px 28px;
             margin-bottom: 48px;
             position: relative;
             z-index: 10;
@@ -8479,7 +8512,7 @@ export default function InviteViewer({ invitation }) {
           }}
         >
           {/* HERO WALL FRAME */}
-          <div className="hang-reveal">
+          <KeepsakeScrollReveal>
             <div className="keepsake-card" style={{ textAlign: "center" }}>
               {/* Antique gold rope hero photo frame */}
               <div className="keepsake-hero-frame">
@@ -8517,10 +8550,10 @@ export default function InviteViewer({ invitation }) {
                 25 Years of Shared Devotion
               </p>
             </div>
-          </div>
+          </KeepsakeScrollReveal>
 
           {/* DATE & TIME PANEL */}
-          <ScrollReveal>
+          <KeepsakeScrollReveal>
             <div className="keepsake-card" style={{ textAlign: "center" }}>
               {/* Miniature framed Calendar icon */}
               <div style={{
@@ -8568,10 +8601,10 @@ export default function InviteViewer({ invitation }) {
                 <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", opacity: 0.4 }} />
               </div>
             </div>
-          </ScrollReveal>
+          </KeepsakeScrollReveal>
 
           {/* VENUE PANEL */}
-          <ScrollReveal>
+          <KeepsakeScrollReveal>
             <div className="keepsake-card" style={{ textAlign: "center" }}>
               {/* Miniature framed Compass icon */}
               <div style={{
@@ -8625,10 +8658,10 @@ export default function InviteViewer({ invitation }) {
                 </a>
               )}
             </div>
-          </ScrollReveal>
+          </KeepsakeScrollReveal>
 
           {/* SCHEDULE PANEL */}
-          <ScrollReveal>
+          <KeepsakeScrollReveal>
             <div className="keepsake-card">
               <div style={{ textAlign: "center", marginBottom: 28 }}>
                 <h2 style={{ fontSize: 22, fontWeight: 300, color: "#D4AF37" }}>
@@ -8670,10 +8703,10 @@ export default function InviteViewer({ invitation }) {
                 ))}
               </div>
             </div>
-          </ScrollReveal>
+          </KeepsakeScrollReveal>
 
           {/* RSVP FORM */}
-          <ScrollReveal>
+          <KeepsakeScrollReveal>
             <div className="keepsake-card">
               <h2 style={{ fontSize: 22, fontWeight: 300, color: "#D4AF37", textAlign: "center", marginBottom: 8 }}>
                 RSVP
@@ -8754,7 +8787,7 @@ export default function InviteViewer({ invitation }) {
                 </div>
               )}
             </div>
-          </ScrollReveal>
+          </KeepsakeScrollReveal>
 
           {/* Footer details */}
           <div style={{ textAlign: "center", opacity: 0.4, padding: "16px 0 0" }}>
