@@ -347,7 +347,7 @@ export default function InviteViewer({ invitation }) {
         card: "rgba(25, 25, 112, 0.2)",
         text: "#FFFFFF",
         sub: "#E5E4E2",
-        gold: "#E5E4E2",
+        gold: "#191970",
         border: "rgba(229, 228, 226, 0.2)"
       }
     : isIvory

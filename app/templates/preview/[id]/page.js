@@ -484,8 +484,8 @@ const DEMO_DATA = {
       enableScratchCard: true,
       enableLanguageSwitcher: true,
       doorAnimation: "fade-zoom",
-      btnBgColor: "#E5E4E2",
-      btnTextColor: "#191970"
+      btnBgColor: "#191970",
+      btnTextColor: "#FFFFFF"
     }
   }
 };
