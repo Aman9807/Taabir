@@ -368,6 +368,32 @@ const TEMPLATES = [
     vibeColor: "text-emerald-200/70",
     featureColor: "text-slate-200",
     btnSecondaryClass: "bg-emerald-900/20 hover:bg-emerald-900/40 text-[#CFB53B] border-emerald-800/40"
+  },
+  {
+    id: "modern-urban-skyline",
+    name: "The Modern Urban Skyline",
+    badge: "Contemporary & Chic",
+    vibe: "Sleek dark-mode aesthetic with Ken Burns animations, glassmorphic countdowns, glowing rose-gold dividers, and line-art skyline details.",
+    primaryColor: "bg-[#050A1F]",
+    textColor: "text-[#B76E79]",
+    paletteColors: ["#050A1F", "#B76E79", "#FFFFFF"],
+    fonts: "Oswald, Montserrat",
+    features: [
+      "Ken Burns Continuous Zoom Background Animation",
+      "Sharp Semi-Transparent 10px Glass Box Border",
+      "Glassmorphic Distinct Squared Countdown Timer",
+      "Glowing Rose-Gold Gradient Divider Lines",
+      "Line-Art SVG Modern City Skyline Illustration",
+      "Bounce-Hover CSS Icon Effects"
+    ],
+    bgClass: "bg-[#050A1F] border-[#B76E79]/20",
+    image: "https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-rose-900/40 text-rose-300 border-rose-800/40",
+    titleColor: "text-[#B76E79] group-hover:text-white",
+    vibeColor: "text-slate-300",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-[#B76E79]/20 hover:bg-[#B76E79]/40 text-[#B76E79] border-[#B76E79]/40"
   }
 ];
 

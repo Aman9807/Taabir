@@ -562,6 +562,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#CFB53B",
         border: "rgba(207, 181, 59, 0.25)"
       }
+    : activePaletteId === "modern-urban-skyline"
+    ? {
+        bg: "#050A1F",
+        door: "#050A1F",
+        seam: "#B76E79",
+        card: "rgba(255, 255, 255, 0.05)",
+        text: "#FFFFFF",
+        sub: "#FFFFFF",
+        gold: "#B76E79",
+        border: "rgba(255, 255, 255, 0.15)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -6568,6 +6579,350 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderModernUrbanSkyline = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=1200"; // Dark city skyline
+
+    // Sample modern schedule
+    const scheduleItems = invitation.details?.schedule?.length > 0 ? invitation.details.schedule : [
+      {
+        name: "Cocktail Reception",
+        time: "07:00 PM",
+        description: "Welcome drinks and hors d'oeuvres on the terrace",
+        venue: "The Glass Lounge"
+      },
+      {
+        name: "Gala Dinner",
+        time: "08:30 PM",
+        description: "A curated 5-course culinary experience",
+        venue: "The Grand Ballroom"
+      }
+    ];
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#050A1F",
+          color: "#FFFFFF",
+          fontFamily: "'Montserrat', sans-serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          padding: "16px",
+          boxSizing: "border-box",
+        }}
+      >
+        {/* Dynamic Keyframes for Modern Urban Skyline */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+          }
+          @keyframes bounceHover {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+          }
+          .modern-bg {
+            position: absolute;
+            inset: -5%;
+            background-image: url('\${bgImage}');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            animation: kenBurns 25s ease-in-out infinite alternate;
+            z-index: 1;
+            pointer-events: none;
+          }
+          .modern-glass-border {
+            position: absolute;
+            inset: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 0 20px rgba(183, 110, 121, 0.1);
+            pointer-events: none;
+            z-index: 5;
+          }
+          .modern-card {
+            background: rgba(5, 10, 31, 0.7);
+            border: 1px solid rgba(183, 110, 121, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+          }
+          .glow-divider {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #B76E79, transparent);
+            box-shadow: 0 0 10px rgba(183, 110, 121, 0.8);
+            margin: 32px 0;
+            opacity: 0.8;
+          }
+          .icon-bounce:hover {
+            animation: bounceHover 0.6s ease-in-out infinite;
+            color: #B76E79 !important;
+          }
+          .timer-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(183, 110, 121, 0.3);
+            backdrop-filter: blur(8px);
+            padding: 12px;
+            width: 70px;
+            text-align: center;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          }
+          .modern-btn {
+            background: rgba(183, 110, 121, 0.15);
+            color: #FFFFFF;
+            border: 1px solid #B76E79;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(183, 110, 121, 0.2);
+          }
+          .modern-btn:hover {
+            background: #B76E79;
+            box-shadow: 0 0 20px rgba(183, 110, 121, 0.6);
+            color: #050A1F;
+          }
+        `}} />
+
+        {/* Ken Burns Background */}
+        <div className="modern-bg" />
+
+        {/* Sharp Glass Box Inner Border */}
+        <div className="modern-glass-border" />
+
+        {/* Main Content Scrolling Container */}
+        <div 
+          style={{
+            maxWidth: 600,
+            margin: "0 auto",
+            padding: "80px 16px 120px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* HERO SECTION */}
+          <ScrollReveal>
+            <div style={{ textAlign: "center", marginBottom: 60, marginTop: 40 }}>
+              <p style={{ fontSize: 12, letterSpacing: "0.3em", textTransform: "uppercase", color: "#B76E79", marginBottom: 16 }}>
+                You Are Invited
+              </p>
+              
+              <h1 style={{ 
+                fontFamily: "'Oswald', sans-serif", 
+                fontSize: 48, 
+                lineHeight: 1.1,
+                marginBottom: 24,
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                textShadow: "0 0 20px rgba(255,255,255,0.2)"
+              }}>
+                {invitation.brideName} <span style={{ color: "#B76E79", fontWeight: 300 }}>&</span> {invitation.groomName}
+              </h1>
+
+              <div className="glow-divider" style={{ width: "60%", margin: "0 auto 32px" }} />
+
+              <p style={{ fontSize: 16, fontWeight: 300, letterSpacing: "0.1em", opacity: 0.9 }}>
+                {targetDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              </p>
+              <p style={{ fontSize: 14, opacity: 0.6, marginTop: 8, letterSpacing: "0.1em" }}>
+                {invitation.venue?.name || "The Grand Venue"}
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* COUNTDOWN TIMER */}
+          <ScrollReveal>
+            <div style={{ marginBottom: 60 }}>
+              <div style={{ display: "flex", justifyContent: "center", gap: 16 }}>
+                <div className="timer-box">
+                  <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 24, color: "#B76E79", fontWeight: 500 }}>{timeLeft.days}</div>
+                  <div style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.7, marginTop: 4 }}>Days</div>
+                </div>
+                <div className="timer-box">
+                  <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 24, color: "#B76E79", fontWeight: 500 }}>{timeLeft.hours}</div>
+                  <div style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.7, marginTop: 4 }}>Hours</div>
+                </div>
+                <div className="timer-box">
+                  <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 24, color: "#B76E79", fontWeight: 500 }}>{timeLeft.minutes}</div>
+                  <div style={{ fontSize: 9, textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.7, marginTop: 4 }}>Mins</div>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          <div className="glow-divider" />
+
+          {/* VENUE SECTION */}
+          <ScrollReveal>
+            <div className="modern-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              {/* Skyline Line-Art SVG */}
+              <svg viewBox="0 0 400 100" fill="none" stroke="#B76E79" strokeWidth="1.5" style={{ width: "100%", height: 80, marginBottom: 24, opacity: 0.8 }}>
+                <path d="M 0 90 L 400 90" strokeWidth="1" strokeDasharray="4 4" />
+                <path d="M 20 90 L 20 60 L 50 60 L 50 30 L 70 30 L 70 90 M 70 50 L 90 50 L 90 90 M 110 90 L 110 20 L 120 10 L 130 20 L 130 90 M 140 90 L 140 40 L 180 40 L 180 90 M 190 90 L 190 10 L 220 10 L 220 90 M 230 90 L 230 50 L 270 50 L 270 90 M 280 90 L 280 20 L 300 20 L 300 90 M 310 90 L 310 40 L 340 40 L 340 90 M 350 90 L 350 60 L 380 60 L 380 90" />
+                <rect x="145" y="45" width="5" height="5" />
+                <rect x="155" y="45" width="5" height="5" />
+                <rect x="165" y="45" width="5" height="5" />
+                <rect x="145" y="55" width="5" height="5" />
+                <rect x="155" y="55" width="5" height="5" />
+                <rect x="165" y="55" width="5" height="5" />
+                <rect x="195" y="15" width="20" height="5" />
+                <rect x="195" y="25" width="20" height="5" />
+                <rect x="195" y="35" width="20" height="5" />
+              </svg>
+              
+              <h2 style={{ fontFamily: "'Oswald', sans-serif", fontSize: 22, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 16 }}>
+                The Location
+              </h2>
+              <p style={{ fontSize: 18, fontWeight: 500, marginBottom: 8, color: "#B76E79" }}>
+                {invitation.venue?.name || "The Grand Venue"}
+              </p>
+              <p style={{ fontSize: 14, opacity: 0.7, lineHeight: 1.6, marginBottom: 24 }}>
+                {invitation.venue?.address || "123 Event Street, Cityscape"}
+              </p>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: "inline-block", textDecoration: "none" }}
+                >
+                  <button className="modern-btn" style={{ padding: "12px 32px", fontSize: 12, cursor: "pointer" }}>
+                    Get Directions
+                  </button>
+                </a>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* ITINERARY */}
+          <ScrollReveal>
+            <div className="modern-card" style={{ padding: "40px 24px", marginBottom: 48 }}>
+              <div style={{ textAlign: "center", marginBottom: 32 }}>
+                <h2 style={{ fontFamily: "'Oswald', sans-serif", fontSize: 22, textTransform: "uppercase", letterSpacing: "0.15em", color: "#FFFFFF" }}>
+                  Itinerary
+                </h2>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+                {scheduleItems.map((ev, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: 16 }}>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 40 }}>
+                      <svg className="icon-bounce" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B76E79" strokeWidth="2" style={{ transition: "color 0.3s" }}>
+                        <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      {idx !== scheduleItems.length - 1 && (
+                        <div style={{ width: 1, height: "100%", background: "linear-gradient(to bottom, #B76E79, transparent)", margin: "8px 0" }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1, paddingBottom: idx !== scheduleItems.length - 1 ? 16 : 0 }}>
+                      <p style={{ fontFamily: "'Oswald', sans-serif", fontSize: 14, letterSpacing: "0.1em", color: "#B76E79", margin: "0 0 4px" }}>
+                        {ev.time}
+                      </p>
+                      <p style={{ fontSize: 16, fontWeight: 500, margin: "0 0 6px" }}>
+                        {ev.name}
+                      </p>
+                      <p style={{ fontSize: 13, opacity: 0.7, margin: 0, lineHeight: 1.5 }}>
+                        {ev.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* RSVP PORTAL */}
+          <ScrollReveal>
+            <div className="modern-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              <svg className="icon-bounce" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B76E79" strokeWidth="1.5" style={{ margin: "0 auto 16px" }}>
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <h2 style={{ fontFamily: "'Oswald', sans-serif", fontSize: 22, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 24 }}>
+                RSVP
+              </h2>
+              
+              {!rsvpDone ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 16, textAlign: "left" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "#B76E79", marginBottom: 8 }}>
+                      Guest Name
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvp.name}
+                      onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(183,110,121,0.4)", color: "#FFFFFF", outline: "none", borderRadius: 4, fontFamily: "'Montserrat', sans-serif" }}
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "#B76E79", marginBottom: 8 }}>
+                      Attendance
+                    </label>
+                    <select 
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({...rsvp, attending: e.target.value === "true"})}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(183,110,121,0.4)", color: "#FFFFFF", outline: "none", borderRadius: 4, fontFamily: "'Montserrat', sans-serif", appearance: "none" }}
+                    >
+                      <option value="true" style={{ color: "#000" }}>Joyfully Accepts</option>
+                      <option value="false" style={{ color: "#000" }}>Regretfully Declines</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "#B76E79", marginBottom: 8 }}>
+                      Message for the Host
+                    </label>
+                    <textarea 
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(183,110,121,0.4)", color: "#FFFFFF", outline: "none", minHeight: 80, borderRadius: 4, fontFamily: "'Montserrat', sans-serif" }}
+                      placeholder="Optional"
+                    />
+                  </div>
+                  <button 
+                    onClick={submitRsvp}
+                    disabled={rsvpLoading || !rsvp.name}
+                    className="modern-btn"
+                    style={{
+                      width: "100%",
+                      padding: "14px",
+                      marginTop: 8,
+                      fontWeight: 500,
+                      cursor: rsvpLoading || !rsvp.name ? "not-allowed" : "pointer",
+                      opacity: rsvpLoading || !rsvp.name ? 0.6 : 1,
+                      borderRadius: 4
+                    }}
+                  >
+                    {rsvpLoading ? "Recording..." : "Confirm RSVP"}
+                  </button>
+                </div>
+              ) : (
+                <div style={{ padding: "32px 0" }}>
+                  <p style={{ fontFamily: "'Oswald', sans-serif", fontSize: 24, color: "#B76E79", margin: "0 0 8px", textTransform: "uppercase" }}>Response Received</p>
+                  <p style={{ fontSize: 14, opacity: 0.8 }}>Thank you for filling out your details.</p>
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* Footer */}
+          <div style={{ textAlign: "center", opacity: 0.5 }}>
+            <div className="glow-divider" style={{ width: "40%", margin: "0 auto 16px" }} />
+            <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "'Oswald', sans-serif" }}>
+              A Modern Celebration
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
@@ -6582,6 +6937,7 @@ export default function InviteViewer({ invitation }) {
     { id: "cozy-dinner", name: "Cozy Holiday / Dinner Party", icon: "🎄" },
     { id: "royal-heritage", name: "The Royal Heritage", icon: "👑" },
     { id: "enchanted-wireframe", name: "The Enchanted Wireframe", icon: "🌿" },
+    { id: "modern-urban-skyline", name: "Modern Urban Skyline", icon: "🏙️" },
   ];
 
   const palettes = [
@@ -6600,6 +6956,7 @@ export default function InviteViewer({ invitation }) {
     { id: "cozy-dinner", name: "Cozy Holiday / Dinner Party", preview: ["#0C1D12", "#CFB53B", "#9E1B32"] },
     { id: "royal-heritage", name: "The Royal Heritage", preview: ["#0C0C0C", "#D4AF37", "#800000"] },
     { id: "enchanted-wireframe", name: "The Enchanted Wireframe", preview: ["#0A1A14", "#CFB53B", "#E6F2EC"] },
+    { id: "modern-urban-skyline", name: "Modern Urban Skyline", preview: ["#050A1F", "#B76E79", "#FFFFFF"] },
   ];
 
   return (
@@ -7085,6 +7442,8 @@ export default function InviteViewer({ invitation }) {
         renderRoyalHeritage()
       ) : activeLayoutId === "enchanted-wireframe" ? (
         renderEnchantedWireframe()
+      ) : activeLayoutId === "modern-urban-skyline" ? (
+        renderModernUrbanSkyline()
       ) : (
         <div 
           style={{

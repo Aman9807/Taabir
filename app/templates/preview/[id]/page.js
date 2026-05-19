@@ -582,6 +582,37 @@ const DEMO_DATA = {
       btnBgColor: "#CFB53B",
       btnTextColor: "#0A1A14"
     }
+  },
+  "modern-urban-skyline": {
+    id: "__demo_modern_urban_skyline__",
+    brideName: "Alexander",
+    groomName: "James",
+    brideParentsName: "",
+    groomParentsName: "",
+    weddingDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Glass Lounge",
+      address: "Downtown Skyscraper, Level 42",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=1200"
+    ],
+    eventType: "birthday",
+    musicUrl: "",
+    coupleEmail: "rsvp@alexander30th.com",
+    theme: { templateId: "modern-urban-skyline" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: false,
+      enableLanguageSwitcher: false,
+      doorAnimation: "sliding-doors",
+      btnBgColor: "#B76E79",
+      btnTextColor: "#050A1F"
+    }
   }
 };
 
@@ -601,7 +632,8 @@ export async function generateMetadata({ params }) {
     "corporate-gala": "Sleek Corporate Gala",
     "cozy-dinner": "Cozy Holiday / Dinner Party",
     "royal-heritage": "The Royal Heritage",
-    "enchanted-wireframe": "The Enchanted Wireframe"
+    "enchanted-wireframe": "The Enchanted Wireframe",
+    "modern-urban-skyline": "The Modern Urban Skyline"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,
