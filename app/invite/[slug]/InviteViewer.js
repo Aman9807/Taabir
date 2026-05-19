@@ -2771,26 +2771,26 @@ export default function InviteViewer({ invitation }) {
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "100%", zIndex: 1, pointerEvents: "none", overflow: "hidden" }}>
           {/* Cloud 1 */}
           <div className="kids-drift-left-1" style={{ position: "absolute", top: "5%", width: 140 }}>
-            <svg viewBox="0 0 120 80" fill="rgba(255,255,255,0.85)">
-              <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+            <svg viewBox="0 0 170 130" fill="rgba(255,255,255,0.85)">
+              <path d="M40,100 Q10,100 10,70 Q10,40 40,40 Q50,20 80,20 Q110,20 120,40 Q150,40 160,70 Q160,100 130,100 Q110,112 85,100 Q60,112 40,100 Z" />
             </svg>
           </div>
           {/* Cloud 2 */}
           <div className="kids-drift-right-1" style={{ position: "absolute", top: "18%", width: 100, animationDelay: "-15s" }}>
-            <svg viewBox="0 0 120 80" fill="rgba(255,255,255,0.7)">
-              <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+            <svg viewBox="0 0 170 130" fill="rgba(255,255,255,0.7)">
+              <path d="M40,100 Q10,100 10,70 Q10,40 40,40 Q50,20 80,20 Q110,20 120,40 Q150,40 160,70 Q160,100 130,100 Q110,112 85,100 Q60,112 40,100 Z" />
             </svg>
           </div>
           {/* Cloud 3 */}
           <div className="kids-drift-left-2" style={{ position: "absolute", top: "45%", width: 120, animationDelay: "-30s" }}>
-            <svg viewBox="0 0 120 80" fill="rgba(255,255,255,0.75)">
-              <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+            <svg viewBox="0 0 170 130" fill="rgba(255,255,255,0.75)">
+              <path d="M40,100 Q10,100 10,70 Q10,40 40,40 Q50,20 80,20 Q110,20 120,40 Q150,40 160,70 Q160,100 130,100 Q110,112 85,100 Q60,112 40,100 Z" />
             </svg>
           </div>
           {/* Cloud 4 */}
           <div className="kids-drift-right-2" style={{ position: "absolute", top: "65%", width: 160, animationDelay: "-10s" }}>
-            <svg viewBox="0 0 120 80" fill="rgba(255,255,255,0.65)">
-              <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+            <svg viewBox="0 0 170 130" fill="rgba(255,255,255,0.65)">
+              <path d="M40,100 Q10,100 10,70 Q10,40 40,40 Q50,20 80,20 Q110,20 120,40 Q150,40 160,70 Q160,100 130,100 Q110,112 85,100 Q60,112 40,100 Z" />
             </svg>
           </div>
         </div>
@@ -3279,10 +3279,20 @@ export default function InviteViewer({ invitation }) {
 
         {/* SVG Wave Divider Top */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 180, overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
-          <svg viewBox="0 0 1440 200" style={{ width: "200%", height: "100%", fill: "#7FFFD4", opacity: 0.5 }} className="summer-wave-1">
+          <svg 
+            viewBox="0 0 1440 200" 
+            preserveAspectRatio="none"
+            style={{ position: "absolute", top: 0, left: 0, width: "200%", height: "100%", fill: "#7FFFD4", opacity: 0.5 }} 
+            className="summer-wave-1"
+          >
             <path d="M0,96L120,112C240,128,480,160,720,160C960,160,1200,128,1320,112L1440,96L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z" />
           </svg>
-          <svg viewBox="0 0 1440 200" style={{ width: "200%", height: "100%", fill: "#FFDAB9", opacity: 0.4, position: "absolute", top: 10, left: -50 }} className="summer-wave-2">
+          <svg 
+            viewBox="0 0 1440 200" 
+            preserveAspectRatio="none"
+            style={{ position: "absolute", top: 10, left: -50, width: "200%", height: "100%", fill: "#FFDAB9", opacity: 0.4 }} 
+            className="summer-wave-2"
+          >
             <path d="M0,64L120,80C240,96,480,128,720,128C960,128,1200,96,1320,80L1440,64L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z" />
           </svg>
         </div>
@@ -4988,7 +4998,7 @@ export default function InviteViewer({ invitation }) {
                 <div style={{ position: "absolute", inset: 0, zIndex: 10 }}>
                   {/* Top Left Cloud */}
                   <svg 
-                    viewBox="0 0 120 80" 
+                    viewBox="0 0 170 130" 
                     style={{
                       position: "absolute", top: "50%", left: "50%",
                       width: 320, height: 200, fill: "#FFFFFF", opacity: 0.95,
@@ -4998,12 +5008,12 @@ export default function InviteViewer({ invitation }) {
                       transition: "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)"
                     }}
                   >
-                    <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+                    <path d="M40,100 Q10,100 10,70 Q10,40 40,40 Q50,20 80,20 Q110,20 120,40 Q150,40 160,70 Q160,100 130,100 Q110,112 85,100 Q60,112 40,100 Z" />
                   </svg>
 
                   {/* Top Right Cloud */}
                   <svg 
-                    viewBox="0 0 120 80" 
+                    viewBox="0 0 170 130" 
                     style={{
                       position: "absolute", top: "50%", left: "50%",
                       width: 320, height: 200, fill: "#FFFFFF", opacity: 0.95,
@@ -5013,12 +5023,12 @@ export default function InviteViewer({ invitation }) {
                       transition: "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)"
                     }}
                   >
-                    <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+                    <path d="M40,100 Q10,100 10,70 Q10,40 40,40 Q50,20 80,20 Q110,20 120,40 Q150,40 160,70 Q160,100 130,100 Q110,112 85,100 Q60,112 40,100 Z" />
                   </svg>
 
                   {/* Bottom Left Cloud */}
                   <svg 
-                    viewBox="0 0 120 80" 
+                    viewBox="0 0 170 130" 
                     style={{
                       position: "absolute", top: "50%", left: "50%",
                       width: 320, height: 200, fill: "#FFFFFF", opacity: 0.95,
@@ -5028,12 +5038,12 @@ export default function InviteViewer({ invitation }) {
                       transition: "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)"
                     }}
                   >
-                    <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+                    <path d="M40,100 Q10,100 10,70 Q10,40 40,40 Q50,20 80,20 Q110,20 120,40 Q150,40 160,70 Q160,100 130,100 Q110,112 85,100 Q60,112 40,100 Z" />
                   </svg>
 
                   {/* Bottom Right Cloud */}
                   <svg 
-                    viewBox="0 0 120 80" 
+                    viewBox="0 0 170 130" 
                     style={{
                       position: "absolute", top: "50%", left: "50%",
                       width: 320, height: 200, fill: "#FFFFFF", opacity: 0.95,
@@ -5043,7 +5053,7 @@ export default function InviteViewer({ invitation }) {
                       transition: "transform 1.3s cubic-bezier(0.25, 1, 0.5, 1)"
                     }}
                   >
-                    <path d="M 20 60 a 20 20 0 0 1 20 -20 a 25 25 0 0 1 40 0 a 20 20 0 0 1 20 20 a 10 10 0 0 1 0 20 L 20 80 Z" />
+                    <path d="M40,100 Q10,100 10,70 Q10,40 40,40 Q50,20 80,20 Q110,20 120,40 Q150,40 160,70 Q160,100 130,100 Q110,112 85,100 Q60,112 40,100 Z" />
                   </svg>
                 </div>
               )}
