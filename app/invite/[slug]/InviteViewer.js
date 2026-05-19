@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { db } from "../../../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 
@@ -39,6 +39,17 @@ export default function InviteViewer({ invitation }) {
   const [rsvpExpanded, setRsvpExpanded] = useState(false);
 
   const targetDate = new Date(invitation.weddingDate);
+
+  // Generate cozy-dinner particles once to avoid re-render glitching
+  const cozyParticleList = useMemo(() => Array.from({ length: 35 }).map((_, i) => {
+    const left = (i * 2.9 + Math.random() * 4) % 100;
+    const delay = -Math.random() * 15;
+    const duration = 9 + Math.random() * 10;
+    const size = 3 + Math.random() * 7;
+    const opacity = 0.25 + Math.random() * 0.45;
+    const isStar = Math.random() > 0.45;
+    return { id: i, left, delay, duration, size, opacity, isStar };
+  }), []);
 
   // Read styling preferences
   const customStyle = invitation.styling || {};
@@ -5097,16 +5108,8 @@ export default function InviteViewer({ invitation }) {
       "https://images.unsplash.com/photo-1575549594211-18c1d50c7760?q=80&w=800"
     ];
 
-    // Generate falling particle settings
-    const particleList = Array.from({ length: 35 }).map((_, i) => {
-      const left = (i * 2.9 + Math.random() * 4) % 100;
-      const delay = -Math.random() * 15;
-      const duration = 9 + Math.random() * 10;
-      const size = 3 + Math.random() * 7;
-      const opacity = 0.25 + Math.random() * 0.45;
-      const isStar = Math.random() > 0.45;
-      return { id: i, left, delay, duration, size, opacity, isStar };
-    });
+    // Use pre-computed falling particle settings to prevent glitching on re-render
+    const particleList = cozyParticleList;
 
     return (
       <div 
