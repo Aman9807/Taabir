@@ -353,7 +353,7 @@ export default function InviteViewer({ invitation }) {
     : activePaletteId === "cozy-dinner"
     ? {
         bg: "#0C1D12",
-        door: "#228B22",
+        door: "#0C1D12",
         seam: "#CFB53B",
         card: "rgba(18, 41, 26, 0.82)",
         text: "#FFFFFF",
@@ -385,7 +385,7 @@ export default function InviteViewer({ invitation }) {
 
   const isPaletteDefault = activePaletteId === tplId;
   btnBg = isPaletteDefault && customStyle.btnBgColor ? customStyle.btnBgColor : T.gold;
-  btnText = isPaletteDefault && customStyle.btnTextColor ? customStyle.btnTextColor : (activePaletteId === "minimalist-romance" || activePaletteId === "bohemian-terracotta" ? "#333333" : "#FFFFFF");
+  btnText = isPaletteDefault && customStyle.btnTextColor ? customStyle.btnTextColor : (activePaletteId === "minimalist-romance" || activePaletteId === "bohemian-terracotta" ? "#333333" : activePaletteId === "cozy-dinner" ? "#0C1D12" : "#FFFFFF");
 
   const renderMinimalistRomance = () => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
@@ -5122,7 +5122,6 @@ export default function InviteViewer({ invitation }) {
       >
         {/* Dynamic Fonts Import and Cozy Custom Styles */}
         <style dangerouslySetInnerHTML={{ __html: `
-          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
           @keyframes fallAndSway {
             0% {

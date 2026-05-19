@@ -296,9 +296,9 @@ const TEMPLATES = [
     name: "Cozy Holiday / Dinner Party",
     badge: "Warm & Immersive",
     vibe: "Warm scrolling winter feast theme. Rich pine green mesh, continuous floating golden embers & snow particles, classic Garamond bento menus, and Dancing Script titles.",
-    primaryColor: "bg-[#228B22]",
+    primaryColor: "bg-[#0C1D12]",
     textColor: "text-[#CFB53B]",
-    paletteColors: ["#0C1D12", "#228B22", "#CFB53B", "#9E1B32"],
+    paletteColors: ["#0C1D12", "#0C1D12", "#CFB53B", "#9E1B32"],
     fonts: "Dancing Script, Garamond",
     features: [
       "Continuous Floating Gold Stars & Snow Particles",
