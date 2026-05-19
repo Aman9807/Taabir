@@ -177,6 +177,17 @@ export default function InviteViewer({ invitation }) {
     return { id: i, left, top, delay, duration, size };
   }), []);
 
+  // Generate enchanted-wireframe fireflies
+  const enchantedParticleList = useMemo(() => Array.from({ length: 45 }).map((_, i) => {
+    const left = Math.random() * 100;
+    const top = Math.random() * 100;
+    const delay = -Math.random() * 10;
+    const duration = 10 + Math.random() * 15;
+    const size = 1 + Math.random() * 3;
+    const opacity = 0.3 + Math.random() * 0.7;
+    return { id: i, left, top, delay, duration, size, opacity };
+  }), []);
+
   // Read styling preferences
   const customStyle = invitation.styling || {};
   let btnBg = customStyle.btnBgColor || (tplId === "ivory-elegance" ? "#800020" : "#D4AF37");
@@ -6111,9 +6122,32 @@ export default function InviteViewer({ invitation }) {
         {/* Dynamic Keyframes for Self-Drawing Vine Borders and custom styling */}
         <style dangerouslySetInnerHTML={{ __html: `
           @keyframes drawStroke {
-            to {
-              stroke-dashoffset: 0;
-            }
+            to { stroke-dashoffset: 0; }
+          }
+          @keyframes pulseBg {
+            0%, 100% { background: radial-gradient(circle at 50% 30%, rgba(207, 181, 59, 0.08) 0%, rgba(10, 26, 20, 1) 70%); }
+            50% { background: radial-gradient(circle at 50% 50%, rgba(207, 181, 59, 0.15) 0%, rgba(10, 26, 20, 1) 80%); }
+          }
+          @keyframes floatFirefly {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+            33% { transform: translate(15px, -20px) scale(1.2); opacity: 0.8; }
+            66% { transform: translate(-10px, -40px) scale(0.9); opacity: 0.5; }
+            100% { transform: translate(0, -60px) scale(1); opacity: 0; }
+          }
+          .enchanted-pulse-bg {
+            position: absolute;
+            inset: 0;
+            animation: pulseBg 8s ease-in-out infinite;
+            z-index: 1;
+            pointer-events: none;
+          }
+          .firefly {
+            position: absolute;
+            border-radius: 50%;
+            background-color: #CFB53B;
+            box-shadow: 0 0 6px #CFB53B, 0 0 12px #CFB53B;
+            pointer-events: none;
+            z-index: 2;
           }
           .wireframe-path {
             stroke-dasharray: 1000;
@@ -6122,9 +6156,33 @@ export default function InviteViewer({ invitation }) {
           }
           .wireframe-card {
             background: rgba(10, 26, 20, 0.85);
-            border: 1px solid rgba(207, 181, 59, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(207, 181, 59, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
+            position: relative;
+            border-radius: 4px;
+          }
+          .wireframe-card::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, rgba(207, 181, 59, 0.8));
+          }
+          .wireframe-card::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            border: 1px solid #CFB53B;
+            background: #0A1A14;
           }
           .wireframe-btn {
             background: transparent;
@@ -6139,6 +6197,25 @@ export default function InviteViewer({ invitation }) {
             box-shadow: 0 0 12px rgba(207, 181, 59, 0.2);
           }
         `}} />
+
+        {/* Pulsing Enchanted Background */}
+        <div className="enchanted-pulse-bg" />
+
+        {/* Floating Fireflies Layer */}
+        {enchantedParticleList.map((p) => (
+          <div
+            key={p.id}
+            className="firefly"
+            style={{
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              width: p.size,
+              height: p.size,
+              animation: `floatFirefly ${p.duration}s infinite ease-in-out`,
+              animationDelay: `${p.delay}s`,
+            }}
+          />
+        ))}
 
         {/* Thin Gold Border Around Screen Edges */}
         <div 
