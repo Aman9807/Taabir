@@ -79,6 +79,30 @@ export default function CreateInvitationPage() {
       return { bg: "#87CEEB", door: "#87CEEB", text: "#333333", gold: "#FF7F50" };
     } else if (palId === "summer-poolparty") {
       return { bg: "#7FFFD4", door: "#FFDAB9", text: "#2E4F4F", gold: "#FFDAB9" };
+    } else if (palId === "corporate-gala") {
+      return { bg: "#0A0E1A", door: "#191970", text: "#FFFFFF", gold: "#E5E4E2" };
+    } else if (palId === "enchanted-wireframe") {
+      return { bg: "#0A1A14", door: "#0A1A14", text: "#FFFFFF", gold: "#CFB53B" };
+    } else if (palId === "royal-heritage") {
+      return { bg: "#0C0C0C", door: "#800000", text: "#FFFFFF", gold: "#D4AF37" };
+    } else if (palId === "cozy-dinner") {
+      return { bg: "#0C1D12", door: "#0C1D12", text: "#FFFFFF", gold: "#CFB53B" };
+    } else if (palId === "modern-urban-skyline") {
+      return { bg: "#050A1F", door: "#050A1F", text: "#FFFFFF", gold: "#B76E79" };
+    } else if (palId === "ethereal-coastal") {
+      return { bg: "#001020", door: "#001020", text: "#F7E7CE", gold: "#C2B280" };
+    } else if (palId === "opulent-gala") {
+      return { bg: "#1A1A1A", door: "#1A1A1A", text: "#E5E4E2", gold: "#B5A642" };
+    } else if (palId === "elegant-memory-frame") {
+      return { bg: "#000000", door: "#000000", text: "#F3EFE0", gold: "#D4AF37" };
+    } else if (palId === "golden-keepsake") {
+      return { bg: "#242424", door: "#242424", text: "#F9F6EE", gold: "#D4AF37" };
+    } else if (palId === "minimalist-white-gold") {
+      return { bg: "#FDFBF7", door: "#FDFBF7", text: "#1A1A1A", gold: "#C5A880" };
+    } else if (palId === "dramatic-moody-photo") {
+      return { bg: "#030F0D", door: "#030F0D", text: "#FAF9F6", gold: "#FFB300" };
+    } else if (palId === "elegant-silver-platinum") {
+      return { bg: "#1C1C1E", door: "#1C1C1E", text: "#E8E8E8", gold: "#C0C0C0" };
     } else if (isIvory) {
       return { bg: "#FAF9F5", door: "#FAF9F5", text: "#2c2317", gold: "#800020" };
     } else {
@@ -360,8 +384,8 @@ export default function CreateInvitationPage() {
         theme: {
           templateId: templateId || "emerald-noir",
           paletteId: formData.paletteId || templateId || "emerald-noir",
-          primaryColor: templateId === "emerald-noir" ? "#C5A880" : templateId === "minimalist-romance" ? "#F7E7CE" : "#A78BFA", 
-          secondaryColor: templateId === "emerald-noir" ? "#022E1F" : templateId === "minimalist-romance" ? "#FFFFF0" : "#FAF9F5", 
+          primaryColor: getPaletteColors(formData.paletteId || templateId || "emerald-noir").gold,
+          secondaryColor: getPaletteColors(formData.paletteId || templateId || "emerald-noir").bg,
           fontFamily: "Playfair Display",
         },
         styling: {
@@ -990,7 +1014,19 @@ export default function CreateInvitationPage() {
                     { id: "neon-nightclub", label: "Neon Nightclub", desc: "Milestone birthday, Permanent Marker fonts, title load flicker & bounce events", color: "#000000", textColor: "#00FF66", tag: "Premium Scroll" },
                     { id: "elegant-milestone", label: "Elegant Milestone", desc: "Sophisticated editorial magazine, slow cross-fade backgrounds, 2s stationary fades", color: "#800020", textColor: "#C0C0C0", tag: "Premium Scroll" },
                     { id: "playful-kidsparty", label: "Playful & Interactive", desc: "Kids party, horizontal snap-scroll pages, continuous balloon/star wiggles, pop-in titles", color: "#87CEEB", textColor: "#FFD700", tag: "Premium Snap Scroll" },
-                    { id: "summer-poolparty", label: "Summer Pool Party", desc: "Vibrant Summer Oasis, fluid continuous SVG Wave Ripple dividers, Nunito Slide-Up animations", color: "#7FFFD4", textColor: "#FFDAB9", tag: "Premium Scroll" }
+                    { id: "summer-poolparty", label: "Summer Pool Party", desc: "Vibrant Summer Oasis, fluid continuous SVG Wave Ripple dividers, Nunito Slide-Up animations", color: "#7FFFD4", textColor: "#FFDAB9", tag: "Premium Scroll" },
+                    { id: "corporate-gala", label: "Corporate Gala", desc: "Grand corporate gala, midnight navy & platinum", color: "#0A0E1A", textColor: "#E5E4E2", tag: "Classic" },
+                    { id: "enchanted-wireframe", label: "Enchanted Wireframe", desc: "Haldi & Mehendi botanical line-art", color: "#0A1A14", textColor: "#CFB53B", tag: "Classic" },
+                    { id: "royal-heritage", label: "Royal Heritage", desc: "Heritage luxury wedding theme", color: "#0C0C0C", textColor: "#D4AF37", tag: "Premium Interactive" },
+                    { id: "cozy-dinner", label: "Cozy Dinner", desc: "Warm intimate dinner, sage & gold", color: "#0C1D12", textColor: "#CFB53B", tag: "Classic" },
+                    { id: "modern-urban-skyline", label: "Modern Urban Skyline", desc: "Sleek glassmorphic skyline", color: "#050A1F", textColor: "#B76E79", tag: "Premium Scroll" },
+                    { id: "ethereal-coastal", label: "Ethereal Coastal", desc: "Soft destination coastal beach arch", color: "#001020", textColor: "#C2B280", tag: "Classic" },
+                    { id: "opulent-gala", label: "Opulent Gala", desc: "1920s Gatsby Art Deco", color: "#1A1A1A", textColor: "#B5A642", tag: "Premium Interactive" },
+                    { id: "elegant-memory-frame", label: "Elegant Memory Frame", desc: "Curated digital gallery grid", color: "#000000", textColor: "#D4AF37", tag: "Premium Scroll" },
+                    { id: "golden-keepsake", label: "Golden Keepsake", desc: "Traditional gold rope-textured border", color: "#242424", textColor: "#D4AF37", tag: "Classic" },
+                    { id: "minimalist-white-gold", label: "Minimalist Modern White-Gold", desc: "Clean bright modern photo album layout", color: "#FDFBF7", textColor: "#C5A880", tag: "Premium Scroll" },
+                    { id: "dramatic-moody-photo", label: "Dramatic Moody Photo-First", desc: "Vow renewal, deep blue-green & gunmetal", color: "#030F0D", textColor: "#FFB300", tag: "Premium Scroll" },
+                    { id: "elegant-silver-platinum", label: "Elegant Silver & Platinum", desc: "Polished silver geometric border", color: "#1C1C1E", textColor: "#C0C0C0", tag: "Classic" }
                   ].map((tpl) => (
                     <div key={tpl.id} className={`border-2 rounded-2xl overflow-hidden transition-all relative ${
                       formData.templateId === tpl.id ? "border-amber-500 shadow-md" : "border-slate-200 hover:border-slate-300"
@@ -1019,28 +1055,28 @@ export default function CreateInvitationPage() {
                           checked={formData.templateId === tpl.id}
                           onChange={(e) => {
                             handleChange(e);
-                            // Auto align default animations to matching templates
-                            if (tpl.id === "midnight-royal") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "sliding-doors", btnBgColor: "#D4AF37", btnTextColor: "#FFFFFF" }));
-                            } else if (tpl.id === "ivory-elegance") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "velvet-curtains", btnBgColor: "#800020", btnTextColor: "#FFFFFF" }));
-                            } else if (tpl.id === "minimalist-romance") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#F7E7CE", btnTextColor: "#333333" }));
-                            } else if (tpl.id === "dark-moody-elegant") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "sliding-doors", btnBgColor: "#D4AF37", btnTextColor: "#0F0F0F" }));
-                            } else if (tpl.id === "bohemian-terracotta") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#E2725B", btnTextColor: "#FFFDD0" }));
-                            } else if (tpl.id === "royal-glamour") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#B76E79", btnTextColor: "#FFFFFF" }));
-                            } else if (tpl.id === "neon-nightclub") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#00FF66", btnTextColor: "#000000" }));
-                            } else if (tpl.id === "elegant-milestone") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#800020", btnTextColor: "#FFFFFF" }));
-                            } else if (tpl.id === "playful-kidsparty") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#FF7F50", btnTextColor: "#FFFFFF" }));
-                            } else if (tpl.id === "summer-poolparty") {
-                              setFormData(prev => ({ ...prev, doorAnimation: "fade-zoom", btnBgColor: "#FF7F50", btnTextColor: "#FFFFFF" }));
+                            const colors = getPaletteColors(tpl.id);
+                            let doorAnim = "fade-zoom";
+                            if (tpl.id === "midnight-royal" || tpl.id === "dark-moody-elegant" || tpl.id === "corporate-gala" || tpl.id === "enchanted-wireframe" || tpl.id === "opulent-gala" || tpl.id === "dramatic-moody-photo" || tpl.id === "elegant-silver-platinum") {
+                              doorAnim = "sliding-doors";
+                            } else if (tpl.id === "ivory-elegance" || tpl.id === "royal-heritage") {
+                              doorAnim = "velvet-curtains";
                             }
+                            
+                            let btnTxt = "#FFFFFF";
+                            if (tpl.id === "minimalist-romance" || tpl.id === "bohemian-terracotta") {
+                              btnTxt = "#333333";
+                            } else if (tpl.id === "neon-nightclub" || tpl.id === "playful-kidsparty" || tpl.id === "summer-poolparty" || tpl.id === "dramatic-moody-photo") {
+                              btnTxt = "#000000";
+                            }
+
+                            setFormData(prev => ({
+                              ...prev,
+                              paletteId: tpl.id,
+                              doorAnimation: doorAnim,
+                              btnBgColor: colors.gold,
+                              btnTextColor: btnTxt
+                            }));
                             // Auto trigger animation preview
                             setPreviewingAnim(true);
                             setTimeout(() => setPreviewingAnim(false), 2200);
@@ -1052,7 +1088,7 @@ export default function CreateInvitationPage() {
                   ))}
                 </div>
               </div>
-
+ 
               {/* Choose Theme Color Palette */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-3 font-sans">
@@ -1070,7 +1106,19 @@ export default function CreateInvitationPage() {
                     { id: "neon-nightclub", label: "Neon Nightclub", preview: ["#000000", "#00FF66", "#00FFFF"], desc: "Pitch Black & Neon Green" },
                     { id: "elegant-milestone", label: "Elegant Milestone", preview: ["#800020", "#C0C0C0", "#708090"], desc: "Burgundy, Silver & Slate" },
                     { id: "playful-kidsparty", label: "Playful Kids Party", preview: ["#87CEEB", "#FFD700", "#FF7F50"], desc: "Sky Blue, Yellow & Coral" },
-                    { id: "summer-poolparty", label: "Summer Pool Party", preview: ["#7FFFD4", "#FFDAB9", "#C2B280"], desc: "Aqua, Peach & Sand" }
+                    { id: "summer-poolparty", label: "Summer Pool Party", preview: ["#7FFFD4", "#FFDAB9", "#C2B280"], desc: "Aqua, Peach & Sand" },
+                    { id: "corporate-gala", label: "Corporate Gala", preview: ["#0A0E1A", "#E5E4E2", "#191970"], desc: "Midnight Navy & Platinum" },
+                    { id: "enchanted-wireframe", label: "Enchanted Wireframe", preview: ["#0A1A14", "#CFB53B", "#E6F2EC"], desc: "Deep Forest & Gold" },
+                    { id: "royal-heritage", label: "Royal Heritage", preview: ["#0C0C0C", "#D4AF37", "#800000"], desc: "Onyx, Crimson & Gold" },
+                    { id: "cozy-dinner", preview: ["#0C1D12", "#CFB53B", "#FFFDD0"], label: "Cozy Dinner", desc: "Deep Olive & Gold" },
+                    { id: "modern-urban-skyline", preview: ["#050A1F", "#B76E79", "#FFFFFF"], label: "Urban Skyline", desc: "Midnight Navy & Rose Gold" },
+                    { id: "ethereal-coastal", preview: ["#001020", "#F7E7CE", "#C2B280"], label: "Ethereal Coastal", desc: "Ocean Blue & Champagne" },
+                    { id: "opulent-gala", preview: ["#1A1A1A", "#E5E4E2", "#B5A642"], label: "Opulent Gala", desc: "Charcoal, Platinum & Brass" },
+                    { id: "elegant-memory-frame", preview: ["#000000", "#D4AF37", "#F3EFE0"], label: "Memory Gallery", desc: "Onyx Black & Gold" },
+                    { id: "golden-keepsake", preview: ["#242424", "#D4AF37", "#F9F6EE"], label: "Golden Keepsake", desc: "Charcoal Canvas & Gold" },
+                    { id: "minimalist-white-gold", preview: ["#FDFBF7", "#C5A880", "#1A1A1A"], label: "Minimalist White-Gold", desc: "Antique White & Gold" },
+                    { id: "dramatic-moody-photo", preview: ["#030F0D", "#FFB300", "#FAF9F6"], label: "Dramatic Moody", desc: "Deep Black-Blue & Amber" },
+                    { id: "elegant-silver-platinum", preview: ["#1C1C1E", "#C0C0C0", "#E8E8E8"], label: "Silver & Platinum", desc: "Polished Silver & Grey" }
                   ].map((pal) => {
                     const isSelected = formData.paletteId === pal.id;
                     return (
@@ -1078,11 +1126,18 @@ export default function CreateInvitationPage() {
                         key={pal.id}
                         type="button"
                         onClick={() => {
+                          const colors = getPaletteColors(pal.id);
+                          let btnTxt = "#FFFFFF";
+                          if (pal.id === "minimalist-romance" || pal.id === "bohemian-terracotta") {
+                            btnTxt = "#333333";
+                          } else if (pal.id === "neon-nightclub" || pal.id === "playful-kidsparty" || pal.id === "summer-poolparty" || pal.id === "dramatic-moody-photo") {
+                            btnTxt = "#000000";
+                          }
                           setFormData(prev => ({ 
                             ...prev, 
                             paletteId: pal.id,
-                            btnBgColor: pal.id === "minimalist-romance" ? "#F7E7CE" : pal.id === "bohemian-terracotta" ? "#E2725B" : pal.id === "ivory-classic" ? "#800020" : pal.id === "royal-glamour" ? "#B76E79" : pal.id === "neon-nightclub" ? "#00FF66" : pal.id === "elegant-milestone" ? "#800020" : pal.id === "playful-kidsparty" ? "#FF7F50" : pal.id === "summer-poolparty" ? "#FF7F50" : "#D4AF37",
-                            btnTextColor: pal.id === "minimalist-romance" ? "#333333" : pal.id === "bohemian-terracotta" ? "#FFFDD0" : pal.id === "neon-nightclub" ? "#000000" : pal.id === "playful-kidsparty" ? "#FFFFFF" : pal.id === "summer-poolparty" ? "#FFFFFF" : "#FFFFFF"
+                            btnBgColor: colors.gold,
+                            btnTextColor: btnTxt
                           }));
                         }}
                         className={`flex flex-col items-center justify-between p-3 rounded-xl border-2 transition-all text-left w-full bg-white ${

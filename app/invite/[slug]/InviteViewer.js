@@ -187,6 +187,18 @@ export default function InviteViewer({ invitation }) {
   const [rsvpLoading, setRsvpLoading] = useState(false);
   const [rsvpExpanded, setRsvpExpanded] = useState(false);
 
+  const [opulentGalaBtnState, setOpulentGalaBtnState] = useState("idle");
+  const [whiteGoldBgIdx, setWhiteGoldBgIdx] = useState(0);
+
+  // Slideshow rotation logic for Minimalist White & Gold
+  useEffect(() => {
+    if (activeLayoutId !== "minimalist-white-gold") return;
+    const interval = setInterval(() => {
+      setWhiteGoldBgIdx(prev => (prev + 1) % 3);
+    }, 5500);
+    return () => clearInterval(interval);
+  }, [activeLayoutId]);
+
   const targetDate = new Date(invitation.weddingDate);
 
   // Generate cozy-dinner particles once to avoid re-render glitching
@@ -7492,7 +7504,8 @@ export default function InviteViewer({ invitation }) {
   };
 
   const renderOpulentGala = () => {
-    const [btnState, setBtnState] = useState("idle"); // idle, submitting, success
+    const btnState = opulentGalaBtnState;
+    const setBtnState = setOpulentGalaBtnState;
     const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200"; // Elegant party backdrop
 
     const scheduleItems = invitation.details?.schedule?.length > 0 ? invitation.details.schedule : [
@@ -9151,13 +9164,8 @@ export default function InviteViewer({ invitation }) {
     ];
 
     // Carousel Image rotation logic
-    const [bgIdx, setBgIdx] = useState(0);
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setBgIdx(prev => (prev + 1) % slideshowImages.length);
-      }, 5500);
-      return () => clearInterval(interval);
-    }, []);
+    const bgIdx = whiteGoldBgIdx;
+    const setBgIdx = setWhiteGoldBgIdx;
 
     const scheduleItems = invitation.details?.schedule && invitation.details.schedule.length > 0
       ? invitation.details.schedule
@@ -11595,7 +11603,7 @@ function TextRevealLeft({ children, delay = 0 }) {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -11604,13 +11612,19 @@ function TextRevealLeft({ children, delay = 0 }) {
   return (
     <div
       ref={ref}
-      className={isVisible ? "reveal-left-active" : "reveal-left-idle"}
-      style={{ animationDelay: `${delay}ms` }}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translateX(0)" : "translateX(-20px)",
+        transition: "opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
+        transitionDelay: `${delay}ms`,
+        width: "100%",
+      }}
     >
       {children}
     </div>
   );
 }
+
 
 function ColorFadeImage({ src, alt }) {
   const [isVisible, setIsVisible] = useState(false);
