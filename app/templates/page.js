@@ -555,6 +555,34 @@ const TEMPLATES = [
     vibeColor: "text-slate-300",
     featureColor: "text-slate-200",
     btnSecondaryClass: "bg-amber-950/20 hover:bg-amber-950/40 text-[#FFB300] border-amber-850/40"
+  },
+  {
+    id: "elegant-silver-platinum",
+    name: "Elegant Silver & Platinum Anniversary",
+    badge: "50th Anniversary",
+    vibe: "A sophisticated, single-page 50th anniversary invitation with a dark platinum-grey brushed-metal canvas. Features a polished silver geometric framing border, platinum flake particle background, a couple's relationship timeline with glowing silver nodes, and a minimalist wedding band line-art above RSVP.",
+    primaryColor: "bg-[#1C1C1E]",
+    textColor: "text-[#E8E8E8]",
+    paletteColors: ["#1C1C1E", "#C0C0C0", "#E8E8E8", "#808080"],
+    fonts: "Cormorant Garamond, Inter",
+    features: [
+      "Dark Platinum-Grey brushed-metal background texture",
+      "Heavy polished Silver geometric center border",
+      "Small decorative Silver corner elements",
+      "Falling Platinum Flakes background particle effect",
+      "Slide-In-Right with Fade text animations",
+      "Gently pulsing main event text",
+      "Timeline of relationship with glowing silver nodes",
+      "Minimalist wedding band line-art illustration above RSVP"
+    ],
+    bgClass: "bg-[#1C1C1E] border-slate-600/40",
+    image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-slate-700/60 text-slate-200 border-slate-600/40",
+    titleColor: "text-white group-hover:text-slate-300",
+    vibeColor: "text-slate-300",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-slate-700/20 hover:bg-slate-700/40 text-slate-300 border-slate-600/40"
   }
 ];
 

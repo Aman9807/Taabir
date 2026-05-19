@@ -630,6 +630,39 @@ export default function InviteViewer({ invitation }) {
         gold: "#D4AF37",
         border: "rgba(212, 175, 55, 0.2)"
       }
+    : activePaletteId === "minimalist-white-gold"
+    ? {
+        bg: "#FDFBF7",
+        door: "#FDFBF7",
+        seam: "#C5A880",
+        card: "#FFFFFF",
+        text: "#1A1A1A",
+        sub: "#4A4A4A",
+        gold: "#C5A880",
+        border: "rgba(197, 168, 128, 0.3)"
+      }
+    : activePaletteId === "dramatic-moody-photo"
+    ? {
+        bg: "#030F0D",
+        door: "#030F0D",
+        seam: "#FFB300",
+        card: "rgba(15, 30, 27, 0.65)",
+        text: "#FAF9F6",
+        sub: "rgba(250, 249, 246, 0.75)",
+        gold: "#FFB300",
+        border: "rgba(255, 179, 0, 0.3)"
+      }
+    : activePaletteId === "elegant-silver-platinum"
+    ? {
+        bg: "#1C1C1E",
+        door: "#1C1C1E",
+        seam: "#C0C0C0",
+        card: "rgba(255, 255, 255, 0.04)",
+        text: "#E8E8E8",
+        sub: "#A8A8A8",
+        gold: "#C0C0C0",
+        border: "rgba(192, 192, 192, 0.25)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -8340,6 +8373,400 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderElegantSilverPlatinum = () => {
+    const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=1200";
+
+    const timelineItems = [
+      { year: "1974", title: "First Meeting", desc: "At a summer garden party in the English countryside." },
+      { year: "1975", title: "First Date", desc: "A candlelit dinner under a July full moon." },
+      { year: "1975", title: "Engaged", desc: "A proposal by the lakeside at dusk." },
+      { year: "1975", title: "Married", desc: "A small church ceremony with loved ones." },
+      { year: "2000", title: "Silver Anniversary", desc: "25 years — celebrated with a renewal of vows." },
+      { year: "2025", title: "Golden Jubilee", desc: "50 glorious years of love, laughter, and legacy." },
+    ];
+
+    return (
+      <div
+        style={{
+          backgroundColor: "#1C1C1E",
+          color: "#E8E8E8",
+          fontFamily: "'Inter', sans-serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          boxSizing: "border-box",
+        }}
+      >
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;700&display=swap');
+
+          .silver-serif {
+            font-family: 'Cormorant Garamond', serif !important;
+          }
+
+          /* Brushed metal texture via CSS */
+          .brushed-metal-bg {
+            background-image:
+              repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 2px,
+                rgba(192, 192, 192, 0.015) 2px,
+                rgba(192, 192, 192, 0.015) 4px
+              ),
+              repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 3px,
+                rgba(192, 192, 192, 0.01) 3px,
+                rgba(192, 192, 192, 0.01) 6px
+              );
+          }
+
+          @keyframes platinumFlakeFall {
+            0%   { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+            10%  { opacity: 0.85; }
+            90%  { opacity: 0.6; }
+            100% { transform: translateY(105vh) rotate(540deg); opacity: 0; }
+          }
+
+          @keyframes silverSlideRight {
+            from { opacity: 0; transform: translateX(-28px); }
+            to   { opacity: 1; transform: translateX(0); }
+          }
+
+          @keyframes silverGlow {
+            0%, 100% { text-shadow: 0 0 8px rgba(192, 192, 192, 0.3); }
+            50%       { text-shadow: 0 0 20px rgba(192, 192, 192, 0.7), 0 0 40px rgba(192, 192, 192, 0.3); }
+          }
+
+          @keyframes eventPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.015); opacity: 0.92; }
+          }
+
+          @keyframes nodeGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(192,192,192,0.4); }
+            50% { box-shadow: 0 0 15px rgba(192,192,192,0.85), 0 0 30px rgba(192,192,192,0.4); }
+          }
+
+          .silver-slide-in-1 { animation: silverSlideRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+          .silver-slide-in-2 { animation: silverSlideRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both; }
+          .silver-slide-in-3 { animation: silverSlideRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both; }
+          .silver-slide-in-4 { animation: silverSlideRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both; }
+          .silver-slide-in-5 { animation: silverSlideRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both; }
+
+          .event-pulse { animation: eventPulse 3s ease-in-out infinite; }
+          .silver-glow  { animation: silverGlow 3s ease-in-out infinite; }
+          .node-glow    { animation: nodeGlow 2.5s ease-in-out infinite; }
+
+          .silver-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(192, 192, 192, 0.25);
+            color: #E8E8E8;
+            padding: 13px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13.5px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+          }
+          .silver-input:focus { border-color: #C0C0C0; }
+          .silver-input::placeholder { color: rgba(232, 232, 232, 0.4); }
+        `}} />
+
+        {/* Falling Platinum Flakes */}
+        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 1, overflow: "hidden" }}>
+          {Array.from({ length: 40 }).map((_, i) => {
+            const left = (i * 2.5 + (i % 3) * 7) % 100;
+            const delay = -(i * 0.6);
+            const duration = 10 + (i % 7) * 2;
+            const size = 2 + (i % 4);
+            const opacity = 0.35 + (i % 5) * 0.1;
+            return (
+              <div
+                key={i}
+                style={{
+                  position: "absolute",
+                  top: "-10px",
+                  left: `${left}%`,
+                  width: size,
+                  height: size,
+                  borderRadius: i % 3 === 0 ? "50%" : "2px",
+                  backgroundColor: i % 2 === 0 ? "#C0C0C0" : "#A8A8A8",
+                  opacity,
+                  animation: `platinumFlakeFall ${duration}s linear ${delay}s infinite`,
+                }}
+              />
+            );
+          })}
+        </div>
+
+        {/* Main content — central polished silver geometric bordered panel */}
+        <div style={{ position: "relative", zIndex: 10, maxWidth: 640, margin: "0 auto", padding: "60px 20px 100px" }}>
+
+          {/* OUTER SILVER GEOMETRIC BORDER FRAME */}
+          <div
+            className="brushed-metal-bg"
+            style={{
+              position: "relative",
+              border: "2px solid rgba(192, 192, 192, 0.6)",
+              boxShadow: "0 0 0 6px rgba(192, 192, 192, 0.08), 0 0 0 12px rgba(192,192,192,0.04), 0 24px 60px rgba(0,0,0,0.6)",
+              padding: "48px 32px",
+              backgroundColor: "rgba(30, 30, 32, 0.85)",
+              backdropFilter: "blur(6px)",
+            }}
+          >
+            {/* Decorative Silver Corner Elements */}
+            {[
+              { top: -2, left: -2, rotate: "0deg" },
+              { top: -2, right: -2, rotate: "90deg" },
+              { bottom: -2, left: -2, rotate: "-90deg" },
+              { bottom: -2, right: -2, rotate: "180deg" },
+            ].map((pos, idx) => (
+              <svg
+                key={idx}
+                width="28"
+                height="28"
+                viewBox="0 0 28 28"
+                fill="none"
+                style={{ position: "absolute", ...pos, transform: `rotate(${pos.rotate})` }}
+              >
+                <path d="M 1 27 L 1 1 L 27 1" stroke="#C0C0C0" strokeWidth="2" fill="none" />
+                <path d="M 1 27 L 1 6 L 6 1" stroke="#E8E8E8" strokeWidth="0.8" fill="none" opacity="0.5" />
+                <circle cx="1" cy="1" r="2" fill="#C0C0C0" />
+              </svg>
+            ))}
+
+            {/* HERO SECTION */}
+            <div style={{ textAlign: "center", marginBottom: 48 }}>
+              <p className="silver-slide-in-1" style={{ fontSize: 11, letterSpacing: "0.35em", textTransform: "uppercase", color: "#A8A8A8", marginBottom: 18, fontWeight: 500 }}>
+                GOLDEN JUBILEE ✦ 50th ANNIVERSARY
+              </p>
+
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 24 }}>
+                <div style={{ flex: 1, height: "0.5px", background: "linear-gradient(to right, transparent, #C0C0C0)" }} />
+                <span style={{ fontSize: 14, color: "#C0C0C0" }}>◆</span>
+                <div style={{ flex: 1, height: "0.5px", background: "linear-gradient(to left, transparent, #C0C0C0)" }} />
+              </div>
+
+              {/* Couple Names — classic serif, pulsing */}
+              <h1 className="silver-serif event-pulse silver-slide-in-2 silver-glow" style={{ fontSize: 48, fontWeight: 300, color: "#E8E8E8", letterSpacing: "0.04em", lineHeight: 1.15, margin: "0 0 10px" }}>
+                {invitation.brideName}
+              </h1>
+              <p className="silver-slide-in-2" style={{ fontSize: 16, color: "#A8A8A8", letterSpacing: "0.25em", margin: "0 0 6px" }}>&amp;</p>
+              <h1 className="silver-serif event-pulse silver-slide-in-2 silver-glow" style={{ fontSize: 48, fontWeight: 300, color: "#E8E8E8", letterSpacing: "0.04em", lineHeight: 1.15, margin: "0 0 28px" }}>
+                {invitation.groomName}
+              </h1>
+
+              {/* Photo in a polished silver frame */}
+              <div style={{
+                width: "100%",
+                height: 340,
+                overflow: "hidden",
+                border: "3px solid rgba(192, 192, 192, 0.5)",
+                boxShadow: "0 0 20px rgba(192, 192, 192, 0.1), inset 0 0 20px rgba(0,0,0,0.4)",
+                marginBottom: 32,
+                position: "relative",
+              }}>
+                <img
+                  src={bgImage}
+                  alt="Anniversary couple"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.85)" }}
+                />
+                <div style={{
+                  position: "absolute", inset: 0,
+                  background: "linear-gradient(to top, rgba(28, 28, 30, 0.7) 0%, transparent 60%)",
+                }} />
+              </div>
+
+              <p className="silver-slide-in-3" style={{ fontSize: 14.5, color: "#A8A8A8", letterSpacing: "0.15em", fontStyle: "italic" }}>
+                Fifty Years. One Love. A Lifetime of Joy.
+              </p>
+            </div>
+
+            {/* ELEGANT DIVIDER */}
+            <div style={{ textAlign: "center", marginBottom: 48 }}>
+              <svg width="200" height="12" viewBox="0 0 200 12" fill="none">
+                <line x1="0" y1="6" x2="75" y2="6" stroke="rgba(192,192,192,0.4)" strokeWidth="0.8" />
+                <circle cx="88" cy="6" r="3" fill="#C0C0C0" opacity="0.6" />
+                <circle cx="100" cy="6" r="4.5" fill="#C0C0C0" />
+                <circle cx="112" cy="6" r="3" fill="#C0C0C0" opacity="0.6" />
+                <line x1="125" y1="6" x2="200" y2="6" stroke="rgba(192,192,192,0.4)" strokeWidth="0.8" />
+              </svg>
+            </div>
+
+            {/* DATE & VENUE (main event text — pulsing) */}
+            <div style={{ textAlign: "center", marginBottom: 56 }}>
+              <p className="silver-slide-in-3" style={{ fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: "#A8A8A8", marginBottom: 12 }}>
+                THE ANNIVERSARY DINNER
+              </p>
+              <h2 className="silver-serif silver-slide-in-3 event-pulse" style={{ fontSize: 30, fontWeight: 600, color: "#FFFFFF", margin: "0 0 10px" }}>
+                {targetDate.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+              </h2>
+              <p className="silver-slide-in-4" style={{ fontSize: 22, fontWeight: 300, color: "#C0C0C0", margin: "0 0 24px" }}>
+                {targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+              </p>
+              <p className="silver-slide-in-4" style={{ fontSize: 15, color: "#E8E8E8", margin: "0 0 4px" }}>
+                {invitation.venue?.name}
+              </p>
+              <p className="silver-slide-in-4" style={{ fontSize: 13, color: "#A8A8A8" }}>
+                {invitation.venue?.address}
+              </p>
+              {invitation.venue?.googleMapsUrl && (
+                <a href={invitation.venue.googleMapsUrl} target="_blank" rel="noreferrer" style={{ textDecoration: "none", display: "inline-block", marginTop: 20 }}>
+                  <button
+                    style={{ padding: "11px 36px", backgroundColor: "transparent", border: "1px solid #C0C0C0", color: "#C0C0C0", fontSize: 11.5, letterSpacing: "0.15em", textTransform: "uppercase", cursor: "pointer", transition: "all 0.3s ease", fontWeight: 600 }}
+                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#C0C0C0"; e.currentTarget.style.color = "#1C1C1E"; }}
+                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#C0C0C0"; }}
+                  >
+                    View Venue
+                  </button>
+                </a>
+              )}
+            </div>
+
+            {/* RELATIONSHIP TIMELINE */}
+            <div style={{ marginBottom: 56 }}>
+              <p className="silver-slide-in-3" style={{ fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: "#A8A8A8", textAlign: "center", marginBottom: 32 }}>
+                OUR JOURNEY TOGETHER
+              </p>
+              <div style={{ position: "relative" }}>
+                {/* Vertical track */}
+                <div style={{ position: "absolute", left: 38, top: 0, bottom: 0, width: 1.5, background: "linear-gradient(to bottom, transparent, rgba(192,192,192,0.5), transparent)" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+                  {timelineItems.map((ev, idx) => (
+                    <div key={idx} style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
+                      {/* Year + Glowing Node */}
+                      <div style={{ width: 78, flexShrink: 0, textAlign: "right", paddingRight: 12, position: "relative" }}>
+                        <span className="silver-serif" style={{ fontSize: 16, fontWeight: 600, color: "#C0C0C0" }}>{ev.year}</span>
+                        <div
+                          className="node-glow"
+                          style={{
+                            position: "absolute",
+                            right: -7,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: 13,
+                            height: 13,
+                            borderRadius: "50%",
+                            backgroundColor: "#C0C0C0",
+                            border: "2px solid #E8E8E8",
+                          }}
+                        />
+                      </div>
+                      {/* Content */}
+                      <div style={{ flex: 1 }}>
+                        <p style={{ fontSize: 15, fontWeight: 600, color: "#E8E8E8", margin: "0 0 3px" }}>{ev.title}</p>
+                        <p style={{ fontSize: 13, color: "#A8A8A8", margin: 0, lineHeight: 1.55 }}>{ev.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* WEDDING BAND LINE-ART */}
+            <div style={{ textAlign: "center", marginBottom: 40 }}>
+              <p style={{ fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: "#A8A8A8", marginBottom: 18 }}>
+                RSVP
+              </p>
+              <svg width="120" height="52" viewBox="0 0 120 52" fill="none" style={{ marginBottom: 20 }}>
+                {/* Left band */}
+                <ellipse cx="38" cy="26" rx="22" ry="14" stroke="#C0C0C0" strokeWidth="2.5" fill="none" />
+                {/* Right band */}
+                <ellipse cx="82" cy="26" rx="22" ry="14" stroke="#C0C0C0" strokeWidth="2.5" fill="none" />
+                {/* Interior overlap engraving lines */}
+                <path d="M 54,18 Q 60,26 66,18" stroke="#A8A8A8" strokeWidth="1" fill="none" opacity="0.6" />
+                <path d="M 54,34 Q 60,26 66,34" stroke="#A8A8A8" strokeWidth="1" fill="none" opacity="0.6" />
+                {/* Diamond on left band */}
+                <polygon points="38,18 42,26 38,34 34,26" fill="none" stroke="#E8E8E8" strokeWidth="1.5" opacity="0.7" />
+                {/* Diamond on right band */}
+                <polygon points="82,18 86,26 82,34 78,26" fill="none" stroke="#E8E8E8" strokeWidth="1.5" opacity="0.7" />
+              </svg>
+            </div>
+
+            {/* RSVP FORM */}
+            <div style={{ border: "1px solid rgba(192, 192, 192, 0.2)", padding: "36px 24px", backgroundColor: "rgba(255,255,255,0.02)" }}>
+              {!rsvpDone ? (
+                <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, color: "#A8A8A8", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 7 }}>Full Name</label>
+                    <input
+                      type="text"
+                      value={rsvp.name}
+                      onChange={e => setRsvp({ ...rsvp, name: e.target.value })}
+                      className="silver-input"
+                      placeholder="Your name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, color: "#A8A8A8", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 7 }}>Attendance</label>
+                    <select
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({ ...rsvp, attending: e.target.value })}
+                      className="silver-input"
+                      style={{ appearance: "none" }}
+                    >
+                      <option value="yes" style={{ color: "#000" }}>Accepts with Pleasure</option>
+                      <option value="no" style={{ color: "#000" }}>Regretfully Declines</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, color: "#A8A8A8", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 7 }}>A Message of Congratulations</label>
+                    <textarea
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({ ...rsvp, blessing: e.target.value })}
+                      className="silver-input"
+                      style={{ minHeight: 64, resize: "none" }}
+                      placeholder="Your heartfelt wishes..."
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={!rsvp.name.trim() || rsvpLoading}
+                    style={{
+                      padding: "14px",
+                      backgroundColor: rsvp.name.trim() ? "#C0C0C0" : "transparent",
+                      color: rsvp.name.trim() ? "#1C1C1E" : "rgba(232,232,232,0.35)",
+                      border: "1px solid #C0C0C0",
+                      cursor: rsvp.name.trim() ? "pointer" : "default",
+                      fontSize: 12,
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      fontWeight: 700,
+                      marginTop: 8,
+                      transition: "all 0.3s ease"
+                    }}
+                    onMouseEnter={e => { if (rsvp.name.trim()) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#C0C0C0"; } }}
+                    onMouseLeave={e => { if (rsvp.name.trim()) { e.currentTarget.style.backgroundColor = "#C0C0C0"; e.currentTarget.style.color = "#1C1C1E"; } }}
+                  >
+                    {rsvpLoading ? "Sending..." : "Confirm Attendance"}
+                  </button>
+                </form>
+              ) : (
+                <div style={{ textAlign: "center", padding: "20px 0" }}>
+                  <p className="silver-serif" style={{ fontSize: 20, color: "#C0C0C0", margin: "0 0 8px" }}>Thank You</p>
+                  <p style={{ fontSize: 13.5, color: "#A8A8A8" }}>Your response has been received. We look forward to celebrating with you.</p>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div style={{ textAlign: "center", marginTop: 32, opacity: 0.4 }}>
+              <p style={{ fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "#C0C0C0" }}>
+                Fifty Years ✦ One Love
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderDramaticMoodyPhoto = () => {
     const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200";
 
@@ -9643,6 +10070,9 @@ export default function InviteViewer({ invitation }) {
     { id: "opulent-gala", name: "The Opulent Gala", icon: "✨" },
     { id: "elegant-memory-frame", name: "The Elegant Memory Frame", icon: "🖼️" },
     { id: "golden-keepsake", name: "The Golden Keepsake", icon: "🏆" },
+    { id: "minimalist-white-gold", name: "Minimalist White & Gold", icon: "✦" },
+    { id: "dramatic-moody-photo", name: "Dramatic Moody Photo-First", icon: "🎬" },
+    { id: "elegant-silver-platinum", name: "Elegant Silver & Platinum", icon: "💿" },
   ];
 
   const palettes = [
@@ -9668,9 +10098,12 @@ export default function InviteViewer({ invitation }) {
     { id: "golden-keepsake", name: "The Golden Keepsake", preview: ["#242424", "#D4AF37", "#F9F6EE"] },
   ];
 
+  // For fully self-contained templates, reset outer wrapper to be neutral
+  const isSelfContainedTemplate = ["minimalist-white-gold", "dramatic-moody-photo", "elegant-silver-platinum"].includes(activeLayoutId);
+
   return (
     <div style={{ 
-      background: T.bg, 
+      background: isSelfContainedTemplate ? "transparent" : T.bg, 
       minHeight: "100vh", 
       fontFamily: lang === "ur" 
         ? "'Noto Nastaliq Urdu', serif" 
@@ -10208,6 +10641,8 @@ export default function InviteViewer({ invitation }) {
         renderMinimalistWhiteGold()
       ) : activeLayoutId === "dramatic-moody-photo" ? (
         renderDramaticMoodyPhoto()
+      ) : activeLayoutId === "elegant-silver-platinum" ? (
+        renderElegantSilverPlatinum()
       ) : (
         <div 
           style={{

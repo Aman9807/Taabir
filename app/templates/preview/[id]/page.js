@@ -803,6 +803,37 @@ const DEMO_DATA = {
       btnBgColor: "#FFB300",
       btnTextColor: "#030F0D"
     }
+  },
+  "elegant-silver-platinum": {
+    id: "__demo_elegant_silver_platinum__",
+    brideName: "Arthur",
+    groomName: "Eleanor",
+    brideParentsName: "",
+    groomParentsName: "",
+    weddingDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Grand Silver Estate",
+      address: "50 Jubilee Hall, Lake District, England",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=1200"
+    ],
+    eventType: "anniversary",
+    musicUrl: "",
+    coupleEmail: "arthur.eleanor@grandsilver.com",
+    theme: { templateId: "elegant-silver-platinum" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: false,
+      enableLanguageSwitcher: false,
+      doorAnimation: "curtain-reveal",
+      btnBgColor: "#C0C0C0",
+      btnTextColor: "#1C1C1E"
+    }
   }
 };
 
@@ -829,7 +860,8 @@ export async function generateMetadata({ params }) {
     "elegant-memory-frame": "The Elegant Memory Frame",
     "golden-keepsake": "The Golden Keepsake",
     "minimalist-white-gold": "Minimalist Modern White-and-Gold",
-    "dramatic-moody-photo": "Dramatic and Moody Photo-First"
+    "dramatic-moody-photo": "Dramatic and Moody Photo-First",
+    "elegant-silver-platinum": "Elegant Silver & Platinum Anniversary"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,
