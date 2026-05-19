@@ -446,6 +446,34 @@ const TEMPLATES = [
     vibeColor: "text-amber-200/70",
     featureColor: "text-slate-300",
     btnSecondaryClass: "bg-amber-900/20 hover:bg-amber-900/40 text-[#E5E4E2] border-amber-800/40"
+  },
+  {
+    id: "elegant-memory-frame",
+    name: "The Elegant Memory Frame",
+    badge: "10th Anniversary",
+    vibe: "A sophisticated curated digital gallery layout on pure matte black. Perfect for milestone anniversaries, displaying memories in gold-framed panels.",
+    primaryColor: "bg-[#000000]",
+    textColor: "text-[#F3EFE0]",
+    paletteColors: ["#000000", "#D4AF37", "#F3EFE0"],
+    fonts: "Cormorant Garamond, Montserrat",
+    features: [
+      "Pure Matte Black Minimalist Backdrop",
+      "Symmetrical Gold-Dust Corner Patterns",
+      "Curated Gold-Border Photo Gallery Panels",
+      "Ken Burns Slow Image Zoom Transitions",
+      "Subtle Floating Golden Bokeh Particle Animation",
+      "Delicate Shared Wine Glass Vector Art",
+      "Architectural Space Line Drawing Vector Art",
+      "1.5s Fade-In-Up Scrolling Text Reveals"
+    ],
+    bgClass: "bg-black border-[#D4AF37]/25",
+    image: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-yellow-950/40 text-yellow-300 border-yellow-800/40",
+    titleColor: "text-[#F3EFE0] group-hover:text-yellow-400",
+    vibeColor: "text-yellow-200/70",
+    featureColor: "text-slate-300",
+    btnSecondaryClass: "bg-yellow-950/20 hover:bg-yellow-950/40 text-[#D4AF37] border-yellow-850/40"
   }
 ];
 

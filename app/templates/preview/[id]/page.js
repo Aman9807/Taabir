@@ -677,6 +677,39 @@ const DEMO_DATA = {
       btnBgColor: "#B5A642",
       btnTextColor: "#1A1A1A"
     }
+  },
+  "elegant-memory-frame": {
+    id: "__demo_elegant_memory_frame__",
+    brideName: "Charles",
+    groomName: "Charlotte",
+    brideParentsName: "",
+    groomParentsName: "",
+    weddingDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Skylight Conservatory",
+      address: "22 Glass Palace Way, San Francisco, CA",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200",
+      "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?q=80&w=1200",
+      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1200"
+    ],
+    eventType: "anniversary",
+    musicUrl: "",
+    coupleEmail: "charles.charlotte@gmail.com",
+    theme: { templateId: "elegant-memory-frame" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: false,
+      enableLanguageSwitcher: false,
+      doorAnimation: "curtain-reveal",
+      btnBgColor: "#D4AF37",
+      btnTextColor: "#000000"
+    }
   }
 };
 
@@ -699,7 +732,8 @@ export async function generateMetadata({ params }) {
     "enchanted-wireframe": "The Enchanted Wireframe",
     "modern-urban-skyline": "The Modern Urban Skyline",
     "ethereal-coastal": "The Ethereal Coastal",
-    "opulent-gala": "The Opulent Gala"
+    "opulent-gala": "The Opulent Gala",
+    "elegant-memory-frame": "The Elegant Memory Frame"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

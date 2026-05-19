@@ -608,6 +608,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#B5A642",
         border: "rgba(181, 166, 66, 0.2)"
       }
+    : activePaletteId === "elegant-memory-frame"
+    ? {
+        bg: "#000000",
+        door: "#000000",
+        seam: "#D4AF37",
+        card: "rgba(255, 255, 255, 0.02)",
+        text: "#F3EFE0",
+        sub: "#D4AF37",
+        gold: "#D4AF37",
+        border: "rgba(212, 175, 55, 0.15)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -7855,6 +7866,469 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderElegantMemoryFrame = () => {
+    const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200"; // Romantic dark anniversary
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+
+    const scheduleItems = invitation.details?.schedule?.length > 0 ? invitation.details.schedule : [
+      {
+        name: "Welcome Toast & Speeches",
+        time: "07:00 PM",
+        description: "Celebrating ten years of laughter, love, and shared milestones",
+        venue: "The Skylight Conservatory"
+      },
+      {
+        name: "Fine Dining & Jazz",
+        time: "08:30 PM",
+        description: "Intimate curated culinary experience with classical strings accompaniment",
+        venue: "The Skylight Conservatory"
+      }
+    ];
+
+    // Generate random values for bokeh particles to ensure unique float paths
+    const bokehParticles = Array.from({ length: 25 }).map((_, i) => ({
+      left: `${(i * 17) % 100}%`,
+      size: `${15 + ((i * 13) % 45)}px`,
+      delay: `${i * 0.7}s`,
+      duration: `${15 + ((i * 5) % 15)}s`,
+    }));
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#000000",
+          color: "#F3EFE0",
+          fontFamily: "'Cormorant Garamond', serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          padding: "24px",
+          boxSizing: "border-box",
+        }}
+      >
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400&display=swap');
+          
+          @keyframes floatBokeh {
+            0% { transform: translateY(105vh) translateX(0) scale(1); opacity: 0; }
+            10% { opacity: 0.25; }
+            90% { opacity: 0.25; }
+            100% { transform: translateY(-5vh) translateX(25px) scale(1.4); opacity: 0; }
+          }
+          @keyframes galleryKenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.12); }
+          }
+          .bokeh-particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, rgba(212,175,55,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            animation: floatBokeh 18s infinite linear;
+          }
+          .gallery-panel-img {
+            animation: galleryKenBurns 18s infinite alternate ease-in-out;
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+          }
+          .memory-panel-card {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 24px;
+            margin-bottom: 56px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+            position: relative;
+            z-index: 10;
+          }
+          .memory-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            color: #F3EFE0;
+            padding: 12px 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+          }
+          .memory-input:focus {
+            border-bottom-color: #D4AF37;
+            box-shadow: 0 4px 12px -4px rgba(212, 175, 55, 0.2);
+          }
+          .memory-header-font {
+            font-family: 'Cormorant Garamond', serif !important;
+            letter-spacing: 0.1em;
+          }
+          .memory-details-font {
+            font-family: 'Montserrat', sans-serif !important;
+            font-weight: 200;
+            letter-spacing: 0.05em;
+          }
+        `}} />
+
+        {/* Symmetrical Gold-Dust Corner Patterns */}
+        {/* Top-Left */}
+        <svg style={{ position: "absolute", top: 12, left: 12, width: 80, height: 80, pointerEvents: "none", zIndex: 5 }} viewBox="0 0 100 100">
+          <path d="M 8 8 L 90 8" stroke="#D4AF37" strokeWidth="0.6" opacity="0.6" fill="none" />
+          <path d="M 8 8 L 8 90" stroke="#D4AF37" strokeWidth="0.6" opacity="0.6" fill="none" />
+          <circle cx="8" cy="8" r="2" fill="#D4AF37" />
+          <circle cx="22" cy="8" r="0.8" fill="#D4AF37" />
+          <circle cx="34" cy="10" r="1.1" fill="#D4AF37" opacity="0.8" />
+          <circle cx="8" cy="22" r="0.8" fill="#D4AF37" />
+          <circle cx="10" cy="34" r="1.1" fill="#D4AF37" opacity="0.8" />
+          <circle cx="20" cy="20" r="0.6" fill="#D4AF37" />
+          <circle cx="45" cy="14" r="0.6" fill="#D4AF37" opacity="0.5" />
+          <circle cx="14" cy="45" r="0.6" fill="#D4AF37" opacity="0.5" />
+        </svg>
+        {/* Top-Right */}
+        <svg style={{ position: "absolute", top: 12, right: 12, width: 80, height: 80, transform: "rotate(90deg)", pointerEvents: "none", zIndex: 5 }} viewBox="0 0 100 100">
+          <path d="M 8 8 L 90 8" stroke="#D4AF37" strokeWidth="0.6" opacity="0.6" fill="none" />
+          <path d="M 8 8 L 8 90" stroke="#D4AF37" strokeWidth="0.6" opacity="0.6" fill="none" />
+          <circle cx="8" cy="8" r="2" fill="#D4AF37" />
+          <circle cx="22" cy="8" r="0.8" fill="#D4AF37" />
+          <circle cx="34" cy="10" r="1.1" fill="#D4AF37" opacity="0.8" />
+          <circle cx="8" cy="22" r="0.8" fill="#D4AF37" />
+          <circle cx="10" cy="34" r="1.1" fill="#D4AF37" opacity="0.8" />
+          <circle cx="20" cy="20" r="0.6" fill="#D4AF37" />
+          <circle cx="45" cy="14" r="0.6" fill="#D4AF37" opacity="0.5" />
+          <circle cx="14" cy="45" r="0.6" fill="#D4AF37" opacity="0.5" />
+        </svg>
+        {/* Bottom-Left */}
+        <svg style={{ position: "absolute", bottom: 12, left: 12, width: 80, height: 80, transform: "rotate(-90deg)", pointerEvents: "none", zIndex: 5 }} viewBox="0 0 100 100">
+          <path d="M 8 8 L 90 8" stroke="#D4AF37" strokeWidth="0.6" opacity="0.6" fill="none" />
+          <path d="M 8 8 L 8 90" stroke="#D4AF37" strokeWidth="0.6" opacity="0.6" fill="none" />
+          <circle cx="8" cy="8" r="2" fill="#D4AF37" />
+          <circle cx="22" cy="8" r="0.8" fill="#D4AF37" />
+          <circle cx="34" cy="10" r="1.1" fill="#D4AF37" opacity="0.8" />
+          <circle cx="8" cy="22" r="0.8" fill="#D4AF37" />
+          <circle cx="10" cy="34" r="1.1" fill="#D4AF37" opacity="0.8" />
+          <circle cx="20" cy="20" r="0.6" fill="#D4AF37" />
+          <circle cx="45" cy="14" r="0.6" fill="#D4AF37" opacity="0.5" />
+          <circle cx="14" cy="45" r="0.6" fill="#D4AF37" opacity="0.5" />
+        </svg>
+        {/* Bottom-Right */}
+        <svg style={{ position: "absolute", bottom: 12, right: 12, width: 80, height: 80, transform: "rotate(180deg)", pointerEvents: "none", zIndex: 5 }} viewBox="0 0 100 100">
+          <path d="M 8 8 L 90 8" stroke="#D4AF37" strokeWidth="0.6" opacity="0.6" fill="none" />
+          <path d="M 8 8 L 8 90" stroke="#D4AF37" strokeWidth="0.6" opacity="0.6" fill="none" />
+          <circle cx="8" cy="8" r="2" fill="#D4AF37" />
+          <circle cx="22" cy="8" r="0.8" fill="#D4AF37" />
+          <circle cx="34" cy="10" r="1.1" fill="#D4AF37" opacity="0.8" />
+          <circle cx="8" cy="22" r="0.8" fill="#D4AF37" />
+          <circle cx="10" cy="34" r="1.1" fill="#D4AF37" opacity="0.8" />
+          <circle cx="20" cy="20" r="0.6" fill="#D4AF37" />
+          <circle cx="45" cy="14" r="0.6" fill="#D4AF37" opacity="0.5" />
+          <circle cx="14" cy="45" r="0.6" fill="#D4AF37" opacity="0.5" />
+        </svg>
+
+        {/* Subtle Floating Bokeh Background */}
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 1 }}>
+          {bokehParticles.map((b, i) => (
+            <div 
+              key={i} 
+              className="bokeh-particle"
+              style={{
+                left: b.left,
+                width: b.size,
+                height: b.size,
+                animationDelay: b.delay,
+                animationDuration: b.duration,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Main Digital Gallery Container */}
+        <div 
+          style={{
+            maxWidth: 580,
+            margin: "0 auto",
+            padding: "70px 8px 100px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* HEADER HERO */}
+          <ScrollReveal duration={1500}>
+            <div style={{ textAlign: "center", marginBottom: 64 }}>
+              <span className="memory-header-font" style={{ fontSize: 13, textTransform: "uppercase", color: "#D4AF37", letterSpacing: "0.25em" }}>
+                Decade of Love
+              </span>
+              
+              <h1 className="memory-header-font" style={{ 
+                fontSize: 34, 
+                fontWeight: 300, 
+                lineHeight: 1.4, 
+                margin: "24px 0",
+                color: "#F3EFE0"
+              }}>
+                {invitation.brideName} & {invitation.groomName}
+              </h1>
+
+              <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", margin: "16px auto", opacity: 0.6 }} />
+
+              <p className="memory-details-font" style={{ fontSize: 14, color: "#D4AF37", textTransform: "uppercase" }}>
+                10th Anniversary Celebration
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* PANEL 1: OUR JOURNEY */}
+          <ScrollReveal duration={1500}>
+            <div className="memory-panel-card">
+              {/* Ultra-thin Brushed Gold Frame around gallery image */}
+              <div style={{
+                border: "1px solid #D4AF37",
+                padding: "3px",
+                overflow: "hidden",
+                position: "relative",
+                height: 280,
+                width: "100%",
+                marginBottom: 24,
+                boxShadow: "0 8px 24px rgba(0,0,0,0.6)"
+              }}>
+                <div 
+                  className="gallery-panel-img" 
+                  style={{ backgroundImage: `url('${galleryPhotos[0] || bgImage}')` }} 
+                />
+              </div>
+
+              <div style={{ textAlign: "center", padding: "8px 12px" }}>
+                <h2 className="memory-header-font" style={{ fontSize: 24, fontWeight: 300, color: "#D4AF37", marginBottom: 12 }}>
+                  Our Journey
+                </h2>
+                <p style={{ fontSize: 16, lineHeight: 1.7, fontStyle: "italic", opacity: 0.85, fontWeight: 300 }}>
+                  "Ten years of shared smiles, adventures, and a love that grows more beautiful with every passing year."
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* PANEL 2: EVENT DETAILS */}
+          <ScrollReveal duration={1500}>
+            <div className="memory-panel-card">
+              {/* Ultra-thin Brushed Gold Frame around second gallery image */}
+              <div style={{
+                border: "1px solid #D4AF37",
+                padding: "3px",
+                overflow: "hidden",
+                position: "relative",
+                height: 280,
+                width: "100%",
+                marginBottom: 24,
+                boxShadow: "0 8px 24px rgba(0,0,0,0.6)"
+              }}>
+                <div 
+                  className="gallery-panel-img" 
+                  style={{ backgroundImage: `url('${galleryPhotos[1] || "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?q=80&w=800"}')` }} 
+                />
+              </div>
+
+              <div style={{ textAlign: "center", padding: "0 8px" }}>
+                {/* Glowing Shared Wine Glass Vector */}
+                <div style={{ width: 64, height: 50, margin: "0 auto 16px", opacity: 0.9 }}>
+                  <svg viewBox="0 0 100 80" fill="none" stroke="#D4AF37" strokeWidth="1.2">
+                    <path d="M 40 20 Q 40 40 46 45 Q 48 47 48 55 L 48 65 L 42 65 L 42 67 L 58 67 L 58 65 L 52 65 L 52 55 Q 52 47 54 45 Q 60 40 60 20 Z" />
+                    <g transform="translate(6, -2) rotate(8 50 40)">
+                      <path d="M 40 20 Q 40 40 46 45 Q 48 47 48 55 L 48 65 L 42 65 L 42 67 L 58 67 L 58 65 L 52 65 L 52 55 Q 52 47 54 45 Q 60 40 60 20 Z" />
+                    </g>
+                    <path d="M 42 30 Q 50 32 58 30 Q 58 40 46 44 Z" fill="rgba(212, 175, 55, 0.25)" />
+                    <g transform="translate(6, -2) rotate(8 50 40)">
+                      <path d="M 42 30 Q 50 32 58 30 Q 58 40 46 44 Z" fill="rgba(212, 175, 55, 0.25)" />
+                    </g>
+                    <circle cx="50" cy="12" r="1.5" fill="#D4AF37" />
+                    <path d="M 48 10 L 52 14 M 52 10 L 48 14" stroke="#D4AF37" strokeWidth="0.8" />
+                  </svg>
+                </div>
+
+                <h2 className="memory-header-font" style={{ fontSize: 24, fontWeight: 300, color: "#D4AF37", marginBottom: 16 }}>
+                  The Celebration
+                </h2>
+
+                <p className="memory-details-font" style={{ fontSize: 15, textTransform: "uppercase", marginBottom: 8 }}>
+                  {targetDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                </p>
+                <p className="memory-details-font" style={{ fontSize: 13, opacity: 0.8, marginBottom: 24 }}>
+                  At {targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                </p>
+
+                {/* Countdown list inside details */}
+                <div style={{ display: "flex", justifyContent: "center", gap: 16, margin: "24px 0" }}>
+                  <div>
+                    <span style={{ fontSize: 20, color: "#D4AF37" }}>{timeLeft.days}</span>d
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 20, color: "#D4AF37" }}>{timeLeft.hours}</span>h
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 20, color: "#D4AF37" }}>{timeLeft.minutes}</span>m
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* PANEL 3: THE VENUE */}
+          <ScrollReveal duration={1500}>
+            <div className="memory-panel-card" style={{ textAlign: "center" }}>
+              {/* Gold architectural drawing */}
+              <div style={{ width: 80, height: 60, margin: "0 auto 16px", opacity: 0.9 }}>
+                <svg viewBox="0 0 120 70" fill="none" stroke="#D4AF37" strokeWidth="1.2">
+                  <line x1="10" y1="65" x2="110" y2="65" />
+                  <rect x="25" y="25" width="70" height="40" rx="2" />
+                  <path d="M 35 65 L 35 40 Q 35 32 45 32 Q 55 32 55 40 L 55 65" />
+                  <path d="M 65 65 L 65 40 Q 65 32 75 32 Q 85 32 85 40 L 85 65" />
+                  <polygon points="20,25 60,8 100,25" />
+                  <circle cx="60" cy="20" r="4" stroke="#D4AF37" strokeWidth="0.8" strokeDasharray="2,2" />
+                </svg>
+              </div>
+
+              <h2 className="memory-header-font" style={{ fontSize: 24, fontWeight: 300, color: "#D4AF37", marginBottom: 12 }}>
+                The Pavilion
+              </h2>
+
+              <p style={{ fontSize: 18, fontWeight: 300, color: "#F3EFE0", marginBottom: 6 }}>
+                {invitation.venue?.name || "The Glass Pavilion"}
+              </p>
+              <p className="memory-details-font" style={{ fontSize: 13, opacity: 0.7, lineHeight: 1.6, marginBottom: 24 }}>
+                {invitation.venue?.address || "70 Ocean Crest Dr, Cliffside, CA"}
+              </p>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  style={{ display: "inline-block", textDecoration: "none" }}
+                >
+                  <button 
+                    className="memory-header-font"
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "1px solid #D4AF37",
+                      color: "#F3EFE0",
+                      padding: "10px 28px",
+                      fontSize: 11,
+                      cursor: "pointer",
+                      textTransform: "uppercase"
+                    }}
+                  >
+                    View Map
+                  </button>
+                </a>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* PANEL 4: RSVP */}
+          <ScrollReveal duration={1500}>
+            <div className="memory-panel-card">
+              {/* Ultra-thin Brushed Gold Frame around third gallery image */}
+              <div style={{
+                border: "1px solid #D4AF37",
+                padding: "3px",
+                overflow: "hidden",
+                position: "relative",
+                height: 280,
+                width: "100%",
+                marginBottom: 24,
+                boxShadow: "0 8px 24px rgba(0,0,0,0.6)"
+              }}>
+                <div 
+                  className="gallery-panel-img" 
+                  style={{ backgroundImage: `url('${galleryPhotos[2] || "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800"}')` }} 
+                />
+              </div>
+
+              <h2 className="memory-header-font" style={{ fontSize: 24, fontWeight: 300, color: "#D4AF37", textAlign: "center", marginBottom: 28 }}>
+                Kindly RSVP
+              </h2>
+
+              {!rsvpDone ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                  <div>
+                    <label className="memory-header-font" style={{ display: "block", fontSize: 11, color: "#D4AF37", textTransform: "uppercase", marginBottom: 4 }}>
+                      Guest Name
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvp.name}
+                      onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                      className="memory-input"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label className="memory-header-font" style={{ display: "block", fontSize: 11, color: "#D4AF37", textTransform: "uppercase", marginBottom: 4 }}>
+                      Attendance
+                    </label>
+                    <select 
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({...rsvp, attending: e.target.value === "true"})}
+                      className="memory-input"
+                      style={{ appearance: "none" }}
+                    >
+                      <option value="true" style={{ color: "#000" }}>Will Attend</option>
+                      <option value="false" style={{ color: "#000" }}>Cannot Attend</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="memory-header-font" style={{ display: "block", fontSize: 11, color: "#D4AF37", textTransform: "uppercase", marginBottom: 4 }}>
+                      Message to Couple
+                    </label>
+                    <textarea 
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                      className="memory-input"
+                      style={{ minHeight: 60, resize: "none" }}
+                      placeholder="Send a warm message"
+                    />
+                  </div>
+                  <button 
+                    onClick={submitRsvp}
+                    disabled={!rsvp.name}
+                    className="memory-header-font"
+                    style={{
+                      width: "100%",
+                      backgroundColor: rsvp.name ? "#D4AF37" : "transparent",
+                      color: rsvp.name ? "#000000" : "rgba(243, 239, 224, 0.4)",
+                      border: "1px solid #D4AF37",
+                      padding: "14px",
+                      cursor: rsvp.name ? "pointer" : "default",
+                      fontSize: 12,
+                      textTransform: "uppercase",
+                      marginTop: 12
+                    }}
+                  >
+                    Submit Response
+                  </button>
+                </div>
+              ) : (
+                <div style={{ textAlign: "center", padding: "24px 0" }}>
+                  <p className="memory-header-font" style={{ fontSize: 18, color: "#D4AF37", margin: "0 0 6px" }}>Thank You</p>
+                  <p style={{ fontSize: 14, opacity: 0.8 }}>Your response has been registered.</p>
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* Footer details */}
+          <div style={{ textAlign: "center", opacity: 0.4, padding: "16px 0 0" }}>
+            <p className="memory-header-font" style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.2em" }}>
+              A Decade of Shared Memory
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
@@ -7872,6 +8346,7 @@ export default function InviteViewer({ invitation }) {
     { id: "modern-urban-skyline", name: "Modern Urban Skyline", icon: "🏙️" },
     { id: "ethereal-coastal", name: "The Ethereal Coastal", icon: "🌊" },
     { id: "opulent-gala", name: "The Opulent Gala", icon: "✨" },
+    { id: "elegant-memory-frame", name: "The Elegant Memory Frame", icon: "🖼️" },
   ];
 
   const palettes = [
@@ -7893,6 +8368,7 @@ export default function InviteViewer({ invitation }) {
     { id: "modern-urban-skyline", name: "Modern Urban Skyline", preview: ["#050A1F", "#B76E79", "#FFFFFF"] },
     { id: "ethereal-coastal", name: "The Ethereal Coastal", preview: ["#001020", "#F7E7CE", "#C2B280"] },
     { id: "opulent-gala", name: "The Opulent Gala", preview: ["#1A1A1A", "#E5E4E2", "#B5A642"] },
+    { id: "elegant-memory-frame", name: "The Elegant Memory Frame", preview: ["#000000", "#D4AF37", "#F3EFE0"] },
   ];
 
   return (
@@ -8384,6 +8860,8 @@ export default function InviteViewer({ invitation }) {
         renderEtherealCoastal()
       ) : activeLayoutId === "opulent-gala" ? (
         renderOpulentGala()
+      ) : activeLayoutId === "elegant-memory-frame" ? (
+        renderElegantMemoryFrame()
       ) : (
         <div 
           style={{
