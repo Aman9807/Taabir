@@ -335,7 +335,7 @@ const TEMPLATES = [
       "Fade-In-Up Dynamic Scroll Trigger Animations"
     ],
     bgClass: "bg-[#0C0C0C] border-[#D4AF37]/30",
-    image: "https://images.unsplash.com/photo-1543886567-27b3e2b9f3aa?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800",
     cardTheme: "dark",
     badgeClass: "bg-[#800000]/30 text-[#D4AF37] border-[#D4AF37]/40",
     titleColor: "text-[#D4AF37] group-hover:text-white",

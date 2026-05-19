@@ -531,10 +531,10 @@ const DEMO_DATA = {
       address: "1 Royal Boulevard, King's Landing, NY",
       googleMapsUrl: "https://www.google.com/maps",
     },
-    photoUrl: "https://images.unsplash.com/photo-1543886567-27b3e2b9f3aa?q=80&w=1200",
+    photoUrl: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200",
     photos: [
-      "https://images.unsplash.com/photo-1543886567-27b3e2b9f3aa?q=80&w=1200",
-      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200"
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200",
+      "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200"
     ],
     eventType: "wedding",
     musicUrl: "",

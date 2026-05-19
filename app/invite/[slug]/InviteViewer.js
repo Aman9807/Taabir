@@ -5912,7 +5912,7 @@ export default function InviteViewer({ invitation }) {
                     />
                   </div>
                   <button 
-                    onClick={handleRsvpSubmit}
+                    onClick={submitRsvp}
                     disabled={rsvpLoading || !rsvp.name}
                     className="royal-btn"
                     style={{
