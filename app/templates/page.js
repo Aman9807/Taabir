@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 
 const TEMPLATES = [
@@ -588,11 +587,159 @@ const TEMPLATES = [
 
 export default function TemplatesPage() {
   const { user } = useAuth();
-  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  // ── category groups ──────────────────────────────────────────────
+  const CATEGORIES = [
+    {
+      key: "wedding",
+      label: "Wedding & Anniversary",
+      emoji: "💍",
+      description: "Timeless designs for weddings, vow renewals, and milestone anniversaries. Many of these work beautifully for any celebration.",
+      accent: "from-amber-500 to-yellow-600",
+      accentBg: "bg-amber-50",
+      accentText: "text-amber-800",
+      accentBorder: "border-amber-200",
+      ids: [
+        "emerald-noir",
+        "ivory-classic",
+        "minimalist-romance",
+        "dark-moody-elegant",
+        "bohemian-terracotta",
+        "royal-glamour",
+        "royal-heritage",
+        "enchanted-wireframe",
+        "ethereal-coastal",
+        "opulent-gala",
+        "elegant-memory-frame",
+        "golden-keepsake",
+        "minimalist-white-gold",
+        "dramatic-moody-photo",
+        "elegant-silver-platinum",
+      ],
+    },
+    {
+      key: "birthday",
+      label: "Birthday",
+      emoji: "🎂",
+      description: "From elegant milestone dinners to high-energy neon parties — birthday invitations for every age and vibe.",
+      accent: "from-rose-500 to-pink-600",
+      accentBg: "bg-rose-50",
+      accentText: "text-rose-800",
+      accentBorder: "border-rose-200",
+      ids: [
+        "neon-nightclub",
+        "elegant-milestone",
+        "playful-kidsparty",
+        "modern-urban-skyline",
+      ],
+    },
+    {
+      key: "party",
+      label: "Party & Corporate",
+      emoji: "🎉",
+      description: "Vibrant party themes and polished corporate event styles. Mix and match — couples use these for receptions too!",
+      accent: "from-violet-500 to-indigo-600",
+      accentBg: "bg-violet-50",
+      accentText: "text-violet-800",
+      accentBorder: "border-violet-200",
+      ids: [
+        "summer-poolparty",
+        "corporate-gala",
+        "cozy-dinner",
+      ],
+    },
+  ];
+
+  const templateById = Object.fromEntries(TEMPLATES.map(t => [t.id, t]));
+
+  const TemplateCard = ({ tpl }) => (
+    <div
+      key={tpl.id}
+      className={`rounded-3xl border p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${tpl.bgClass} shadow-md relative group overflow-hidden`}
+    >
+      {/* Subtle light reflections */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
+
+      <div>
+        {/* Visual Header */}
+        <div className="flex justify-between items-start mb-6">
+          <div>
+            <span className={`inline-block px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider font-mono mb-2 border ${tpl.badgeClass}`}>
+              {tpl.badge}
+            </span>
+            <h3 className={`text-2xl font-serif font-bold transition-colors ${tpl.titleColor}`}>
+              {tpl.name}
+            </h3>
+          </div>
+
+          {/* Color Palette Indicators */}
+          <div className="flex items-center gap-1.5 bg-slate-950/40 p-1.5 rounded-lg border border-white/5">
+            {tpl.paletteColors.map((color, index) => (
+              <span
+                key={index}
+                className="w-4 h-4 rounded-full border border-white/20 block"
+                style={{ backgroundColor: color }}
+                title={color}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Cover Image Preview */}
+        <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/5 shadow-inner mb-6 relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={tpl.image}
+            alt={`${tpl.name} template layout preview`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
+            <p className="text-[10px] uppercase tracking-widest text-[#FAF9F5]/80 font-mono">
+              Typography: {tpl.fonts}
+            </p>
+          </div>
+        </div>
+
+        {/* Vibe / Description */}
+        <p className={`text-xs sm:text-sm leading-relaxed mb-6 italic ${tpl.vibeColor}`}>
+          &ldquo;{tpl.vibe}&rdquo;
+        </p>
+
+        {/* Feature checklist */}
+        <div className="space-y-2 mb-8">
+          <p className={`text-[9px] uppercase tracking-widest font-bold font-mono ${tpl.cardTheme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Template Features:</p>
+          <ul className={`grid grid-cols-1 sm:grid-cols-2 gap-2 ${tpl.featureColor}`}>
+            {tpl.features.map((feature, index) => (
+              <li key={index} className="text-xs flex items-start gap-2">
+                <span className="text-amber-500 text-sm leading-none">✦</span>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="grid grid-cols-2 gap-4 mt-auto">
+        <Link
+          href={`/templates/preview/${tpl.id}`}
+          className={`py-3.5 border font-bold text-xs uppercase tracking-widest rounded-xl transition-all text-center flex items-center justify-center gap-2 ${tpl.btnSecondaryClass}`}
+        >
+          👁️ See Live Demo
+        </Link>
+        <Link
+          href={`/register?template=${tpl.id}`}
+          className="py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md text-center flex items-center justify-center gap-2"
+        >
+          ✨ Customize &amp; Use
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#FAF9F5] text-slate-800 selection:bg-amber-100 font-sans relative overflow-hidden">
-      
+
       {/* Decorative luxury background grids */}
       <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#C5A880_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
 
@@ -630,9 +777,9 @@ export default function TemplatesPage() {
 
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-        
+
         {/* Title and Intro */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className="text-center max-w-3xl mx-auto mb-6 space-y-4">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-50 text-amber-800 text-[10px] font-bold uppercase tracking-widest font-mono">
             ✨ Exquisite Theme Selection
           </span>
@@ -640,101 +787,52 @@ export default function TemplatesPage() {
             Choose Your <span className="text-amber-600 italic font-normal">Forever</span> Canvas
           </h1>
           <p className="text-sm sm:text-base text-slate-500 leading-relaxed font-sans max-w-xl mx-auto">
-            Browse our carefully curated library of designer digital wedding invitation cards. Click any template to explore a live interactive demo and feel the digital luxury.
+            Browse our curated library of designer digital invitation templates, grouped by occasion. Mix and match freely — every template works for any celebration.
           </p>
         </div>
 
-        {/* Template Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {TEMPLATES.map((tpl) => (
-            <div 
-              key={tpl.id}
-              className={`rounded-3xl border p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${tpl.bgClass} shadow-md relative group overflow-hidden`}
-            >
-              {/* Subtle light reflections */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
-
-              <div>
-                {/* Visual Header */}
-                <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <span className={`inline-block px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider font-mono mb-2 border ${tpl.badgeClass}`}>
-                      {tpl.badge}
-                    </span>
-                    <h2 className={`text-2xl font-serif font-bold transition-colors ${tpl.titleColor}`}>
-                      {tpl.name}
-                    </h2>
-                  </div>
-                  
-                  {/* Color Palette Indicators */}
-                  <div className="flex items-center gap-1.5 bg-slate-950/40 p-1.5 rounded-lg border border-white/5">
-                    {tpl.paletteColors.map((color, index) => (
-                      <span 
-                        key={index}
-                        className="w-4 h-4 rounded-full border border-white/20 block"
-                        style={{ backgroundColor: color }}
-                        title={color}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Cover Image Preview */}
-                <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden border border-white/5 shadow-inner mb-6 relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
-                    src={tpl.image} 
-                    alt={`${tpl.name} template layout preview`}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
-                    <p className="text-[10px] uppercase tracking-widest text-[#FAF9F5]/80 font-mono">
-                      Typography: {tpl.fonts}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Vibe / Description */}
-                <p className={`text-xs sm:text-sm leading-relaxed mb-6 italic ${tpl.vibeColor}`}>
-                  &ldquo;{tpl.vibe}&rdquo;
-                </p>
-
-                {/* Feature checklist */}
-                <div className="space-y-2 mb-8">
-                  <p className={`text-[9px] uppercase tracking-widest font-bold font-mono ${tpl.cardTheme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Template Features:</p>
-                  <ul className={`grid grid-cols-1 sm:grid-cols-2 gap-2 ${tpl.featureColor}`}>
-                    {tpl.features.map((feature, index) => (
-                      <li key={index} className="text-xs flex items-start gap-2">
-                        <span className="text-amber-500 text-sm leading-none">✦</span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-4 mt-auto">
-                <Link
-                  href={`/templates/preview/${tpl.id}`}
-                  className={`py-3.5 border font-bold text-xs uppercase tracking-widest rounded-xl transition-all text-center flex items-center justify-center gap-2 ${tpl.btnSecondaryClass}`}
-                >
-                  👁️ See Live Demo
-                </Link>
-                <Link
-                  href={`/register?template=${tpl.id}`}
-                  className="py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md text-center flex items-center justify-center gap-2"
-                >
-                  ✨ Customize &amp; Use
-                </Link>
-              </div>
-
-            </div>
-          ))}
+        {/* Cross-category note */}
+        <div className="max-w-2xl mx-auto mb-16 px-5 py-3.5 rounded-2xl bg-slate-900/4 border border-slate-200 flex items-start gap-3">
+          <span className="text-lg mt-0.5">💡</span>
+          <p className="text-xs text-slate-500 leading-relaxed font-sans">
+            <strong className="text-slate-700">Mix &amp; match freely.</strong> All templates can be used for any event type — a wedding template works great for a gala, and a party design can elevate an anniversary dinner. The theme switcher in your dashboard lets you change anytime.
+          </p>
         </div>
 
+        {/* ── Category Sections ── */}
+        {CATEGORIES.map((cat) => {
+          const templates = cat.ids.map(id => templateById[id]).filter(Boolean);
+          return (
+            <section key={cat.key} className="mb-20">
+              {/* Section Heading */}
+              <div className="flex items-center gap-4 mb-8">
+                <div className={`flex items-center gap-3 px-5 py-2.5 rounded-2xl ${cat.accentBg} border ${cat.accentBorder}`}>
+                  <span className="text-2xl leading-none">{cat.emoji}</span>
+                  <h2 className={`text-base font-bold font-serif tracking-wide ${cat.accentText}`}>{cat.label}</h2>
+                  <span className={`ml-2 text-[9px] font-bold font-mono uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/60 border ${cat.accentBorder} ${cat.accentText}`}>
+                    {templates.length} templates
+                  </span>
+                </div>
+                <div className="flex-1 h-px bg-gradient-to-r from-slate-200 to-transparent" />
+              </div>
+
+              {/* Category description */}
+              <p className="text-xs text-slate-400 font-sans mb-8 max-w-xl italic">
+                {cat.description}
+              </p>
+
+              {/* Template Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                {templates.map(tpl => (
+                  <TemplateCard key={tpl.id} tpl={tpl} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+
         {/* Dynamic decorative seal bottom section */}
-        <div className="mt-20 border-t border-slate-200/60 pt-16 text-center max-w-xl mx-auto space-y-6">
+        <div className="mt-8 border-t border-slate-200/60 pt-16 text-center max-w-xl mx-auto space-y-6">
           <div className="inline-flex h-12 w-12 rounded-full border border-amber-500/30 items-center justify-center text-amber-600 font-serif text-lg bg-amber-50/50 shadow-inner">
             ❦
           </div>
@@ -774,3 +872,4 @@ export default function TemplatesPage() {
     </div>
   );
 }
+

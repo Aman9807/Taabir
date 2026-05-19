@@ -3,50 +3,135 @@
 ​Colors: Ivory (#FFFFF0), Champagne (#F7E7CE), and Charcoal (#333333) for text.
 ​Fonts: Playfair Display for primary headers and names, Lora for body text.
 ​Animations: Use a Fade-In-Up animation for all text blocks triggered on scroll (Duration: 1.5s, Ease-out). Background images should feature a continuous, slow Parallax scroll effect. The RSVP button should have a gentle Pulse animation (Duration: 2s loop).
+
 ​2. Dark Moody & Elegant
 ​Prompt: Create a luxurious, dark-themed digital wedding invitation formatted as an immersive web story.
 ​Colors: Deep Emerald (#043927), Rich Gold (#D4AF37), and Onyx (#0F0F0F).
 ​Fonts: Cinzel for elegant, cinematic headers, and Montserrat for crisp, readable event details.
 ​Animations: Hero text should use a Reveal-from-Left masking effect (Duration: 1.2s). Use a Ken Burns effect (slow zoom-in) on the background hero images (Duration: 8s loop). Timeline items should Slide-In-Right with a staggered delay of 0.3s.
+
 ​3. Bohemian Terracotta Dream
 ​Prompt: Design a warm, boho-chic web invitation with a fluid, organic scrolling layout, avoiding rigid boxes.
 ​Colors: Terracotta (#E2725B), Sage Green (#9DC183), and Warm Cream (#FFFDD0).
 ​Fonts: Pacifico for accent words and section titles, Roboto for clean body typography.
 ​Animations: Elements should appear using a Zoom-In-Fade (Duration: 1.2s). Add a custom Floating/Levitate animation to decorative botanical vectors (Duration: 4s loop, moving up and down by 10px).
+
 ​4. Royal Glamour & Glassmorphism
 ​Prompt: Generate a high-end, glamorous wedding invitation using modern web design trends like glassmorphism (frosted glass overlays over background images).
 ​Colors: Navy Blue (#000080), Rose Gold (#B76E79), and Crisp White (#FFFFFF).
 ​Fonts: Cormorant Garamond for sophisticated titles, Lato for body text.
 ​Animations: The frosted glass event cards should Slide-Up-with-Blur-Reveal (Duration: 1s) as the user scrolls. Use a Fade-In for text inside the cards (Duration: 0.8s, delayed by 0.5s after the card appears).
 ​🎂 Birthday Invitations
-​5. Neon Nightclub (18th/21st Birthday)
+​
+5. Neon Nightclub (18th/21st Birthday)
 ​Prompt: Build an energetic, high-contrast, modern landing page for a milestone birthday party.
 ​Colors: Pitch Black (#000000), Neon Pink (#FF10F0), and Electric Blue (#00FFFF).
 ​Fonts: Permanent Marker for edgy headers, Open Sans for event details.
 ​Animations: The main title should have a Neon-Flicker effect on load (Duration: 0.5s, random intervals). Event detail cards should Bounce-In-Down when scrolled into view (Duration: 1s).
+
 ​6. Elegant Milestone (50th/60th Birthday)
 ​Prompt: Create a sophisticated, magazine-style web layout for a milestone birthday dinner.
 ​Colors: Burgundy (#800020), Silver (#C0C0C0), and Slate Gray (#708090).
 ​Fonts: Great Vibes for the birthday person's name, Merriweather for the remaining text.
 ​Animations: A very slow Cross-Fade between background images (Duration: 3s). Text should elegantly Fade-In (Duration: 2s) with zero movement to maintain a mature, classic feel.
+
 ​7. Playful & Interactive (Kids/Themed Birthday)
 ​Prompt: Design a bright, fun, and highly interactive digital invitation with a horizontal scrolling layout (or section-by-section snap scroll).
 ​Colors: Sunshine Yellow (#FFD700), Sky Blue (#87CEEB), and Coral (#FF7F50).
 ​Fonts: Fredoka One for chunky, friendly headers, Quicksand for rounded, easy-to-read body text.
 ​Animations: Decorative elements (like balloons or stars) should have a continuous Wiggle/Shake animation (Duration: 2s loop). Text blocks should Pop-In (scale from 0 to 1 with an overshoot/bounce, Duration: 0.8s).
 ​🎉 Party & Event Invitations
-​8. Summer Pool/Beach Party
+​
+8. Summer Pool/Beach Party
 ​Prompt: Generate a vibrant, fluid web invitation for a summer party. The layout should feel refreshing and dynamic.
 ​Colors: Aqua Marine (#7FFFD4), Peach (#FFDAB9), and Sand (#C2B280).
 ​Fonts: Anton for bold, impactful headlines, Nunito for soft, casual body text.
 ​Animations: Background section dividers should use an SVG Wave-Ripple continuous animation (Duration: 5s loop). Text content should Slide-Up-Fade from the bottom of the screen (Duration: 1.2s).
-​9. Sleek Corporate Gala / Launch Party
+​
+9. Sleek Corporate Gala / Launch Party
 ​Prompt: Build a professional, ultra-modern, and minimalist web invitation for a corporate event or gala.
 ​Colors: Midnight Blue (#191970), Platinum (#E5E4E2), and White (#FFFFFF).
 ​Fonts: Oswald for strong, uppercase headers, Helvetica Neue (or Arial) for strict, clean data presentation.
 ​Animations: Use a clean Wipe-Left-to-Right reveal for headers (Duration: 0.8s). The RSVP form should use a smooth Accordion-Expand animation when clicked (Duration: 0.4s).
+
 ​10. Cozy Holiday / Dinner Party
 ​Prompt: Create a warm, immersive, scrolling invitation for an intimate dinner or holiday party.
 ​Colors: Forest Green (#228B22), Cranberry Red (#9E1B32), and Warm Gold (#CFB53B).
 ​Fonts: Dancing Script for a handwritten feel on titles, Garamond for classic body text.
 ​Animations: Include a subtle Falling-Particles (like snow or embers) background animation (Continuous). Image galleries of the venue or food should Fade-In while slightly zooming out (Scale 1.1 to 1.0, Duration: 1.5s).
+
+1. The Royal Heritage (Based closely on your screenshots)
+Prompt: Generate a luxury, dark-themed scrolling single-page web invitation for a grand wedding.
+Layout & Borders: The hero section should feature deep red theatrical stage curtains framing the edges, with intricate, vintage gold Art Deco flourishes in the four corners.
+Colors: Onyx Black (#0C0C0C), Antique Gold (#D4AF37), and a subtle crimson glow behind the hero text.
+Typography: Great Vibes for script accents/names, Cinzel for section headers, and Lora for body text. Use thin, horizontal gold line dividers with a tiny central diamond (♦) or heart (♥) separating sections.
+Micro-Details: Include small, minimalist gold vector icons centered above each section header (e.g., a map pin for Venue, a suit hanger for Dress Code, a gift box for Registry). Above the Venue text, include a delicate, continuous-line architectural illustration of a grand palace or heritage hotel.
+Animations: Implement a slow, floating gold particle effect (opacity: 0.3) continuously drifting in the background. Scroll triggers should Fade-In-Up the text blocks (Duration: 1.2s, ease-in-out).
+
+2. The Enchanted Wireframe (Perfect for Haldi/Mehendi)
+Prompt: Create an elegant, nature-inspired scrolling web invitation with a focus on delicate line-art.
+Layout & Borders: The screen edges should be bordered by a very thin gold line, featuring minimalist, wireframe-style botanical leaves or vines wrapping around the top and bottom corners.
+Colors: Deep Forest Green (#0A1A14), Metallic Gold (#CFB53B), and Soft Mint for secondary text (#E6F2EC).
+Typography: Alex Brush for flowing script, Playfair Display for structured headings.
+Micro-Details: Above the program timeline, use tiny, glowing dot-nodes to connect the schedule vertically. For the Venue section, incorporate a fine-line SVG illustration of a floral gazebo or outdoor tent. Include an interactive "Scratch to Reveal" golden card element for a surprise event or dress code reveal.
+Animations: The wireframe vine borders should slowly "draw themselves" using an SVG stroke-dashoffset animation on page load (Duration: 2.5s).
+
+3. The Modern Urban Skyline (Gala/Birthday)
+Prompt: Design a sleek, contemporary dark-mode landing page invitation for a milestone birthday or formal gala.
+Layout & Borders: Use a clean, sharp "glass box" border effect—a thin, semi-transparent white border sitting 10px inside the screen edge, without ornate corner flourishes, keeping it ultra-modern.
+Colors: Midnight Navy (#050A1F), Rose Gold (#B76E79), and Crisp White (#FFFFFF).
+Typography: Oswald for bold, tracked-out uppercase headers, Montserrat for clean, modern event details.
+Micro-Details: Instead of traditional dividers, use a glowing rose-gold gradient line that fades out at the edges. Above the venue details, feature a minimalist line-art illustration of a modern city skyline. Include a high-contrast countdown timer composed of distinct, glassmorphic square boxes for Days, Hours, Minutes.
+Animations: Include a background Ken Burns effect (slow continuous zoom) on a dark, moody background image. The section icons (calendar, clock, car) should have a subtle Bounce-Hover effect when the user scrolls past them.
+
+4. The Ethereal Coastal (Destination Event)
+Prompt: Generate a soft, airy, yet dark-themed scrolling invitation for a destination event.
+Layout & Borders: Instead of a hard border, use a heavy, soft vignette shadow around the edges of the screen that focuses the user's eye on the center.
+Colors: Deep Ocean Blue (#001020), Champagne (#F7E7CE), and Sand (#C2B280).
+Typography: Cormorant Garamond for elegant, classical serif styling throughout, using italics heavily for sub-headers.
+Micro-Details: Use tiny, nautical line-art icons (a minimalist compass for the map, a wave for the venue). For the Venue illustration, display a delicate vector line drawing of a beachside archway or a cliffside villa. Include an embedded, horizontally scrollable photo gallery with rounded corners and thin gold borders.
+Animations: Background should feature a very slow Wave/Ripple CSS overlay to mimic water. Text elements should use a soft Blur-to-Focus reveal (starting blurred at 5px and transitioning to 0px while fading in, Duration: 1.5s).
+
+5. The Opulent Gala (Anniversary/Formal Party)
+Prompt: Create a high-end, immersive digital invitation focused on typography and interactive forms.
+Layout & Borders: Feature an intricate, symmetrical Art Deco geometric border in the corners, reminiscent of the 1920s Gatsby style.
+Colors: Charcoal Black (#1A1A1A), Bright Platinum (#E5E4E2), and Brass (#B5A642).
+Typography: Julius Sans One for striking headers, Lato for highly readable form inputs and details.
+Micro-Details: Section dividers should be geometric (e.g., < — ⬟ — >). Above the RSVP section, include a line-art illustration of an elegant champagne tower or a grand ballroom chandelier. The RSVP form fields should be minimalist—just a bottom border (no full boxes) that glows platinum when focused.
+Animations: The geometric corner borders should pulse with a subtle glow (Drop-Shadow transition, 3s loop). When the user clicks "Send Message" on the RSVP, the button should shrink into a small loading circle before revealing a success checkmark.
+
+
+Prompt 1: The Elegant Memory Frame
+Design a sophisticated, dark-themed single-page scrolling web invitation for a 10th wedding anniversary.
+Background: Pure matte black.
+Layout and Framing: The layout must resemble a curated digital gallery. Each section, such as Our Journey, Event Details, and RSVP, should be a distinct, central photo panel. Use ultra-thin, brushed gold line frames around every photo, with minimalist, symmetrical gold-dust patterns in the inner corners of the screen.
+Details: Above the Event Details section, include a delicate, glowing vector illustration of a shared wine glass or a milestone gift. Above the Venue details, display a minimalist gold architectural line drawing of the event space.
+Animations: Use a Ken Burns slow zoom-in effect on the photo frames. The text should elegantly Fade-In-Up as you scroll with a duration of 1.5 seconds and an ease-out transition. Use a subtle Bokeh-Float background animation across the entire page.
+
+Prompt 2: The Golden Keepsake
+Create a warm, intimate web invitation for a 25th wedding anniversary party.
+Background: A deep, textured charcoal grey, giving a premium canvas feel.
+Layout and Framing: Focus on traditional photo frames. The central hero photo must be set inside a decorative, antique gold rope-textured border frame. Section headers should be underlined by a thin gold line with a central, small floral emblem.
+Details: Include miniature, framed vector icons, such as a small, classic calendar page for the date, and a minimalist compass for the location. The main header for the anniversary couple should be a flowing, warm gold script like Dancing Script.
+Animations: Background elements like tiny sparkles should use a persistent Shimmer/Sparkle animation. Text and frames should use a Slide-In-Down with a slight bounce and a duration of 1.2 seconds, simulating a framed piece being hung on a wall.
+
+Prompt 3: The Minimalist Modern White-and-Gold
+Generate a modern, minimalist wedding web invitation, shifting the style from dark to clean and bright.
+Background: A clean, spacious cream or antique white.
+Layout and Framing: The core focus is on large, frameless hero images, broken up by structured, minimalist content blocks with thin, elegant black or dark gold borders, similar to a modern photo album layout.
+Details: Use a sleek, thin black line map illustration for the venue location. Add subtle gold-brushed corner accents to the RSVP section panel. Typography should use a clean, sophisticated serif for headers and a sans-serif for details.
+Animations: Background image should slowly cross-fade. Content blocks should use a Parallax scroll effect, rising slightly above the background photos as the user scrolls. Use a clean, sharp Reveal-from-Left for the text.
+
+Prompt 4: The Dramatic and Moody Photo-First
+Design a dramatic, immersive, dark-themed single-page scrolling web invitation for a vow renewal ceremony.
+Background: A very deep, almost-black blue-green.
+Layout and Framing: This layout must use heavy foreground image overlays. Large, black-and-white photos are central, framed with thick, dark gunmetal borders.
+Details: Above the Program of Events, use subtle, glowing text like Reaffirming Our Vows in a deep amber color. The Location icon should be a minimalist vector map pin inside a thin gold circle. Use thick, solid white text for dates and times to provide high contrast against the dark background.
+Animations: The black-and-white photo frames should have a slow Color-Fade-to-Color effect when they come into view. Background elements should use a persistent, very slow Drifting-Mist effect.
+
+Prompt 5: The Elegant Silver and Platinum Anniversary
+Build a sophisticated, single-page web invitation for a 50th wedding anniversary dinner.
+Background: A luxurious, dark platinum grey with a subtle brushed-metal texture.
+Layout and Framing: The layout must look structured, like a formal framed announcement. The central content area should be contained within a heavy, polished silver geometric border, with small, decorative silver corner elements.
+Details: Above the RSVP form, feature a stylized, minimalist line-art illustration of a wedding band. A classic serif typeface should be used for the names of the couple, and a clean modern sans-serif for details. Include a timeline of their relationship with tiny, glowing silver nodes.
+Animations: Include a background particle effect of falling platinum flakes. Text should Slide-In-Right with a very soft Fade with a duration of 1 second, delayed on subsequent elements. The main event text should pulse gently.
