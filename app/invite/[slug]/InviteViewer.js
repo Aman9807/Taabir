@@ -597,6 +597,17 @@ export default function InviteViewer({ invitation }) {
         gold: "#F7E7CE",
         border: "rgba(247, 231, 206, 0.2)"
       }
+    : activePaletteId === "opulent-gala"
+    ? {
+        bg: "#1A1A1A",
+        door: "#1A1A1A",
+        seam: "#B5A642",
+        card: "rgba(229, 228, 226, 0.03)",
+        text: "#E5E4E2",
+        sub: "#B5A642",
+        gold: "#B5A642",
+        border: "rgba(181, 166, 66, 0.2)"
+      }
     : isIvory
     ? { 
         bg: "#FAF9F5", 
@@ -7425,7 +7436,424 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderOpulentGala = () => {
+    const [btnState, setBtnState] = useState("idle"); // idle, submitting, success
+    const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200"; // Elegant party backdrop
 
+    const scheduleItems = invitation.details?.schedule?.length > 0 ? invitation.details.schedule : [
+      {
+        name: "Grand Entrance & Toast",
+        time: "08:00 PM",
+        description: "Welcome Champagne reception and opening address",
+        venue: "The Imperial Ballroom"
+      },
+      {
+        name: "Gala Banquet",
+        time: "09:30 PM",
+        description: "An exceptional culinary menu followed by live jazz orchestra",
+        venue: "The Grand Pavilion"
+      }
+    ];
+
+    const handleOpulentSubmit = async () => {
+      if (!rsvp.name) return;
+      setBtnState("submitting");
+      await new Promise(resolve => setTimeout(resolve, 1800));
+      setBtnState("success");
+      submitRsvp();
+    };
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#1A1A1A",
+          color: "#E5E4E2",
+          fontFamily: "'Lato', sans-serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          padding: "24px",
+          boxSizing: "border-box",
+        }}
+      >
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Lato:wght@300;400;700&display=swap');
+          
+          @keyframes borderGlow {
+            0%, 100% { filter: drop-shadow(0 0 2px rgba(181, 166, 66, 0.3)); }
+            50% { filter: drop-shadow(0 0 10px rgba(181, 166, 66, 0.7)); }
+          }
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+          .gatsby-corner {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            stroke: #B5A642;
+            stroke-width: 1.5;
+            fill: none;
+            z-index: 20;
+            pointer-events: none;
+            animation: borderGlow 3s infinite ease-in-out;
+          }
+          .opulent-card {
+            background: rgba(26, 26, 26, 0.85);
+            border: 1px solid rgba(181, 166, 66, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(181, 166, 66, 0.05);
+            border-radius: 4px;
+            padding: 32px 24px;
+            position: relative;
+          }
+          .opulent-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(181, 166, 66, 0.3);
+            color: #E5E4E2;
+            padding: 12px 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+          }
+          .opulent-input:focus {
+            border-bottom-color: #E5E4E2;
+            box-shadow: 0 4px 12px -4px rgba(229, 228, 226, 0.3);
+          }
+          .opulent-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(229, 228, 226, 0.2);
+            border-top-color: #E5E4E2;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+          }
+          .opulent-header {
+            font-family: 'Julius Sans One', sans-serif !important;
+            letter-spacing: 0.25em !important;
+            text-transform: uppercase;
+          }
+        `}} />
+
+        {/* Art Deco Corner Borders */}
+        {/* Top Left */}
+        <svg className="gatsby-corner" style={{ top: 15, left: 15 }} viewBox="0 0 100 100">
+          <path d="M 0 0 L 100 0 L 100 10 L 10 10 L 10 100 L 0 100 Z" />
+          <path d="M 15 15 L 85 15 L 85 22 L 22 22 L 22 85 L 15 85 Z" />
+          <path d="M 28 28 L 70 28 L 70 33 L 33 33 L 33 70 L 28 70 Z" />
+          <circle cx="10" cy="10" r="3" fill="#B5A642" />
+        </svg>
+        {/* Top Right */}
+        <svg className="gatsby-corner" style={{ top: 15, right: 15, transform: "rotate(90deg)" }} viewBox="0 0 100 100">
+          <path d="M 0 0 L 100 0 L 100 10 L 10 10 L 10 100 L 0 100 Z" />
+          <path d="M 15 15 L 85 15 L 85 22 L 22 22 L 22 85 L 15 85 Z" />
+          <path d="M 28 28 L 70 28 L 70 33 L 33 33 L 33 70 L 28 70 Z" />
+          <circle cx="10" cy="10" r="3" fill="#B5A642" />
+        </svg>
+        {/* Bottom Left */}
+        <svg className="gatsby-corner" style={{ bottom: 15, left: 15, transform: "rotate(-90deg)" }} viewBox="0 0 100 100">
+          <path d="M 0 0 L 100 0 L 100 10 L 10 10 L 10 100 L 0 100 Z" />
+          <path d="M 15 15 L 85 15 L 85 22 L 22 22 L 22 85 L 15 85 Z" />
+          <path d="M 28 28 L 70 28 L 70 33 L 33 33 L 33 70 L 28 70 Z" />
+          <circle cx="10" cy="10" r="3" fill="#B5A642" />
+        </svg>
+        {/* Bottom Right */}
+        <svg className="gatsby-corner" style={{ bottom: 15, right: 15, transform: "rotate(180deg)" }} viewBox="0 0 100 100">
+          <path d="M 0 0 L 100 0 L 100 10 L 10 10 L 10 100 L 0 100 Z" />
+          <path d="M 15 15 L 85 15 L 85 22 L 22 22 L 22 85 L 15 85 Z" />
+          <path d="M 28 28 L 70 28 L 70 33 L 33 33 L 33 70 L 28 70 Z" />
+          <circle cx="10" cy="10" r="3" fill="#B5A642" />
+        </svg>
+
+        {/* Ambient Darkened Background Image */}
+        <div 
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url('${bgImage}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.08,
+            pointerEvents: "none",
+            zIndex: 1
+          }}
+        />
+
+        {/* Main Content Container */}
+        <div 
+          style={{
+            maxWidth: 600,
+            margin: "0 auto",
+            padding: "80px 16px 120px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* HERO */}
+          <ScrollReveal>
+            <div style={{ textAlign: "center", marginBottom: 60, marginTop: 20 }}>
+              <p className="opulent-header" style={{ fontSize: 13, color: "#B5A642", marginBottom: 20 }}>
+                You Are Cordially Invited
+              </p>
+              
+              <h1 className="opulent-header" style={{ 
+                fontSize: 38, 
+                fontWeight: 400,
+                lineHeight: 1.3,
+                marginBottom: 24,
+                color: "#E5E4E2"
+              }}>
+                {invitation.brideName} <span style={{ color: "#B5A642" }}>&</span> {invitation.groomName}
+              </h1>
+
+              {/* Geometric Divider */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "24px 0", color: "#B5A642" }}>
+                <span style={{ fontSize: 12 }}>&lt;</span>
+                <div style={{ width: 50, height: 1, backgroundColor: "#B5A642", opacity: 0.7 }} />
+                <span style={{ fontSize: 14 }}>⬟</span>
+                <div style={{ width: 50, height: 1, backgroundColor: "#B5A642", opacity: 0.7 }} />
+                <span style={{ fontSize: 12 }}>&gt;</span>
+              </div>
+
+              <p className="opulent-header" style={{ fontSize: 14, color: "#B5A642" }}>
+                {eventType === "birthday" ? "Milestone Celebration" : "The Honour of Your Presence"}
+              </p>
+              
+              <p style={{ fontSize: 16, marginTop: 24, fontWeight: 300, letterSpacing: "0.05em" }}>
+                {targetDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* COUNTDOWN TIMER */}
+          <ScrollReveal>
+            <div style={{ marginBottom: 60, textShadow: "none", textAlign: "center" }}>
+              <div style={{ display: "flex", justifyContent: "center", gap: 24 }}>
+                <div>
+                  <div style={{ fontSize: 34, fontWeight: 300, color: "#E5E4E2" }}>{timeLeft.days}</div>
+                  <p className="opulent-header" style={{ fontSize: 10, color: "#B5A642", margin: "4px 0 0" }}>Days</p>
+                </div>
+                <div style={{ width: 1, height: 40, backgroundColor: "rgba(181, 166, 66, 0.25)", alignSelf: "center" }} />
+                <div>
+                  <div style={{ fontSize: 34, fontWeight: 300, color: "#E5E4E2" }}>{timeLeft.hours}</div>
+                  <p className="opulent-header" style={{ fontSize: 10, color: "#B5A642", margin: "4px 0 0" }}>Hours</p>
+                </div>
+                <div style={{ width: 1, height: 40, backgroundColor: "rgba(181, 166, 66, 0.25)", alignSelf: "center" }} />
+                <div>
+                  <div style={{ fontSize: 34, fontWeight: 300, color: "#E5E4E2" }}>{timeLeft.minutes}</div>
+                  <p className="opulent-header" style={{ fontSize: 10, color: "#B5A642", margin: "4px 0 0" }}>Mins</p>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* VENUE */}
+          <ScrollReveal>
+            <div className="opulent-card" style={{ marginBottom: 48, textAlign: "center" }}>
+              <h2 className="opulent-header" style={{ fontSize: 20, color: "#B5A642", marginBottom: 24 }}>
+                The Pavilion
+              </h2>
+              <p style={{ fontSize: 18, fontWeight: 400, marginBottom: 8 }}>
+                {invitation.venue?.name || "The Grand Ballroom"}
+              </p>
+              <p style={{ fontSize: 14, opacity: 0.8, lineHeight: 1.6, marginBottom: 28 }}>
+                {invitation.venue?.address || "10 Gatsby Way, Manhattan, NY"}
+              </p>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: "inline-block", textDecoration: "none" }}
+                >
+                  <button 
+                    className="opulent-header"
+                    style={{ 
+                      padding: "12px 32px", 
+                      cursor: "pointer", 
+                      backgroundColor: "transparent", 
+                      border: "1px solid #B5A642",
+                      color: "#E5E4E2",
+                      fontSize: 12
+                    }}
+                  >
+                    View Location
+                  </button>
+                </a>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* SCHEDULE */}
+          <ScrollReveal>
+            <div className="opulent-card" style={{ marginBottom: 48 }}>
+              <div style={{ textAlign: "center", marginBottom: 32 }}>
+                <h2 className="opulent-header" style={{ fontSize: 20, color: "#B5A642" }}>
+                  Order of Events
+                </h2>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+                {scheduleItems.map((ev, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: 16 }}>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 40 }}>
+                      <span style={{ color: "#B5A642", fontSize: 14 }}>◆</span>
+                      {idx !== scheduleItems.length - 1 && (
+                        <div style={{ width: 1, height: "100%", backgroundColor: "rgba(181, 166, 66, 0.3)", margin: "8px 0" }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <p className="opulent-header" style={{ fontSize: 11, color: "#B5A642", margin: "0 0 6px" }}>
+                        {ev.time}
+                      </p>
+                      <p style={{ fontSize: 18, fontWeight: 400, margin: "0 0 6px" }}>
+                        {ev.name}
+                      </p>
+                      <p style={{ fontSize: 14, opacity: 0.7, margin: 0, lineHeight: 1.5 }}>
+                        {ev.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* RSVP FORM WITH CHANDELIER VECTOR */}
+          <ScrollReveal>
+            <div className="opulent-card" style={{ marginBottom: 48, textAlign: "center" }}>
+              {/* Grand Ballroom Chandelier Line-Art */}
+              <div style={{ marginBottom: 12 }}>
+                <svg viewBox="0 0 200 120" fill="none" stroke="#B5A642" strokeWidth="1.2" style={{ width: "100%", height: 120, opacity: 0.85, margin: "0 auto" }}>
+                  <line x1="100" y1="0" x2="100" y2="30" />
+                  <path d="M 90 30 L 110 30 L 105 40 L 95 40 Z" fill="#B5A642" />
+                  <path d="M 100 40 Q 70 50 60 70 Q 70 85 100 85 Q 130 85 140 70 Q 130 50 100 40" />
+                  <path d="M 100 40 Q 80 50 75 75 Q 85 80 100 80 Q 115 80 125 75 Q 120 50 100 40" />
+                  <circle cx="60" cy="65" r="2" fill="#E5E4E2" />
+                  <line x1="60" y1="65" x2="60" y2="70" />
+                  <circle cx="75" cy="70" r="2" fill="#E5E4E2" />
+                  <line x1="75" y1="70" x2="75" y2="75" />
+                  <circle cx="100" cy="75" r="2" fill="#E5E4E2" />
+                  <line x1="100" y1="75" x2="100" y2="80" />
+                  <circle cx="125" cy="70" r="2" fill="#E5E4E2" />
+                  <line x1="125" y1="70" x2="125" y2="75" />
+                  <circle cx="140" cy="65" r="2" fill="#E5E4E2" />
+                  <line x1="140" y1="65" x2="140" y2="70" />
+                  <path d="M 100 85 L 100 95 L 97 98 L 103 98 Z" fill="#B5A642" />
+                  <path d="M 85 82 L 85 90 C 85 92 84 94 82 94" />
+                  <path d="M 115 82 L 115 90 C 115 92 116 94 118 94" />
+                </svg>
+              </div>
+
+              <h2 className="opulent-header" style={{ fontSize: 20, color: "#B5A642", marginBottom: 32 }}>
+                RSVP
+              </h2>
+              
+              {!rsvpDone ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 24, textAlign: "left" }}>
+                  <div>
+                    <label className="opulent-header" style={{ display: "block", fontSize: 10, color: "#B5A642", marginBottom: 4 }}>
+                      Guest Name
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvp.name}
+                      onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                      className="opulent-input"
+                      placeholder="Enter your name"
+                    />
+                  </div>
+                  <div>
+                    <label className="opulent-header" style={{ display: "block", fontSize: 10, color: "#B5A642", marginBottom: 4 }}>
+                      Attendance
+                    </label>
+                    <select 
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({...rsvp, attending: e.target.value === "true"})}
+                      className="opulent-input"
+                      style={{ appearance: "none" }}
+                    >
+                      <option value="true" style={{ color: "#1A1A1A" }}>Accepts with Pleasure</option>
+                      <option value="false" style={{ color: "#1A1A1A" }}>Declines with Regret</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="opulent-header" style={{ display: "block", fontSize: 10, color: "#B5A642", marginBottom: 4 }}>
+                      Message to Host
+                    </label>
+                    <textarea 
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                      className="opulent-input"
+                      style={{ minHeight: 80, resize: "none" }}
+                      placeholder="Optional wishes or dietary needs"
+                    />
+                  </div>
+                  
+                  {/* Dynamic State RSVP Button */}
+                  <button 
+                    onClick={handleOpulentSubmit}
+                    disabled={btnState !== "idle" || !rsvp.name}
+                    style={{
+                      width: btnState === "idle" ? "100%" : "50px",
+                      height: "50px",
+                      borderRadius: btnState === "idle" ? "4px" : "50%",
+                      border: "1px solid #B5A642",
+                      backgroundColor: btnState === "success" ? "#B5A642" : "transparent",
+                      color: btnState === "success" ? "#1A1A1A" : "#E5E4E2",
+                      fontFamily: "'Julius Sans One', sans-serif",
+                      fontSize: 13,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.15em",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "24px auto 0",
+                      cursor: rsvp.name && btnState === "idle" ? "pointer" : "default",
+                      transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                      overflow: "hidden"
+                    }}
+                  >
+                    {btnState === "idle" ? (
+                      "Send Message"
+                    ) : btnState === "submitting" ? (
+                      <div className="opulent-spinner" />
+                    ) : (
+                      <span style={{ fontSize: 20, fontWeight: "bold" }}>✓</span>
+                    )}
+                  </button>
+                </div>
+              ) : (
+                <div style={{ padding: "32px 0" }}>
+                  <p className="opulent-header" style={{ fontSize: 20, color: "#B5A642", margin: "0 0 8px" }}>Response Received</p>
+                  <p style={{ fontSize: 14, opacity: 0.8 }}>Thank you for filling out your details.</p>
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* Footer */}
+          <div style={{ textAlign: "center", opacity: 0.5, marginTop: 40 }}>
+            {/* Geometric Divider */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "16px 0", color: "#B5A642" }}>
+              <span style={{ fontSize: 10 }}>&lt;</span>
+              <div style={{ width: 30, height: 1, backgroundColor: "#B5A642", opacity: 0.5 }} />
+              <span style={{ fontSize: 12 }}>⬟</span>
+              <div style={{ width: 30, height: 1, backgroundColor: "#B5A642", opacity: 0.5 }} />
+              <span style={{ fontSize: 10 }}>&gt;</span>
+            </div>
+            <p className="opulent-header" style={{ fontSize: 9, color: "#E5E4E2" }}>
+              Classic Art Deco Event Template
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
@@ -7443,6 +7871,7 @@ export default function InviteViewer({ invitation }) {
     { id: "enchanted-wireframe", name: "The Enchanted Wireframe", icon: "🌿" },
     { id: "modern-urban-skyline", name: "Modern Urban Skyline", icon: "🏙️" },
     { id: "ethereal-coastal", name: "The Ethereal Coastal", icon: "🌊" },
+    { id: "opulent-gala", name: "The Opulent Gala", icon: "✨" },
   ];
 
   const palettes = [
@@ -7463,6 +7892,7 @@ export default function InviteViewer({ invitation }) {
     { id: "enchanted-wireframe", name: "The Enchanted Wireframe", preview: ["#0A1A14", "#CFB53B", "#E6F2EC"] },
     { id: "modern-urban-skyline", name: "Modern Urban Skyline", preview: ["#050A1F", "#B76E79", "#FFFFFF"] },
     { id: "ethereal-coastal", name: "The Ethereal Coastal", preview: ["#001020", "#F7E7CE", "#C2B280"] },
+    { id: "opulent-gala", name: "The Opulent Gala", preview: ["#1A1A1A", "#E5E4E2", "#B5A642"] },
   ];
 
   return (
@@ -7952,6 +8382,8 @@ export default function InviteViewer({ invitation }) {
         renderModernUrbanSkyline()
       ) : activeLayoutId === "ethereal-coastal" ? (
         renderEtherealCoastal()
+      ) : activeLayoutId === "opulent-gala" ? (
+        renderOpulentGala()
       ) : (
         <div 
           style={{

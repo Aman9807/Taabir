@@ -420,6 +420,32 @@ const TEMPLATES = [
     vibeColor: "text-amber-200/70",
     featureColor: "text-slate-300",
     btnSecondaryClass: "bg-sky-900/20 hover:bg-sky-900/40 text-[#F7E7CE] border-sky-800/40"
+  },
+  {
+    id: "opulent-gala",
+    name: "The Opulent Gala",
+    badge: "Anniversary / Formal Party",
+    vibe: "A high-end, immersive digital invitation featuring Gatsby Art Deco borders, Julius Sans One typography, and elegant champagne / ballroom chandeliers.",
+    primaryColor: "bg-[#1A1A1A]",
+    textColor: "text-[#E5E4E2]",
+    paletteColors: ["#1A1A1A", "#E5E4E2", "#B5A642"],
+    fonts: "Julius Sans One, Lato",
+    features: [
+      "Geometric Art Deco Corner Borders",
+      "Pulsing 3s Drop-Shadow Border Glows",
+      "Minimalist Bottom-Border Form Inputs",
+      "Grand Chandelier Vector Line-Art Illustration",
+      "Interactive RSVP Send Button with State Loader & Checkmark",
+      "Geometric Section Dividers (< — ⬟ — >)"
+    ],
+    bgClass: "bg-[#1A1A1A] border-[#B5A642]/15",
+    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-amber-950/40 text-amber-300 border-amber-800/40",
+    titleColor: "text-[#E5E4E2] group-hover:text-white",
+    vibeColor: "text-amber-200/70",
+    featureColor: "text-slate-300",
+    btnSecondaryClass: "bg-amber-900/20 hover:bg-amber-900/40 text-[#E5E4E2] border-amber-800/40"
   }
 ];
 

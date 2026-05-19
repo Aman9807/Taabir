@@ -646,6 +646,37 @@ const DEMO_DATA = {
       btnBgColor: "#F7E7CE",
       btnTextColor: "#001020"
     }
+  },
+  "opulent-gala": {
+    id: "__demo_opulent_gala__",
+    brideName: "Jonathan",
+    groomName: "Genevieve",
+    brideParentsName: "",
+    groomParentsName: "",
+    weddingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Plaza Grand Pavilion",
+      address: "5th Avenue, New York, NY",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200"
+    ],
+    eventType: "anniversary",
+    musicUrl: "",
+    coupleEmail: "gala.rsvp@ plaza-events.com",
+    theme: { templateId: "opulent-gala" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: false,
+      enableLanguageSwitcher: false,
+      doorAnimation: "velvet-curtains",
+      btnBgColor: "#B5A642",
+      btnTextColor: "#1A1A1A"
+    }
   }
 };
 
@@ -667,7 +698,8 @@ export async function generateMetadata({ params }) {
     "royal-heritage": "The Royal Heritage",
     "enchanted-wireframe": "The Enchanted Wireframe",
     "modern-urban-skyline": "The Modern Urban Skyline",
-    "ethereal-coastal": "The Ethereal Coastal"
+    "ethereal-coastal": "The Ethereal Coastal",
+    "opulent-gala": "The Opulent Gala"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,
