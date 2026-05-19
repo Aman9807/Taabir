@@ -33,6 +33,28 @@ const ScratchCard = ({ revealText }) => {
     ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
 
     let isDrawing = false;
+    let scratchCount = 0;
+
+    const checkScratchPercentage = () => {
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const pixels = imgData.data;
+      let transparentCount = 0;
+      for (let i = 3; i < pixels.length; i += 4) {
+        if (pixels[i] === 0) {
+          transparentCount++;
+        }
+      }
+      const totalPixels = canvas.width * canvas.height;
+      const percentage = (transparentCount / totalPixels) * 100;
+      if (percentage >= 50) {
+        canvas.style.transition = "opacity 0.6s ease-out";
+        canvas.style.opacity = "0";
+        canvas.style.pointerEvents = "none";
+        setTimeout(() => {
+          canvas.style.display = "none";
+        }, 600);
+      }
+    };
 
     const scratch = (clientX, clientY) => {
       const rect = canvas.getBoundingClientRect();
@@ -43,17 +65,28 @@ const ScratchCard = ({ revealText }) => {
       ctx.beginPath();
       ctx.arc(x, y, 18, 0, Math.PI * 2);
       ctx.fill();
+
+      scratchCount++;
+      if (scratchCount % 10 === 0) {
+        checkScratchPercentage();
+      }
     };
 
     const handleMouseDown = () => { isDrawing = true; };
-    const handleMouseUp = () => { isDrawing = false; };
+    const handleMouseUp = () => { 
+      isDrawing = false; 
+      checkScratchPercentage();
+    };
     const handleMouseMove = (e) => {
       if (!isDrawing) return;
       scratch(e.clientX, e.clientY);
     };
 
     const handleTouchStart = () => { isDrawing = true; };
-    const handleTouchEnd = () => { isDrawing = false; };
+    const handleTouchEnd = () => { 
+      isDrawing = false; 
+      checkScratchPercentage();
+    };
     const handleTouchMove = (e) => {
       if (!isDrawing || !e.touches[0]) return;
       scratch(e.touches[0].clientX, e.touches[0].clientY);
@@ -6150,8 +6183,8 @@ export default function InviteViewer({ invitation }) {
             z-index: 2;
           }
           .wireframe-path {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
+            stroke-dasharray: 460;
+            stroke-dashoffset: 460;
             animation: drawStroke 2.5s ease-out forwards;
           }
           .wireframe-card {
@@ -6314,7 +6347,10 @@ export default function InviteViewer({ invitation }) {
                 Use your finger or mouse to scratch the gold card below and reveal the dress code!
               </p>
               
-              <ScratchCard revealText="💛 Haldi Yellow & Floral Brights 🌸" />
+              <ScratchCard 
+                revealText="💛 Haldi Yellow & Floral Brights 🌸" 
+                onReveal={triggerConfettiShower}
+              />
             </div>
           </ScrollReveal>
 
