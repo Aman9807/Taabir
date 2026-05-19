@@ -550,6 +550,38 @@ const DEMO_DATA = {
       btnBgColor: "#D4AF37",
       btnTextColor: "#0C0C0C"
     }
+  },
+  "enchanted-wireframe": {
+    id: "__demo_enchanted_wireframe__",
+    brideName: "Dev",
+    groomName: "Ishita",
+    brideParentsName: "The Sharma Family",
+    groomParentsName: "The Kapoor Family",
+    weddingDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Mango Grove Lawns",
+      address: "Garden Retreat, Jaipur, RJ",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1549417229-aa67d3263c09?q=80&w=1200",
+      "https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?q=80&w=1200"
+    ],
+    eventType: "wedding",
+    musicUrl: "",
+    coupleEmail: "dev.ishita@gmail.com",
+    theme: { templateId: "enchanted-wireframe" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#CFB53B",
+      btnTextColor: "#0A1A14"
+    }
   }
 };
 
@@ -568,7 +600,8 @@ export async function generateMetadata({ params }) {
     "summer-poolparty": "Summer Pool Party",
     "corporate-gala": "Sleek Corporate Gala",
     "cozy-dinner": "Cozy Holiday / Dinner Party",
-    "royal-heritage": "The Royal Heritage"
+    "royal-heritage": "The Royal Heritage",
+    "enchanted-wireframe": "The Enchanted Wireframe"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

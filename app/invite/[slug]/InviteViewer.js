@@ -5,6 +5,122 @@ import { db } from "../../../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   INTERACTIVE CANVAS SCRATCH CARD FOR ENCHANTED WIREFRAME
+   ───────────────────────────────────────────────────────────────────────────── */
+const ScratchCard = ({ revealText }) => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Draw gold scratch layer
+    ctx.fillStyle = "#CFB53B";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw clean dark text on gold
+    ctx.fillStyle = "#0A1A14";
+    ctx.font = "bold 15px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("Scratch to Reveal Dress Code", canvas.width / 2, canvas.height / 2);
+
+    // Draw decorative border
+    ctx.strokeStyle = "rgba(10, 26, 20, 0.4)";
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
+
+    let isDrawing = false;
+
+    const scratch = (clientX, clientY) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.beginPath();
+      ctx.arc(x, y, 18, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    const handleMouseDown = () => { isDrawing = true; };
+    const handleMouseUp = () => { isDrawing = false; };
+    const handleMouseMove = (e) => {
+      if (!isDrawing) return;
+      scratch(e.clientX, e.clientY);
+    };
+
+    const handleTouchStart = () => { isDrawing = true; };
+    const handleTouchEnd = () => { isDrawing = false; };
+    const handleTouchMove = (e) => {
+      if (!isDrawing || !e.touches[0]) return;
+      scratch(e.touches[0].clientX, e.touches[0].clientY);
+    };
+
+    canvas.addEventListener("mousedown", handleMouseDown);
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mouseup", handleMouseUp);
+    canvas.addEventListener("mouseleave", handleMouseUp);
+
+    canvas.addEventListener("touchstart", handleTouchStart);
+    canvas.addEventListener("touchmove", handleTouchMove);
+    canvas.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      canvas.removeEventListener("mousedown", handleMouseDown);
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mouseup", handleMouseUp);
+      canvas.removeEventListener("mouseleave", handleMouseUp);
+
+      canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, []);
+
+  return (
+    <div style={{ position: "relative", width: 280, height: 100, margin: "20px auto", overflow: "hidden", borderRadius: 8 }}>
+      <div 
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "#0F2C22",
+          border: "1px solid #CFB53B",
+          borderRadius: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#E6F2EC",
+          fontFamily: "'Playfair Display', serif",
+          fontSize: 16,
+          fontWeight: "bold",
+          padding: "0 10px",
+          textAlign: "center",
+          boxSizing: "border-box",
+          zIndex: 1
+        }}
+      >
+        {revealText}
+      </div>
+      <canvas 
+        ref={canvasRef}
+        width={280}
+        height={100}
+        style={{
+          position: "absolute",
+          inset: 0,
+          borderRadius: 8,
+          cursor: "pointer",
+          zIndex: 2
+        }}
+      />
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────
    PREMIUM INTERACTIVE INVITATION VIEWER (Antigravity Upgraded)
    - 4 Dynamic Transition Openings (Velvet Curtains, Starry Split Doors, 3D Book Flip, Fade Zoom)
    - Customized premium theme-colored Wax Seals & Tap buttons
@@ -368,7 +484,17 @@ export default function InviteViewer({ invitation }) {
         card: "rgba(25, 25, 112, 0.2)",
         text: "#FFFFFF",
         sub: "#E5E4E2",
-        gold: "#191970",
+      }
+    : activePaletteId === "enchanted-wireframe"
+    ? {
+        bg: "#0A1A14",
+        door: "#0A1A14",
+        seam: "#CFB53B",
+        card: "rgba(10, 26, 20, 0.85)",
+        text: "#FFFFFF",
+        sub: "#E6F2EC",
+        gold: "#CFB53B",
+        border: "rgba(207, 181, 59, 0.2)"
       }
     : activePaletteId === "royal-heritage"
     ? {
@@ -416,7 +542,7 @@ export default function InviteViewer({ invitation }) {
 
   const isPaletteDefault = activePaletteId === tplId;
   btnBg = isPaletteDefault && customStyle.btnBgColor ? customStyle.btnBgColor : T.gold;
-  btnText = isPaletteDefault && customStyle.btnTextColor ? customStyle.btnTextColor : (activePaletteId === "minimalist-romance" || activePaletteId === "bohemian-terracotta" ? "#333333" : activePaletteId === "cozy-dinner" ? "#0C1D12" : activePaletteId === "royal-heritage" ? "#0C0C0C" : "#FFFFFF");
+  btnText = isPaletteDefault && customStyle.btnTextColor ? customStyle.btnTextColor : (activePaletteId === "minimalist-romance" || activePaletteId === "bohemian-terracotta" ? "#333333" : activePaletteId === "cozy-dinner" ? "#0C1D12" : activePaletteId === "royal-heritage" ? "#0C0C0C" : activePaletteId === "enchanted-wireframe" ? "#0A1A14" : "#FFFFFF");
 
   const renderMinimalistRomance = () => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
@@ -5948,6 +6074,387 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderEnchantedWireframe = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+
+    // Sample wireframe schedule
+    const scheduleItems = invitation.details?.schedule?.length > 0 ? invitation.details.schedule : [
+      {
+        name: "Haldi Ceremony",
+        time: "10:30 AM",
+        description: "Laughter, turmeric, and joyful blessings",
+        venue: "The Mango Grove Lawn"
+      },
+      {
+        name: "Mehendi & Sangeet",
+        time: "04:30 PM",
+        description: "Henna hands, dancing beats, and feast",
+        venue: "The Royal Pavilion"
+      }
+    ];
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#0A1A14",
+          color: "#E6F2EC",
+          fontFamily: "'Playfair Display', serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          padding: "16px",
+          boxSizing: "border-box",
+        }}
+      >
+        {/* Dynamic Keyframes for Self-Drawing Vine Borders and custom styling */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @keyframes drawStroke {
+            to {
+              stroke-dashoffset: 0;
+            }
+          }
+          .wireframe-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawStroke 2.5s ease-out forwards;
+          }
+          .wireframe-card {
+            background: rgba(10, 26, 20, 0.85);
+            border: 1px solid rgba(207, 181, 59, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+          }
+          .wireframe-btn {
+            background: transparent;
+            color: #CFB53B;
+            border: 1px solid #CFB53B;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
+          }
+          .wireframe-btn:hover {
+            background: rgba(207, 181, 59, 0.1);
+            box-shadow: 0 0 12px rgba(207, 181, 59, 0.2);
+          }
+        `}} />
+
+        {/* Thin Gold Border Around Screen Edges */}
+        <div 
+          style={{
+            position: "absolute",
+            inset: 12,
+            border: "1px solid rgba(207, 181, 59, 0.3)",
+            pointerEvents: "none",
+            zIndex: 5
+          }}
+        />
+
+        {/* Corner Botanical Wireframe SVGs (Drawing themselves on load) */}
+        {/* Top Left Corner */}
+        <svg 
+          width="120" height="120" viewBox="0 0 100 100" fill="none" stroke="#CFB53B" strokeWidth="1"
+          style={{ position: "absolute", top: 16, left: 16, zIndex: 6, pointerEvents: "none" }}
+        >
+          <path 
+            className="wireframe-path"
+            d="M 10 10 C 30 15, 60 30, 80 10 C 60 40, 40 60, 10 80 C 15 50, 12 30, 10 10 Z M 10 10 C 25 35, 35 50, 45 75 M 10 10 C 40 20, 70 30, 90 50 M 45 75 C 60 70, 75 60, 80 40" 
+          />
+        </svg>
+
+        {/* Bottom Right Corner */}
+        <svg 
+          width="120" height="120" viewBox="0 0 100 100" fill="none" stroke="#CFB53B" strokeWidth="1"
+          style={{ position: "absolute", bottom: 16, right: 16, zIndex: 6, pointerEvents: "none", transform: "rotate(180deg)" }}
+        >
+          <path 
+            className="wireframe-path"
+            d="M 10 10 C 30 15, 60 30, 80 10 C 60 40, 40 60, 10 80 C 15 50, 12 30, 10 10 Z M 10 10 C 25 35, 35 50, 45 75 M 10 10 C 40 20, 70 30, 90 50 M 45 75 C 60 70, 75 60, 80 40" 
+          />
+        </svg>
+
+        {/* Main Content Scrolling Container */}
+        <div 
+          style={{
+            maxWidth: 600,
+            margin: "0 auto",
+            padding: "80px 16px 120px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* ======================================================== */}
+          {/* HERO SECTION                                             */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div style={{ textAlign: "center", marginBottom: 60 }}>
+              <p style={{ textTransform: "uppercase", fontSize: 11, letterSpacing: "0.3em", color: "#CFB53B", marginBottom: 24 }}>
+                {dict[lang]?.[eventType] || "Celebrating the Wedding of"}
+              </p>
+              
+              <h1 
+                style={{ 
+                  fontFamily: "'Alex Brush', cursive", 
+                  fontSize: "4.5rem", 
+                  lineHeight: 1.1, 
+                  margin: "0 0 16px",
+                  color: "#CFB53B",
+                  fontWeight: 400
+                }}
+              >
+                {invitation.brideName}
+                {invitation.groomName && (
+                  <>
+                    <span style={{ display: "block", fontSize: "2rem", margin: "8px 0", color: "#E6F2EC", fontFamily: "'Playfair Display', serif", fontStyle: "italic" }}>and</span>
+                    {invitation.groomName}
+                  </>
+                )}
+              </h1>
+
+              {/* Central Diamond Divider */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "24px 0" }}>
+                <div style={{ width: 60, height: 1, backgroundColor: "rgba(207, 181, 59, 0.4)" }} />
+                <span style={{ color: "#CFB53B", fontSize: 10 }}>♦</span>
+                <div style={{ width: 60, height: 1, backgroundColor: "rgba(207, 181, 59, 0.4)" }} />
+              </div>
+
+              <p style={{ fontSize: 16, lineHeight: 1.8, color: "#E6F2EC", maxWidth: "80%", margin: "0 auto" }}>
+                We invite you to join us in an environment of natural beauty, laughter, and celebration.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* SCRATCH TO REVEAL (SURPRISE EVENT / DRESS CODE)           */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="wireframe-card" style={{ padding: "32px 24px", marginBottom: 48, textAlign: "center" }}>
+              <h3 style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: "0.2em", color: "#CFB53B", marginBottom: 8 }}>
+                Surprise Dress Code Reveal
+              </h3>
+              <p style={{ fontSize: 13, color: "#E6F2EC", opacity: 0.8, marginBottom: 16 }}>
+                Use your finger or mouse to scratch the gold card below and reveal the dress code!
+              </p>
+              
+              <ScratchCard revealText="💛 Haldi Yellow & Floral Brights 🌸" />
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* DATE & TIME SECTION                                      */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="wireframe-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              <h2 style={{ fontSize: 18, textTransform: "uppercase", letterSpacing: "0.2em", color: "#CFB53B", marginBottom: 16 }}>
+                Date & Celebration
+              </h2>
+              <div style={{ fontSize: 22, fontWeight: 500, color: "#FFFFFF", marginBottom: 8 }}>
+                {targetDate.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-US", {
+                  weekday: "long", year: "numeric", month: "long", day: "numeric",
+                })}
+              </div>
+              <div style={{ fontSize: 16, color: "#CFB53B", fontStyle: "italic" }}>
+                Starting at {targetDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* VENUE SECTION (GAZEBO SVG)                               */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="wireframe-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              {/* Fine-line Gazebo SVG */}
+              <div style={{ marginBottom: 24, display: "flex", justifyContent: "center" }}>
+                <svg width="80" height="70" viewBox="0 0 100 80" fill="none" stroke="#CFB53B" strokeWidth="1.2">
+                  {/* Gazebo Top Dome */}
+                  <path d="M10,50 Q50,-10 90,50" />
+                  <path d="M30,32 Q50,5 70,32" />
+                  {/* Gazebo Pillars */}
+                  <line x1="20" y1="50" x2="20" y2="80" />
+                  <line x1="40" y1="50" x2="40" y2="80" />
+                  <line x1="60" y1="50" x2="60" y2="80" />
+                  <line x1="80" y1="50" x2="80" y2="80" />
+                  {/* Tent Platform / Base */}
+                  <line x1="10" y1="80" x2="90" y2="80" strokeWidth="2" />
+                  {/* Floral hanging details */}
+                  <circle cx="50" cy="18" r="2" fill="#CFB53B" />
+                  <circle cx="35" cy="25" r="1.5" fill="#CFB53B" />
+                  <circle cx="65" cy="25" r="1.5" fill="#CFB53B" />
+                </svg>
+              </div>
+              
+              <h2 style={{ fontSize: 18, textTransform: "uppercase", letterSpacing: "0.2em", color: "#CFB53B", marginBottom: 16 }}>
+                The Celebration Pavilion
+              </h2>
+              <p style={{ fontSize: 22, fontWeight: 600, color: "#FFFFFF", margin: "0 0 8px" }}>
+                {invitation.venue?.name || "The Mango Grove Lawns"}
+              </p>
+              <p style={{ fontSize: 15, opacity: 0.8, fontStyle: "italic", margin: "0 0 24px" }}>
+                {invitation.venue?.address || "Garden Retreat, Jaipur, RJ"}
+              </p>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="wireframe-btn"
+                  style={{
+                    display: "inline-block",
+                    padding: "12px 28px",
+                    textDecoration: "none",
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
+                  Locate Pavilion
+                </a>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* TIMELINE / ITINERARY (GLOWING DOT NODES)                 */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="wireframe-card" style={{ padding: "40px 24px", marginBottom: 48 }}>
+              <div style={{ textAlign: "center", marginBottom: 36 }}>
+                <h2 style={{ fontSize: 18, textTransform: "uppercase", letterSpacing: "0.2em", color: "#CFB53B" }}>
+                  Celebration Schedule
+                </h2>
+              </div>
+
+              {/* Timeline Container with vertical node connector */}
+              <div style={{ position: "relative", paddingLeft: 32 }}>
+                {/* Thin Vertical Gold Line */}
+                <div style={{ position: "absolute", left: 11, top: 8, bottom: 8, width: 1, backgroundColor: "rgba(207,181,59,0.3)" }} />
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 36 }}>
+                  {scheduleItems.map((ev, idx) => (
+                    <div key={idx} style={{ position: "relative" }}>
+                      {/* Glowing Dot Node */}
+                      <div 
+                        style={{ 
+                          position: "absolute", 
+                          left: -26, 
+                          top: 4, 
+                          width: 10, 
+                          height: 10, 
+                          borderRadius: "50%", 
+                          backgroundColor: "#CFB53B",
+                          boxShadow: "0 0 10px #CFB53B, 0 0 4px #CFB53B",
+                          zIndex: 2
+                        }} 
+                      />
+                      
+                      <span style={{ fontSize: 12, letterSpacing: "0.15em", color: "#CFB53B", fontWeight: 600 }}>
+                        {ev.time}
+                      </span>
+                      <h4 style={{ fontSize: 18, color: "#FFFFFF", fontWeight: 600, margin: "4px 0 8px" }}>
+                        {ev.name}
+                      </h4>
+                      <p style={{ fontSize: 14, opacity: 0.8, fontStyle: "italic", margin: "0 0 4px" }}>
+                        {ev.description}
+                      </p>
+                      {ev.venue && (
+                        <p style={{ fontSize: 12, color: "#CFB53B", opacity: 0.9 }}>
+                          📍 {ev.venue}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* RSVP FORM PORTAL                                         */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="wireframe-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              <h2 style={{ fontSize: 18, textTransform: "uppercase", letterSpacing: "0.2em", color: "#CFB53B", marginBottom: 24 }}>
+                Kindly Respond
+              </h2>
+              
+              {!rsvpDone ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 16, textAlign: "left" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "#CFB53B", marginBottom: 8 }}>
+                      Name of Guest
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvp.name}
+                      onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid rgba(207,181,59,0.3)", color: "#FFFFFF", outline: "none", fontFamily: "inherit" }}
+                      placeholder="Write your name"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "#CFB53B", marginBottom: 8 }}>
+                      Will you attend?
+                    </label>
+                    <select 
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({...rsvp, attending: e.target.value})}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid rgba(207,181,59,0.3)", color: "#FFFFFF", outline: "none", appearance: "none", fontFamily: "inherit" }}
+                    >
+                      <option value="yes">Will Attend Joyfully</option>
+                      <option value="no">Must Decline Regretfully</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "#CFB53B", marginBottom: 8 }}>
+                      Warm Blessings
+                    </label>
+                    <textarea 
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                      rows={3}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid rgba(207,181,59,0.3)", color: "#FFFFFF", outline: "none", resize: "none", fontFamily: "inherit" }}
+                      placeholder="Send your blessings..."
+                    />
+                  </div>
+                  <button 
+                    onClick={submitRsvp}
+                    disabled={rsvpLoading || !rsvp.name}
+                    className="wireframe-btn"
+                    style={{
+                      width: "100%",
+                      padding: "16px",
+                      marginTop: 8,
+                      fontWeight: 600,
+                      cursor: rsvpLoading || !rsvp.name ? "not-allowed" : "pointer",
+                      opacity: rsvpLoading || !rsvp.name ? 0.6 : 1
+                    }}
+                  >
+                    {rsvpLoading ? "Recording..." : "Send RSVP"}
+                  </button>
+                </div>
+              ) : (
+                <div style={{ padding: "32px 0" }}>
+                  <p style={{ fontSize: 22, color: "#CFB53B", margin: "0 0 8px" }}>Response Received</p>
+                  <p style={{ fontSize: 15, opacity: 0.8 }}>Thank you for filling out your details.</p>
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* Footer */}
+          <div style={{ textAlign: "center", opacity: 0.5 }}>
+            <div style={{ width: 40, height: 1, backgroundColor: "#CFB53B", margin: "0 auto 16px" }} />
+            <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase" }}>
+              Enchanted Botanical Gathering
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
@@ -5961,6 +6468,7 @@ export default function InviteViewer({ invitation }) {
     { id: "corporate-gala", name: "Sleek Corporate Gala", icon: "🏢" },
     { id: "cozy-dinner", name: "Cozy Holiday / Dinner Party", icon: "🎄" },
     { id: "royal-heritage", name: "The Royal Heritage", icon: "👑" },
+    { id: "enchanted-wireframe", name: "The Enchanted Wireframe", icon: "🌿" },
   ];
 
   const palettes = [
@@ -5978,6 +6486,7 @@ export default function InviteViewer({ invitation }) {
     { id: "corporate-gala", name: "Sleek Corporate Gala", preview: ["#0A0E1A", "#191970", "#E5E4E2"] },
     { id: "cozy-dinner", name: "Cozy Holiday / Dinner Party", preview: ["#0C1D12", "#CFB53B", "#9E1B32"] },
     { id: "royal-heritage", name: "The Royal Heritage", preview: ["#0C0C0C", "#D4AF37", "#800000"] },
+    { id: "enchanted-wireframe", name: "The Enchanted Wireframe", preview: ["#0A1A14", "#CFB53B", "#E6F2EC"] },
   ];
 
   return (
@@ -6461,6 +6970,8 @@ export default function InviteViewer({ invitation }) {
         renderCozyDinner()
       ) : activeLayoutId === "royal-heritage" ? (
         renderRoyalHeritage()
+      ) : activeLayoutId === "enchanted-wireframe" ? (
+        renderEnchantedWireframe()
       ) : (
         <div 
           style={{

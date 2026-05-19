@@ -342,6 +342,32 @@ const TEMPLATES = [
     vibeColor: "text-yellow-200/60",
     featureColor: "text-slate-300",
     btnSecondaryClass: "bg-[#D4AF37]/10 hover:bg-[#D4AF37]/30 text-[#D4AF37] border-[#D4AF37]/40"
+  },
+  {
+    id: "enchanted-wireframe",
+    name: "The Enchanted Wireframe",
+    badge: "Nature & Line-Art",
+    vibe: "Elegant botanical wireframes. Deep forest green, self-drawing vine animations on load, Alex Brush & Playfair Display fonts, plus an interactive scratch-to-reveal card.",
+    primaryColor: "bg-[#0A1A14]",
+    textColor: "text-[#CFB53B]",
+    paletteColors: ["#0A1A14", "#CFB53B", "#E6F2EC"],
+    fonts: "Alex Brush, Playfair Display",
+    features: [
+      "Thin Metallic Gold Outer Border Styling",
+      "Self-Drawing Corner Botanical Wireframe SVGs",
+      "Interactive 'Scratch to Reveal' Gold Canvas Card",
+      "Alex Brush Flowing Script Typographical Accents",
+      "Glowing Dot-Nodes Vertical Schedule Connector",
+      "Fine-Line Custom SVG Gazebo Venue Illustration"
+    ],
+    bgClass: "bg-[#0A1A14] border-[#CFB53B]/25",
+    image: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-emerald-950/40 text-emerald-300 border-emerald-800/40",
+    titleColor: "text-[#CFB53B] group-hover:text-white",
+    vibeColor: "text-emerald-200/70",
+    featureColor: "text-slate-200",
+    btnSecondaryClass: "bg-emerald-900/20 hover:bg-emerald-900/40 text-[#CFB53B] border-emerald-800/40"
   }
 ];
 
