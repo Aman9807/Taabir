@@ -8340,6 +8340,486 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderMinimalistWhiteGold = () => {
+    // 3 Slideshow Images (User cover photo + 2 high-quality romantic backups)
+    const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1509319117193-57bab727e09d?q=80&w=1200";
+    const slideshowImages = [
+      bgImage,
+      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200",
+      "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200"
+    ];
+
+    // Carousel Image rotation logic
+    const [bgIdx, setBgIdx] = useState(0);
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setBgIdx(prev => (prev + 1) % slideshowImages.length);
+      }, 5500);
+      return () => clearInterval(interval);
+    }, []);
+
+    const scheduleItems = invitation.details?.schedule && invitation.details.schedule.length > 0
+      ? invitation.details.schedule
+      : [
+          {
+            name: "Welcome Toast",
+            time: "05:30 PM",
+            description: "An elegant reception welcoming our guests with drinks and soft harp tunes.",
+            venue: "The Meadow Lawn"
+          },
+          {
+            name: "Exchange of Vows",
+            time: "06:30 PM",
+            description: "A romantic sunset ceremony under the custom ivory-rose floral canopy.",
+            venue: "The Glass Pavilion"
+          },
+          {
+            name: "Grand Dinner",
+            time: "08:00 PM",
+            description: "Fine dining, speeches, and champagne toasts under a canopy of stars.",
+            venue: "The Great Dining Hall"
+          }
+        ];
+
+    const SleekLineMap = () => (
+      <div style={{ margin: "24px 0", display: "flex", justifyContent: "center" }}>
+        <svg width="180" height="180" viewBox="0 0 120 120" fill="none" stroke="#1A1A1A" strokeWidth="1.2">
+          {/* Grid structure */}
+          <path d="M 0,20 L 120,20" stroke="rgba(26,26,26,0.1)" strokeDasharray="2,2" />
+          <path d="M 0,60 L 120,60" stroke="rgba(26,26,26,0.1)" strokeDasharray="2,2" />
+          <path d="M 0,100 L 120,100" stroke="rgba(26,26,26,0.1)" strokeDasharray="2,2" />
+          <path d="M 20,0 L 20,120" stroke="rgba(26,26,26,0.1)" strokeDasharray="2,2" />
+          <path d="M 60,0 L 60,120" stroke="rgba(26,26,26,0.1)" strokeDasharray="2,2" />
+          <path d="M 100,0 L 100,120" stroke="rgba(26,26,26,0.1)" strokeDasharray="2,2" />
+          
+          {/* Route lines */}
+          <path d="M 10,95 C 40,95 40,45 70,45 S 80,15 110,15" stroke="#1A1A1A" strokeWidth="1.5" />
+          <path d="M 50,110 L 50,75 C 50,60 85,60 85,25" stroke="rgba(26,26,26,0.5)" strokeWidth="1" />
+          
+          {/* Point A */}
+          <circle cx="10" cy="95" r="3.5" fill="#FAF9F6" stroke="#1A1A1A" strokeWidth="1.5" />
+          
+          {/* Destination Pin */}
+          <g transform="translate(110, 15)">
+            <path d="M 0,0 C -3,-3 -5,-6 -5,-9 C -5,-12 -2.5,-14 0,-14 C 2.5,-14 5,-12 5,-9 C 5,-6 3,-3 0,0 Z" fill="#D4AF37" stroke="#1A1A1A" strokeWidth="1" />
+            <circle cx="0" cy="-9" r="1.8" fill="#FAF9F6" />
+          </g>
+        </svg>
+      </div>
+    );
+
+    const GoldCornerBrackets = () => (
+      <>
+        {/* Top Left */}
+        <svg style={{ position: "absolute", top: 12, left: 12, width: 24, height: 24, transform: "rotate(0deg)" }} viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+          <path d="M 2 24 L 2 2 L 24 2" />
+          <path d="M 6 24 L 6 6 L 24 6" opacity="0.4" />
+        </svg>
+        {/* Top Right */}
+        <svg style={{ position: "absolute", top: 12, right: 12, width: 24, height: 24, transform: "rotate(90deg)" }} viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+          <path d="M 2 24 L 2 2 L 24 2" />
+          <path d="M 6 24 L 6 6 L 24 6" opacity="0.4" />
+        </svg>
+        {/* Bottom Left */}
+        <svg style={{ position: "absolute", bottom: 12, left: 12, width: 24, height: 24, transform: "rotate(-90deg)" }} viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+          <path d="M 2 24 L 2 2 L 24 2" />
+          <path d="M 6 24 L 6 6 L 24 6" opacity="0.4" />
+        </svg>
+        {/* Bottom Right */}
+        <svg style={{ position: "absolute", bottom: 12, right: 12, width: 24, height: 24, transform: "rotate(180deg)" }} viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+          <path d="M 2 24 L 2 2 L 24 2" />
+          <path d="M 6 24 L 6 6 L 24 6" opacity="0.4" />
+        </svg>
+      </>
+    );
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#FDFBF7",
+          color: "#1A1A1A",
+          fontFamily: "'Montserrat', sans-serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          boxSizing: "border-box",
+        }}
+      >
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap');
+          
+          .minimalist-serif {
+            font-family: 'Playfair Display', serif !important;
+          }
+          
+          .minimalist-block {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #C5A880;
+            box-shadow: 0 15px 35px rgba(26, 26, 26, 0.05);
+            padding: 44px 32px;
+            margin-bottom: 72px;
+            position: relative;
+            backdrop-filter: blur(8px);
+          }
+          
+          .minimalist-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid rgba(26, 26, 26, 0.2);
+            color: #1A1A1A;
+            padding: 12px 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+          }
+          
+          .minimalist-input:focus {
+            border-bottom-color: #D4AF37;
+          }
+          
+          @keyframes revealLeft {
+            from { clip-path: inset(0 100% 0 0); transform: translateX(-15px); opacity: 0; }
+            to { clip-path: inset(0 0 0 0); transform: translateX(0); opacity: 1; }
+          }
+          
+          .reveal-left-active {
+            animation: revealLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          }
+          
+          .reveal-left-idle {
+            opacity: 0;
+            clip-path: inset(0 100% 0 0);
+            transform: translateX(-15px);
+          }
+        `}} />
+
+        {/* Slow-fading slideshow images in fixed backdrop */}
+        <div style={{ position: "fixed", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
+          {slideshowImages.map((imgUrl, i) => (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: `url('${imgUrl}')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: bgIdx === i ? 0.3 : 0,
+                transition: "opacity 2.5s ease-in-out",
+              }}
+            />
+          ))}
+          {/* Subtle vignette light overlay */}
+          <div 
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "radial-gradient(circle, rgba(253, 251, 247, 0.35) 0%, rgba(253, 251, 247, 0.8) 100%)",
+              zIndex: 1
+            }} 
+          />
+        </div>
+
+        {/* Customizer float layer check */}
+        <div 
+          style={{
+            maxWidth: 580,
+            margin: "0 auto",
+            padding: "80px 20px 120px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* HERO PANEL */}
+          <ParallaxBlock speed={-0.05}>
+            <div className="minimalist-block" style={{ textAlign: "center", border: "1px solid #1A1A1A" }}>
+              {/* Large frameless modern image box */}
+              <div 
+                style={{
+                  width: "100%",
+                  height: "360px",
+                  overflow: "hidden",
+                  marginBottom: "32px",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.06)"
+                }}
+              >
+                <div 
+                  style={{
+                    backgroundImage: `url('${bgImage}')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    width: "100%",
+                    height: "100%",
+                    transition: "transform 8s ease",
+                    transform: "scale(1.05)"
+                  }}
+                />
+              </div>
+
+              <TextRevealLeft delay={100}>
+                <span style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: "0.22em", color: "#C5A880", fontWeight: 500 }}>
+                  Save The Date
+                </span>
+              </TextRevealLeft>
+
+              <TextRevealLeft delay={300}>
+                <h1 className="minimalist-serif" style={{ fontSize: 42, margin: "16px 0 12px", fontWeight: 400, color: "#1A1A1A" }}>
+                  {invitation.brideName} & {invitation.groomName}
+                </h1>
+              </TextRevealLeft>
+
+              {/* Symmetrical divider */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "24px 0", color: "#1A1A1A" }}>
+                <div style={{ width: 40, height: 1, backgroundColor: "#1A1A1A", opacity: 0.3 }} />
+                <span style={{ fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase" }}>wedding invitation</span>
+                <div style={{ width: 40, height: 1, backgroundColor: "#1A1A1A", opacity: 0.3 }} />
+              </div>
+
+              <TextRevealLeft delay={500}>
+                <p className="minimalist-serif" style={{ fontSize: 16, fontStyle: "italic", color: "#4A4A4A" }}>
+                  Join us as we celebrate our new beginning
+                </p>
+              </TextRevealLeft>
+            </div>
+          </ParallaxBlock>
+
+          {/* DATE & TIME PANEL */}
+          <ParallaxBlock speed={-0.08}>
+            <div className="minimalist-block" style={{ textAlign: "center" }}>
+              <TextRevealLeft>
+                <h2 className="minimalist-serif" style={{ fontSize: 24, fontWeight: 400, color: "#1A1A1A", marginBottom: 20 }}>
+                  The Date
+                </h2>
+              </TextRevealLeft>
+              
+              <TextRevealLeft delay={200}>
+                <p className="minimalist-serif" style={{ fontSize: 20, fontWeight: 400, margin: "0 0 10px", color: "#C5A880" }}>
+                  {targetDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                </p>
+              </TextRevealLeft>
+
+              <TextRevealLeft delay={400}>
+                <p style={{ fontSize: 15, color: "#4A4A4A" }}>
+                  At {targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                </p>
+              </TextRevealLeft>
+              
+              <div style={{ width: 30, height: 1, backgroundColor: "#C5A880", margin: "24px auto 0", opacity: 0.5 }} />
+            </div>
+          </ParallaxBlock>
+
+          {/* LOCATION PANEL */}
+          <ParallaxBlock speed={-0.11}>
+            <div className="minimalist-block" style={{ textAlign: "center" }}>
+              <TextRevealLeft>
+                <h2 className="minimalist-serif" style={{ fontSize: 24, fontWeight: 400, color: "#1A1A1A", marginBottom: 16 }}>
+                  The Venue
+                </h2>
+              </TextRevealLeft>
+
+              <TextRevealLeft delay={200}>
+                <p style={{ fontSize: 18, fontWeight: 500, margin: "0 0 8px", color: "#1A1A1A" }}>
+                  {invitation.venue?.name || "The White Pavilion"}
+                </p>
+              </TextRevealLeft>
+              
+              <TextRevealLeft delay={400}>
+                <p style={{ fontSize: 14, color: "#5A5A5A", lineHeight: 1.6, marginBottom: 24 }}>
+                  {invitation.venue?.address || "100 Grand Boulevard, Sonoma County, CA"}
+                </p>
+              </TextRevealLeft>
+
+              {/* Sleek Line Map SVG */}
+              <TextRevealLeft delay={500}>
+                <SleekLineMap />
+              </TextRevealLeft>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ display: "inline-block", textDecoration: "none", marginTop: 12 }}
+                >
+                  <button 
+                    style={{ 
+                      padding: "12px 36px", 
+                      cursor: "pointer", 
+                      backgroundColor: "#1A1A1A", 
+                      border: "1px solid #1A1A1A",
+                      color: "#FAF9F6",
+                      fontSize: 11,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.15em",
+                      fontWeight: 500,
+                      transition: "all 0.3s ease"
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1A1A1A"; }}
+                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = "#1A1A1A"; e.currentTarget.style.color = "#FAF9F6"; }}
+                  >
+                    View Map
+                  </button>
+                </a>
+              )}
+            </div>
+          </ParallaxBlock>
+
+          {/* SCHEDULE PANEL */}
+          <ParallaxBlock speed={-0.13}>
+            <div className="minimalist-block">
+              <div style={{ textAlign: "center", marginBottom: 36 }}>
+                <TextRevealLeft>
+                  <h2 className="minimalist-serif" style={{ fontSize: 24, fontWeight: 400, color: "#1A1A1A" }}>
+                    The Schedule
+                  </h2>
+                </TextRevealLeft>
+                <div style={{ width: 40, height: 1, backgroundColor: "#C5A880", margin: "12px auto 0", opacity: 0.5 }} />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+                {scheduleItems.map((ev, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: 20 }}>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 40 }}>
+                      <span className="minimalist-serif" style={{ color: "#C5A880", fontSize: 13, fontStyle: "italic" }}>
+                        0{idx + 1}
+                      </span>
+                      {idx !== scheduleItems.length - 1 && (
+                        <div style={{ width: 1, height: "100%", backgroundColor: "rgba(26, 26, 26, 0.15)", margin: "12px 0" }} />
+                      )}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <TextRevealLeft delay={idx * 100}>
+                        <p style={{ fontSize: 11, color: "#C5A880", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.15em", fontWeight: 600 }}>
+                          {ev.time}
+                        </p>
+                        <p className="minimalist-serif" style={{ fontSize: 18, fontWeight: 400, margin: "0 0 6px", color: "#1A1A1A" }}>
+                          {ev.name}
+                        </p>
+                        <p style={{ fontSize: 13, color: "#5A5A5A", margin: 0, lineHeight: 1.6 }}>
+                          {ev.description}
+                        </p>
+                      </TextRevealLeft>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ParallaxBlock>
+
+          {/* RSVP FORM */}
+          <ParallaxBlock speed={-0.15}>
+            <div className="minimalist-block" style={{ border: "1px solid #D4AF37" }}>
+              {/* Gold-Brushed Corner Accent Brackets */}
+              <GoldCornerBrackets />
+
+              <h2 className="minimalist-serif" style={{ fontSize: 24, fontWeight: 400, color: "#1A1A1A", textAlign: "center", marginBottom: 8 }}>
+                RSVP
+              </h2>
+              <p style={{ fontSize: 12, color: "#C5A880", letterSpacing: "0.12em", textTransform: "uppercase", textAlign: "center", marginBottom: 32 }}>
+                Kindly Respond
+              </p>
+
+              {!rsvpDone ? (
+                <form onSubmit={submitRsvp} style={{ display: "flex", flexDirection: "column", gap: 24, position: "relative", zIndex: 10 }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 10, color: "#C5A880", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 4, fontWeight: 600 }}>
+                      Your Full Name
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvp.name}
+                      onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                      className="minimalist-input"
+                      placeholder="e.g. John Doe"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label style={{ display: "block", fontSize: 10, color: "#C5A880", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 4, fontWeight: 600 }}>
+                      Will you attend?
+                    </label>
+                    <select 
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({...rsvp, attending: e.target.value})}
+                      className="minimalist-input"
+                      style={{ appearance: "none" }}
+                    >
+                      <option value="yes" style={{ color: "#000" }}>Attending with Pleasure</option>
+                      <option value="no" style={{ color: "#000" }}>Regretfully Declining</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label style={{ display: "block", fontSize: 10, color: "#C5A880", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 4, fontWeight: 600 }}>
+                      Send a Message to the Couple
+                    </label>
+                    <textarea 
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                      className="minimalist-input"
+                      style={{ minHeight: 60, resize: "none" }}
+                      placeholder="Wishes, congratulations, or dietary notes"
+                    />
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={!rsvp.name.trim() || rsvpLoading}
+                    style={{
+                      width: "100%",
+                      backgroundColor: rsvp.name.trim() ? "#1A1A1A" : "transparent",
+                      color: rsvp.name.trim() ? "#FAF9F6" : "rgba(26, 26, 26, 0.4)",
+                      border: "1px solid #1A1A1A",
+                      padding: "14px",
+                      cursor: rsvp.name.trim() ? "pointer" : "default",
+                      fontSize: 12,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.15em",
+                      fontWeight: 600,
+                      marginTop: 12,
+                      transition: "all 0.3s ease"
+                    }}
+                    onMouseEnter={e => {
+                      if (rsvp.name.trim()) {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.color = "#1A1A1A";
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (rsvp.name.trim()) {
+                        e.currentTarget.style.backgroundColor = "#1A1A1A";
+                        e.currentTarget.style.color = "#FAF9F6";
+                      }
+                    }}
+                  >
+                    {rsvpLoading ? "Submitting..." : "Send RSVP"}
+                  </button>
+                </form>
+              ) : (
+                <div style={{ textAlign: "center", padding: "24px 0" }}>
+                  <p className="minimalist-serif" style={{ fontSize: 20, color: "#C5A880", margin: "0 0 8px" }}>Thank You</p>
+                  <p style={{ fontSize: 14, opacity: 0.8, color: "#1A1A1A" }}>Your response has been registered.</p>
+                </div>
+              )}
+            </div>
+          </ParallaxBlock>
+
+          {/* Footer details */}
+          <div style={{ textAlign: "center", opacity: 0.4, padding: "24px 0 0" }}>
+            <p className="minimalist-serif" style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.2em", color: "#1A1A1A" }}>
+              {invitation.brideName} & {invitation.groomName} • 2026
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderGoldenKeepsake = () => {
     const bgImage = invitation.photoUrl || "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200";
 
@@ -9350,6 +9830,8 @@ export default function InviteViewer({ invitation }) {
         renderElegantMemoryFrame()
       ) : activeLayoutId === "golden-keepsake" ? (
         renderGoldenKeepsake()
+      ) : activeLayoutId === "minimalist-white-gold" ? (
+        renderMinimalistWhiteGold()
       ) : (
         <div 
           style={{
@@ -10256,5 +10738,68 @@ function KeepsakeScrollReveal({ children }) {
     </div>
   );
 }
+
+function ParallaxBlock({ children, speed = -0.08 }) {
+  const ref = useRef(null);
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const elementCenter = rect.top + rect.height / 2;
+      const viewportCenter = window.innerHeight / 2;
+      const diff = elementCenter - viewportCenter;
+      setOffset(diff * speed);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [speed]);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        transform: `translateY(${offset}px)`,
+        transition: "transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)",
+        width: "100%",
+        zIndex: 10,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function TextRevealLeft({ children, delay = 0 }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={isVisible ? "reveal-left-active" : "reveal-left-idle"}
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
 
 

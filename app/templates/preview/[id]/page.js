@@ -741,6 +741,37 @@ const DEMO_DATA = {
       btnBgColor: "#D4AF37",
       btnTextColor: "#242424"
     }
+  },
+  "minimalist-white-gold": {
+    id: "__demo_minimalist_white_gold__",
+    brideName: "Julian",
+    groomName: "Sophia",
+    brideParentsName: "",
+    groomParentsName: "",
+    weddingDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The White Pavilion",
+      address: "100 Grand Boulevard, Sonoma County, CA",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1509319117193-57bab727e09d?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1509319117193-57bab727e09d?q=80&w=1200"
+    ],
+    eventType: "wedding",
+    musicUrl: "",
+    coupleEmail: "julian.sophia@whitepavilion.com",
+    theme: { templateId: "minimalist-white-gold" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: false,
+      enableLanguageSwitcher: false,
+      doorAnimation: "fade-zoom",
+      btnBgColor: "#1A1A1A",
+      btnTextColor: "#FAF9F6"
+    }
   }
 };
 
@@ -765,7 +796,8 @@ export async function generateMetadata({ params }) {
     "ethereal-coastal": "The Ethereal Coastal",
     "opulent-gala": "The Opulent Gala",
     "elegant-memory-frame": "The Elegant Memory Frame",
-    "golden-keepsake": "The Golden Keepsake"
+    "golden-keepsake": "The Golden Keepsake",
+    "minimalist-white-gold": "Minimalist Modern White-and-Gold"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,
