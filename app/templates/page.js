@@ -316,6 +316,32 @@ const TEMPLATES = [
     vibeColor: "text-green-200/70",
     featureColor: "text-slate-200",
     btnSecondaryClass: "bg-green-900/20 hover:bg-green-900/40 text-[#CFB53B] border-green-800/40"
+  },
+  {
+    id: "royal-heritage",
+    name: "The Royal Heritage",
+    badge: "Grand Luxury",
+    vibe: "Dark, vintage luxury. Deep red stage curtains, intricate Art Deco gold corners, Great Vibes & Cinzel typography, with slow drifting gold particles.",
+    primaryColor: "bg-[#0C0C0C]",
+    textColor: "text-[#D4AF37]",
+    paletteColors: ["#0C0C0C", "#800000", "#D4AF37", "#FFFFFF"],
+    fonts: "Great Vibes, Cinzel, Lora",
+    features: [
+      "Deep Red Theatrical Stage Curtain Borders",
+      "Vintage Antique Gold Art Deco Flourishes",
+      "Slow Floating Gold Particle Drift (useMemo)",
+      "Continuous-Line Grand Palace Architectural Illustration",
+      "Great Vibes & Cinzel High-End Typography Combinations",
+      "Fade-In-Up Dynamic Scroll Trigger Animations"
+    ],
+    bgClass: "bg-[#0C0C0C] border-[#D4AF37]/30",
+    image: "https://images.unsplash.com/photo-1543886567-27b3e2b9f3aa?q=80&w=800",
+    cardTheme: "dark",
+    badgeClass: "bg-[#800000]/30 text-[#D4AF37] border-[#D4AF37]/40",
+    titleColor: "text-[#D4AF37] group-hover:text-white",
+    vibeColor: "text-yellow-200/60",
+    featureColor: "text-slate-300",
+    btnSecondaryClass: "bg-[#D4AF37]/10 hover:bg-[#D4AF37]/30 text-[#D4AF37] border-[#D4AF37]/40"
   }
 ];
 

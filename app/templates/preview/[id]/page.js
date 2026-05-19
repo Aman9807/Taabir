@@ -518,6 +518,38 @@ const DEMO_DATA = {
       btnBgColor: "#CFB53B",
       btnTextColor: "#0C1D12"
     }
+  },
+  "royal-heritage": {
+    id: "__demo_royal_heritage__",
+    brideName: "Alexander",
+    groomName: "Victoria",
+    brideParentsName: "The Royal House of Sterling",
+    groomParentsName: "The Imperial Family",
+    weddingDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString(),
+    venue: {
+      name: "The Imperial Palace Hotel",
+      address: "1 Royal Boulevard, King's Landing, NY",
+      googleMapsUrl: "https://www.google.com/maps",
+    },
+    photoUrl: "https://images.unsplash.com/photo-1543886567-27b3e2b9f3aa?q=80&w=1200",
+    photos: [
+      "https://images.unsplash.com/photo-1543886567-27b3e2b9f3aa?q=80&w=1200",
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=1200"
+    ],
+    eventType: "wedding",
+    musicUrl: "",
+    coupleEmail: "royal@heritage.com",
+    theme: { templateId: "royal-heritage" },
+    details: {
+      schedule: [],
+    },
+    styling: {
+      enableScratchCard: true,
+      enableLanguageSwitcher: true,
+      doorAnimation: "velvet-curtains",
+      btnBgColor: "#D4AF37",
+      btnTextColor: "#0C0C0C"
+    }
   }
 };
 
@@ -535,7 +567,8 @@ export async function generateMetadata({ params }) {
     "playful-kidsparty": "Playful & Interactive",
     "summer-poolparty": "Summer Pool Party",
     "corporate-gala": "Sleek Corporate Gala",
-    "cozy-dinner": "Cozy Holiday / Dinner Party"
+    "cozy-dinner": "Cozy Holiday / Dinner Party",
+    "royal-heritage": "The Royal Heritage"
   };
   return {
     title: `${labels[id] || "Template"} Preview | Taabir`,

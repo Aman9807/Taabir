@@ -51,6 +51,16 @@ export default function InviteViewer({ invitation }) {
     return { id: i, left, delay, duration, size, opacity, isStar };
   }), []);
 
+  // Generate royal-heritage particles once
+  const royalParticleList = useMemo(() => Array.from({ length: 40 }).map((_, i) => {
+    const left = Math.random() * 100;
+    const top = Math.random() * 100;
+    const delay = -Math.random() * 20;
+    const duration = 15 + Math.random() * 20;
+    const size = 2 + Math.random() * 4;
+    return { id: i, left, top, delay, duration, size };
+  }), []);
+
   // Read styling preferences
   const customStyle = invitation.styling || {};
   let btnBg = customStyle.btnBgColor || (tplId === "ivory-elegance" ? "#800020" : "#D4AF37");
@@ -359,7 +369,17 @@ export default function InviteViewer({ invitation }) {
         text: "#FFFFFF",
         sub: "#E5E4E2",
         gold: "#191970",
-        border: "rgba(229, 228, 226, 0.2)"
+      }
+    : activePaletteId === "royal-heritage"
+    ? {
+        bg: "#0C0C0C",
+        door: "#800000",
+        seam: "#D4AF37",
+        card: "rgba(12, 12, 12, 0.85)",
+        text: "#FFFFFF",
+        sub: "#D4AF37",
+        gold: "#D4AF37",
+        border: "rgba(212, 175, 55, 0.3)"
       }
     : activePaletteId === "cozy-dinner"
     ? {
@@ -396,7 +416,7 @@ export default function InviteViewer({ invitation }) {
 
   const isPaletteDefault = activePaletteId === tplId;
   btnBg = isPaletteDefault && customStyle.btnBgColor ? customStyle.btnBgColor : T.gold;
-  btnText = isPaletteDefault && customStyle.btnTextColor ? customStyle.btnTextColor : (activePaletteId === "minimalist-romance" || activePaletteId === "bohemian-terracotta" ? "#333333" : activePaletteId === "cozy-dinner" ? "#0C1D12" : "#FFFFFF");
+  btnText = isPaletteDefault && customStyle.btnTextColor ? customStyle.btnTextColor : (activePaletteId === "minimalist-romance" || activePaletteId === "bohemian-terracotta" ? "#333333" : activePaletteId === "cozy-dinner" ? "#0C1D12" : activePaletteId === "royal-heritage" ? "#0C0C0C" : "#FFFFFF");
 
   const renderMinimalistRomance = () => {
     const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
@@ -5573,6 +5593,361 @@ export default function InviteViewer({ invitation }) {
     );
   };
 
+  const renderRoyalHeritage = () => {
+    const galleryPhotos = invitation.photos || (invitation.photoUrl ? [invitation.photoUrl] : []);
+    const hasPhotos = galleryPhotos.length > 0;
+    
+    // Sample royal schedule
+    const royalSchedule = invitation.details?.schedule?.length > 0 ? invitation.details.schedule : [
+      {
+        name: "Welcome Reception",
+        time: "18:00 - 19:30",
+        description: "Arrival of guests & signature cocktails",
+        venue: "The Grand Courtyard"
+      },
+      {
+        name: "The Royal Banquet",
+        time: "20:00 - 22:00",
+        description: "A lavish feast accompanied by live orchestral music",
+        venue: "The Imperial Ballroom"
+      }
+    ];
+
+    return (
+      <div 
+        style={{
+          backgroundColor: "#0C0C0C",
+          color: "#D4AF37",
+          fontFamily: "'Lora', serif",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          width: "100%",
+          borderLeft: "16px solid #800000",
+          borderRight: "16px solid #800000",
+          boxShadow: "inset 0 0 100px rgba(0,0,0,0.9)",
+        }}
+      >
+        {/* Dynamic Keyframes for Royal Heritage */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @keyframes royalDrift {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+          }
+          .royal-card {
+            background: rgba(12, 12, 12, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+          }
+          .royal-btn {
+            background: transparent;
+            color: #D4AF37;
+            border: 1px solid #D4AF37;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
+          }
+          .royal-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+          }
+        `}} />
+
+        {/* Floating Gold Particles (Slow Drift) */}
+        {royalParticleList.map(p => (
+          <div 
+            key={p.id}
+            style={{
+              position: "absolute",
+              bottom: "-5%",
+              left: `${p.left}%`,
+              width: p.size,
+              height: p.size,
+              borderRadius: "50%",
+              backgroundColor: "#D4AF37",
+              boxShadow: "0 0 8px #D4AF37",
+              animation: `royalDrift ${p.duration}s linear ${p.delay}s infinite`,
+              pointerEvents: "none",
+              zIndex: 1
+            }}
+          />
+        ))}
+
+        {/* Art Deco Corner Flourishes */}
+        {['top-left', 'top-right', 'bottom-left', 'bottom-right'].map(corner => {
+          const isTop = corner.includes('top');
+          const isLeft = corner.includes('left');
+          return (
+            <svg 
+              key={corner}
+              width="60" height="60" viewBox="0 0 100 100" fill="none"
+              style={{
+                position: "absolute",
+                top: isTop ? 16 : "auto",
+                bottom: !isTop ? 16 : "auto",
+                left: isLeft ? 16 : "auto",
+                right: !isLeft ? 16 : "auto",
+                transform: `rotate(${isTop ? (isLeft ? 0 : 90) : (isLeft ? -90 : 180)}deg)`,
+                pointerEvents: "none",
+                zIndex: 2,
+                opacity: 0.7
+              }}
+            >
+              <path d="M0,0 L100,0 L100,10 L10,10 L10,100 L0,100 Z" fill="#D4AF37"/>
+              <path d="M20,20 L80,20 L80,30 L30,30 L30,80 L20,80 Z" fill="#D4AF37"/>
+              <path d="M40,40 L60,40 L60,50 L50,50 L50,60 L40,60 Z" fill="#D4AF37"/>
+            </svg>
+          );
+        })}
+
+        {/* Top Crimson Glow */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "40vh", background: "radial-gradient(circle at 50% 0%, rgba(128,0,0,0.4), transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
+
+        {/* MAIN CONTENT */}
+        <div 
+          style={{
+            opacity: phase !== "closed" ? 1 : 0,
+            transform: phase !== "closed" ? "translateY(0)" : "translateY(40px)",
+            transition: "opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1)",
+            maxWidth: 660, margin: "0 auto", padding: "80px 24px 120px",
+            position: "relative",
+            zIndex: 10
+          }}
+        >
+          {/* ======================================================== */}
+          {/* HERO SECTION                                             */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div style={{ textAlign: "center", marginBottom: 60 }}>
+              <p style={{ fontFamily: "'Cinzel', serif", textTransform: "uppercase", fontSize: 12, letterSpacing: "0.25em", color: "#D4AF37", marginBottom: 24, opacity: 0.8 }}>
+                {dict[lang]?.[eventType] || "The Grand Celebration of"}
+              </p>
+              
+              <h1 
+                style={{ 
+                  fontFamily: "'Great Vibes', cursive", 
+                  fontSize: "4.5rem", 
+                  lineHeight: 1.1, 
+                  margin: "0 0 16px",
+                  color: "#D4AF37",
+                  textShadow: "0 2px 10px rgba(212,175,55,0.4)"
+                }}
+              >
+                {invitation.brideName}
+                {invitation.groomName && (
+                  <>
+                    <br/><span style={{ fontSize: "3rem", color: "#800000" }}>&</span><br/>
+                    {invitation.groomName}
+                  </>
+                )}
+              </h1>
+
+              {/* Decorative Gold Divider */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, margin: "32px 0" }}>
+                <div style={{ width: 80, height: 1, backgroundColor: "rgba(212,175,55,0.5)" }} />
+                <span style={{ color: "#D4AF37", fontSize: 10 }}>♦</span>
+                <div style={{ width: 80, height: 1, backgroundColor: "rgba(212,175,55,0.5)" }} />
+              </div>
+
+              <p style={{ fontSize: 16, lineHeight: 1.8, maxWidth: "85%", margin: "0 auto", opacity: 0.9 }}>
+                With joy in our hearts, we invite you to share in our royal heritage and celebrate this momentous occasion.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* EVENT METADATA (DATE & TIME)                             */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="royal-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center", position: "relative" }}>
+              <div style={{ marginBottom: 16 }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto" }}>
+                  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, textTransform: "uppercase", letterSpacing: "0.15em", color: "#D4AF37", marginBottom: 16 }}>
+                Date & Time
+              </h2>
+              <div style={{ fontSize: 22, fontWeight: 500, color: "#FFFFFF", marginBottom: 8 }}>
+                {targetDate.toLocaleDateString(lang === "ur" ? "ur-PK" : "en-US", {
+                  weekday: "long", year: "numeric", month: "long", day: "numeric",
+                })}
+              </div>
+              <div style={{ fontSize: 18, color: "#D4AF37", fontStyle: "italic" }}>
+                {targetDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* VENUE SECTION                                            */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="royal-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              {/* Minimalist Palace Illustration (SVG) */}
+              <div style={{ marginBottom: 20, display: "flex", justifyContent: "center" }}>
+                <svg width="60" height="40" viewBox="0 0 100 60" fill="none" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10,60 L10,30 L30,30 L30,10 L50,0 L70,10 L70,30 L90,30 L90,60" />
+                  <path d="M40,60 L40,40 L60,40 L60,60" />
+                  <path d="M20,30 L20,20 L30,20" />
+                  <path d="M80,30 L80,20 L70,20" />
+                </svg>
+              </div>
+              
+              <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, textTransform: "uppercase", letterSpacing: "0.15em", color: "#D4AF37", marginBottom: 16 }}>
+                The Grand Venue
+              </h2>
+              <p style={{ fontSize: 24, fontWeight: 600, color: "#FFFFFF", margin: "0 0 8px" }}>
+                {invitation.venue?.name || "The Imperial Palace Hotel"}
+              </p>
+              <p style={{ fontSize: 15, opacity: 0.8, fontStyle: "italic", margin: "0 0 24px" }}>
+                {invitation.venue?.address || "1 Royal Boulevard, King's Landing"}
+              </p>
+
+              {invitation.venue?.googleMapsUrl && (
+                <a 
+                  href={invitation.venue.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="royal-btn"
+                  style={{
+                    display: "inline-block",
+                    padding: "12px 28px",
+                    textDecoration: "none",
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
+                  View Royal Map
+                </a>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* THE ROYAL BANQUET (SCHEDULE)                             */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="royal-card" style={{ padding: "40px 24px", marginBottom: 48 }}>
+              <div style={{ textAlign: "center", marginBottom: 32 }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 16px" }}>
+                  <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path>
+                </svg>
+                <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, textTransform: "uppercase", letterSpacing: "0.15em", color: "#D4AF37" }}>
+                  Itinerary
+                </h2>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                {royalSchedule.map((ev, idx) => (
+                  <div key={idx} style={{ paddingLeft: 16, borderLeft: "2px solid #800000", position: "relative" }}>
+                    <div style={{ position: "absolute", left: -5, top: 6, width: 8, height: 8, borderRadius: "50%", backgroundColor: "#D4AF37" }} />
+                    <p style={{ fontFamily: "'Cinzel', serif", fontSize: 12, letterSpacing: "0.15em", color: "#D4AF37", margin: 0 }}>
+                      {ev.time}
+                    </p>
+                    <p style={{ fontSize: 18, color: "#FFFFFF", fontWeight: 600, margin: "4px 0" }}>
+                      {ev.name}
+                    </p>
+                    <p style={{ fontSize: 14, fontStyle: "italic", opacity: 0.8, margin: 0 }}>
+                      {ev.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* ======================================================== */}
+          {/* ROYAL RSVP PORTAL                                        */}
+          {/* ======================================================== */}
+          <ScrollReveal>
+            <div className="royal-card" style={{ padding: "40px 24px", marginBottom: 48, textAlign: "center" }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 16px" }}>
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, textTransform: "uppercase", letterSpacing: "0.15em", color: "#D4AF37", marginBottom: 24 }}>
+                RSVP
+              </h2>
+              
+              {!rsvpDone ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 16, textAlign: "left" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", color: "#D4AF37", marginBottom: 8 }}>
+                      Guest Name
+                    </label>
+                    <input 
+                      type="text" 
+                      value={rsvp.name}
+                      onChange={e => setRsvp({...rsvp, name: e.target.value})}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(0,0,0,0.5)", border: "1px solid rgba(212,175,55,0.4)", color: "#FFFFFF", outline: "none" }}
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", color: "#D4AF37", marginBottom: 8 }}>
+                      Attendance
+                    </label>
+                    <select 
+                      value={rsvp.attending}
+                      onChange={e => setRsvp({...rsvp, attending: e.target.value})}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(0,0,0,0.5)", border: "1px solid rgba(212,175,55,0.4)", color: "#FFFFFF", outline: "none", appearance: "none" }}
+                    >
+                      <option value="yes">Joyfully Accept</option>
+                      <option value="no">Regretfully Decline</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.1em", color: "#D4AF37", marginBottom: 8 }}>
+                      Message for the Couple
+                    </label>
+                    <textarea 
+                      value={rsvp.blessing}
+                      onChange={e => setRsvp({...rsvp, blessing: e.target.value})}
+                      rows={3}
+                      style={{ width: "100%", padding: "12px 16px", backgroundColor: "rgba(0,0,0,0.5)", border: "1px solid rgba(212,175,55,0.4)", color: "#FFFFFF", outline: "none", resize: "none" }}
+                      placeholder="Share your blessings..."
+                    />
+                  </div>
+                  <button 
+                    onClick={handleRsvpSubmit}
+                    disabled={rsvpLoading || !rsvp.name}
+                    className="royal-btn"
+                    style={{
+                      width: "100%",
+                      padding: "16px",
+                      marginTop: 8,
+                      fontWeight: 600,
+                      cursor: rsvpLoading || !rsvp.name ? "not-allowed" : "pointer",
+                      opacity: rsvpLoading || !rsvp.name ? 0.6 : 1
+                    }}
+                  >
+                    {rsvpLoading ? "Sending..." : "Submit RSVP"}
+                  </button>
+                </div>
+              ) : (
+                <div style={{ padding: "32px 0", animation: "fadeIn 0.8s ease" }}>
+                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: 24, color: "#D4AF37", margin: "0 0 8px" }}>Thank You</p>
+                  <p style={{ fontSize: 15, opacity: 0.8 }}>Your response has been formally recorded.</p>
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
+
+          {/* Footer */}
+          <div style={{ textAlign: "center", opacity: 0.5 }}>
+            <div style={{ width: 40, height: 1, backgroundColor: "#D4AF37", margin: "0 auto 16px" }} />
+            <p style={{ fontFamily: "'Cinzel', serif", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase" }}>
+              A Royal Celebration
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const layouts = [
     { id: "emerald-noir", name: "Classic Premium", icon: "✨" },
     { id: "minimalist-romance", name: "Minimalist Romance", icon: "🤍" },
@@ -5585,6 +5960,7 @@ export default function InviteViewer({ invitation }) {
     { id: "summer-poolparty", name: "Summer Pool Party", icon: "🏊" },
     { id: "corporate-gala", name: "Sleek Corporate Gala", icon: "🏢" },
     { id: "cozy-dinner", name: "Cozy Holiday / Dinner Party", icon: "🎄" },
+    { id: "royal-heritage", name: "The Royal Heritage", icon: "👑" },
   ];
 
   const palettes = [
@@ -5601,6 +5977,7 @@ export default function InviteViewer({ invitation }) {
     { id: "summer-poolparty", name: "Summer Pool Party", preview: ["#7FFFD4", "#FFDAB9", "#C2B280"] },
     { id: "corporate-gala", name: "Sleek Corporate Gala", preview: ["#0A0E1A", "#191970", "#E5E4E2"] },
     { id: "cozy-dinner", name: "Cozy Holiday / Dinner Party", preview: ["#0C1D12", "#CFB53B", "#9E1B32"] },
+    { id: "royal-heritage", name: "The Royal Heritage", preview: ["#0C0C0C", "#D4AF37", "#800000"] },
   ];
 
   return (
@@ -6082,6 +6459,8 @@ export default function InviteViewer({ invitation }) {
         renderCorporateGala()
       ) : activeLayoutId === "cozy-dinner" ? (
         renderCozyDinner()
+      ) : activeLayoutId === "royal-heritage" ? (
+        renderRoyalHeritage()
       ) : (
         <div 
           style={{
