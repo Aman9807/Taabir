@@ -8370,36 +8370,6 @@ export default function InviteViewer({ invitation }) {
       { top: "92%", left: "20%" }
     ];
 
-    // Keepsake-specific scroll reveal with wall-hanging slide bounce animation
-    const KeepsakeScrollReveal = ({ children }) => {
-      const [isVisible, setIsVisible] = useState(false);
-      const revealRef = useRef(null);
-
-      useEffect(() => {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setIsVisible(true);
-              observer.unobserve(entry.target);
-            }
-          },
-          { threshold: 0.05 }
-        );
-        if (revealRef.current) observer.observe(revealRef.current);
-        return () => observer.disconnect();
-      }, []);
-
-      return (
-        <div
-          ref={revealRef}
-          className={isVisible ? "hang-reveal" : ""}
-          style={{ opacity: isVisible ? 1 : 0 }}
-        >
-          {children}
-        </div>
-      );
-    };
-
     return (
       <div 
         style={{
@@ -10252,6 +10222,35 @@ function BlurFocusReveal({ children, duration = "1.5s" }) {
         filter: isVisible ? "blur(0px)" : "blur(8px)",
         transition: `opacity ${duration} ease-out, filter ${duration} ease-out`,
       }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function KeepsakeScrollReveal({ children }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const revealRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    if (revealRef.current) observer.observe(revealRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={revealRef}
+      className={isVisible ? "hang-reveal" : ""}
+      style={{ opacity: isVisible ? 1 : 0, width: "100%" }}
     >
       {children}
     </div>
